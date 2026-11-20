@@ -1,0 +1,196 @@
+% Báo cáo AS3179: khung theo template (trang bìa, đầu/chân trang, mục lục) và bố cục trong docs/report_outline.md.
+% Biên dịch: pdfLaTeX hai lượt: VS Code (LaTeX Workshop, tự biên dịch khi lưu), hoặc python scripts/04_build_report.py, hoặc Overleaf (pdfLaTeX).
+% Khối mã: \begin{codeblock} ... \end{codeblock} (chỉ ký tự ASCII và chữ Việt, không dùng chữ Hy Lạp trong mã).
+% Lời cảm ơn, lời nói đầu, danh mục ký hiệu: front/; các chương: chapters/; tài liệu tham khảo, phụ lục: back/. Chương 4, 5, 6 có hình/bảng chèn tự động từ outputs/.
+\documentclass[11pt]{article}
+\usepackage[includeheadfoot,textheight=24.6cm,textwidth=18.5cm,headheight=28pt]{geometry}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor,fancyhdr,indentfirst,array,graphicx,setspace,titlesec,tikz,float,booktabs,longtable,tabularx,adjustbox,caption,enumitem,needspace,placeins,xurl}
+\usepackage[framemethod=default]{mdframed}
+\usepackage{etoolbox}
+\usepackage{listings}  % khối mã Python có tô màu cú pháp (thuần LaTeX, không cần shell-escape)
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{tocloft}
+\setlength{\cftbeforesecskip}{4pt}\setlength{\cftbeforesubsecskip}{0pt}
+
+% --- đường dẫn hình/bảng (script 06 đổi ../figures, ../tables thành figures, tables cho Overleaf) ---
+\newcommand{\figdir}{../outputs/figures}
+\newcommand{\tabdir}{../outputs/tables}
+
+% --- ký hiệu và macro dùng chung ---
+\newcommand{\TODO}[1]{{\color{red}\textbf{[TODO(nhóm): #1]}}}
+\newcommand{\figx}[2]{\begin{figure}[H]\centering\includegraphics[width=0.77\linewidth]{\figdir/#1.png}\caption{#2}\label{fig:#1}\end{figure}}
+
+% --- liên kết bấm được tới chương, mục, nội dung kiểm chứng, tài liệu tham khảo ---
+\makeatletter
+\newcommand{\chg}[1]{\hyperlink{ch:#1}{Chương #1}}            % Chương N
+\newcommand{\chn}[1]{\hyperlink{ch:#1}{#1}}                    % chỉ số N (khi liệt kê nhiều chương)
+\newcommand{\muc}[1]{\hyperlink{mc:#1}{mục #1}}                % mục N.M hoặc N.M.K
+\newcommand{\Muc}[1]{\hyperlink{mc:#1}{Mục #1}}
+\newcommand{\phuluc}[1]{\hyperlink{ap:#1}{Phụ lục #1}}
+\def\ndlk#1{\@ndlk#1\relax}                                    % địa chỉ nội dung dạng 4.2(c)
+\def\@ndlk#1(#2)#3\relax{\hyperlink{nd:#1#2}{#1(#2)}}
+\def\mucnd#1{\@mucnd#1\relax}
+\def\@mucnd#1(#2)#3\relax{\hyperlink{nd:#1#2}{mục #1(#2)}}
+\newcommand{\tlk}[1]{[\def\tl@sep{}\@for\@tempa:=#1\do{\tl@sep\hyperlink{tl\@tempa}{\@tempa}\def\tl@sep{, }}]}   % [2, 3]
+\newcommand{\dlk}[1]{\hyperlink{dl#1}{[DL#1]}}                 % [DL2]
+\makeatother
+
+% --- ký hiệu toán và khung kết quả lý thuyết (Chương 2) ---
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newmdenv[linewidth=2.5pt,topline=false,bottomline=false,rightline=false,linecolor=blue!55!black,backgroundcolor=blue!4,
+  innerleftmargin=10pt,innerrightmargin=8pt,innertopmargin=3pt,innerbottommargin=3pt,skipabove=4pt,skipbelow=3pt,nobreak=true]{kqbox}
+\newenvironment{kq}{\begin{kqbox}\small}{\end{kqbox}}
+\newcommand{\kiemchung}[1]{\par\nopagebreak[4]\vspace{-2pt}\hfill{\small\itshape$\rightarrow$ Kiểm chứng tại mục \ndlk{#1}.}\par\smallskip}
+
+% cấp 4: a), b), c)... (tự đánh chữ, đặt lại sau mỗi mục cấp 3)
+\newcounter{noidung}[subsubsection]
+\renewcommand{\thenoidung}{\alph{noidung}}
+\newcommand{\noidung}[1]{\refstepcounter{noidung}\Needspace{6\baselineskip}\ifnum\value{section}=2\hypertarget{nd:\thesubsubsection\thenoidung}{}\else\hypertarget{nd:\thesubsection\thenoidung}{}\fi\par\medskip\noindent\textbf{\thenoidung) #1}\par\nopagebreak\smallskip}
+% sáu thành phần của mỗi nội dung kiểm chứng và nhãn cấp 5: (i), (ii), (iii)
+\newcommand{\tp}[1]{\par\Needspace{4\baselineskip}\smallskip\noindent\textbf{\textit{#1.}}\ }
+\newcommand{\bodl}[1]{\par\noindent\textit{#1}\ }
+
+% --- định dạng các cấp tiêu đề ---
+\titleformat{\section}{\normalfont\fontsize{13}{16}\selectfont\bfseries}{CHƯƠNG \thesection.}{0.6em}{\hypertarget{ch:\thesection}{}}
+\titleformat{name=\section,numberless}{\normalfont\fontsize{13}{16}\selectfont\bfseries}{}{0pt}{}
+\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{0.6em}{\hypertarget{mc:\thesubsection}{}}
+\titleformat{\subsubsection}{\normalfont\normalsize\bfseries\itshape}{\thesubsubsection}{0.6em}{\hypertarget{mc:\thesubsubsection}{}}
+\titlespacing*{\section}{0pt}{0pt}{14pt}
+\titlespacing*{\subsection}{0pt}{14pt}{6pt}
+\titlespacing*{\subsubsection}{0pt}{10pt}{4pt}
+% tiêu đề không bị bỏ lơ ở cuối trang: giữ chỗ cho vài dòng nội dung sau tiêu đề
+\pretocmd{\subsection}{\Needspace{9\baselineskip}}{}{}
+\pretocmd{\subsubsection}{\Needspace{8\baselineskip}}{}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
+\captionsetup{font=small,labelfont=bf,labelsep=period}
+\setstretch{1.04}
+\setlength{\parindent}{1cm}
+\renewcommand*{\contentsname}{\LARGE\textbf{Mục lục}}
+% màu cú pháp cho khối mã (đủ tương phản khi in đen trắng)
+\definecolor{mkw}{HTML}{1F4E9C}   % từ khóa
+\definecolor{mbi}{HTML}{0B7A75}   % hàm dựng sẵn
+\definecolor{mst}{HTML}{B4461B}   % chuỗi
+\definecolor{mcm}{HTML}{5C7A3A}   % chú thích
+\definecolor{mbg}{HTML}{F6F7F9}   % nền
+\definecolor{mfr}{HTML}{C9CED6}   % viền
+\lstdefinestyle{py}{language=Python,basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{mkw}\bfseries,
+  keywordstyle=[2]\color{mbi},
+  stringstyle=\color{mst},commentstyle=\color{mcm}\itshape,
+  morekeywords=[2]{len,range,abs,int,float,sum,min,max,print,enumerate,zip,dict,list,bool,str,sorted},
+  showstringspaces=false,columns=fullflexible,keepspaces=true,
+  backgroundcolor=\color{mbg},frame=single,rulecolor=\color{mfr},framesep=3mm,
+  xleftmargin=3mm,xrightmargin=1mm,aboveskip=6pt,belowskip=4pt,
+  breaklines=true,breakatwhitespace=false,postbreak=\mbox{\textcolor{mcm}{$\hookrightarrow$}\space},
+  upquote=true}
+\lstnewenvironment{codeblock}{\lstset{style=py}}{}
+\BeforeBeginEnvironment{codeblock}{\par\noindent\begin{minipage}{\linewidth}}  % không ngắt khối mã giữa hai trang
+\AfterEndEnvironment{codeblock}{\end{minipage}\par}
+
+\renewcommand{\arraystretch}{1.1}  % hàng bảng thoáng hơn khi có đường kẻ dọc
+\begin{document}
+
+% ================= TRANG BÌA =================
+% Toàn bộ nội dung bìa nằm trong một khung adjustbox tự co lại nếu cao hơn trang, nên không bao giờ tràn sang trang sau.
+\AddToHookNext{shipout/background}{
+	\begin{tikzpicture}[remember picture,overlay]
+		\node at (current page.center) {\includegraphics[width=19.4cm]{assets/khung_bia.png}};
+	\end{tikzpicture}
+}
+\thispagestyle{empty}
+\begin{adjustbox}{max totalsize={\textwidth}{\textheight},center}
+\begin{minipage}{16.4cm}
+\centering
+\textbf{\large ĐẠI HỌC QUỐC GIA THÀNH PHỐ HỒ CHÍ MINH\\
+	TRƯỜNG ĐẠI HỌC BÁCH KHOA\\
+	KHOA KHOA HỌC ỨNG DỤNG}\\[2pt]
+\rule{0.55\textwidth}{0.6pt}
+
+\vspace{0.4cm}
+\includegraphics[height=3.3cm]{assets/01_logobachkhoasang}
+
+\vspace{0.4cm}
+\textbf{\Large MÔ HÌNH THỐNG KÊ (AS3179)}
+
+\vspace{0.3cm}
+\noindent\rule{\textwidth}{0.8pt}\\[6pt]
+{\large\textbf{BÀI TẬP LỚN}}\\[6pt]
+{\Large\textbf{KIỂM CHỨNG THỰC NGHIỆM\\CÁC MÔ HÌNH ARMA VÀ ARIMA\\TRÊN DỮ LIỆU CHUỖI THỜI GIAN}}\\[6pt]
+\noindent\rule{\textwidth}{0.8pt}
+
+\vspace{0.5cm}
+\large
+\begin{tabular}{@{}r@{\hspace{0.8em}}l@{}}
+	\textbf{Học kỳ:} & 261 \\
+	\textbf{Lớp:} & L01 \\
+	\textbf{Nhóm:} & 7 \\
+	\textbf{Cặp bài giảng:} & Bài 11 và Bài 12 \\
+	\textbf{Giảng viên:} & TS. Nguyễn Tiến Dũng \\
+\end{tabular}
+
+\vspace{0.5cm}
+\textbf{Danh sách sinh viên thực hiện}\\[4pt]
+\normalsize
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{|c|l|l|c|p{3.2cm}|}
+	\hline
+	\textbf{STT} & \textbf{Họ} & \textbf{Tên} & \textbf{MSSV} & \textbf{Ghi chú} \\
+	\hline
+	1 & Lý Anh & Quân & 2412896 & \\
+	\hline
+	2 & Vũ Trần Hoàng & Quân & 2412928 & \\
+	\hline
+	3 & Hồ Lê Ngọc & Quang & 2412819 & \\
+	\hline
+	4 & Phạm Nhật & Quang & 2412846 & \\
+	\hline
+	5 & Phạm Anh & Quốc & 2412939 & \\
+	\hline
+\end{tabular}
+
+\vspace{0.6cm}
+\large\textbf{\textit{Thành phố Hồ Chí Minh, tháng 11 năm 2026}}
+\end{minipage}
+\end{adjustbox}
+\newpage
+
+% ================= ĐẦU/CHÂN TRANG VÀ MỤC LỤC =================
+\pagestyle{fancy}
+\renewcommand{\footrulewidth}{1pt}
+\fancyhead{}
+\lhead{\includegraphics[width=5.2cm]{assets/bklogo}}
+\rhead{\textbf{\normalsize {\color{blue}Mô hình thống kê - HK261}\\ \footnotesize{Nhóm 7 - Lớp L01}}}
+\fancyfoot{}
+\rfoot{Trang \thepage}
+\setcounter{page}{1}
+
+% ================= LỜI CẢM ƠN, LỜI NÓI ĐẦU =================
+\input{front/01_loi_cam_on}
+\input{front/02_loi_noi_dau}
+\clearpage
+
+{\hypersetup{linkcolor=black}\setstretch{0.84}\tableofcontents\thispagestyle{fancy}}
+\newpage
+
+% ================= NỘI DUNG =================
+\input{front/03_danh_muc_ky_hieu}
+\input{chapters/01_gioi_thieu}
+\input{chapters/02_co_so_ly_thuyet}
+\input{chapters/03_du_lieu_phuong_phap}
+\input{chapters/04_kiem_chung_chuoi_dung_arma}
+\input{chapters/05_kiem_chung_chuoi_khong_dung_arima}
+\input{chapters/06_kiem_chung_du_bao}
+\input{chapters/07_thao_luan}
+\input{chapters/08_ket_luan}
+\input{back/01_tai_lieu_tham_khao}
+\input{back/02_phu_luc}
+
+\end{document}
