@@ -45,59 +45,66 @@
 \begin{document}
 
 % ================= TRANG BÌA =================
+% Toàn bộ nội dung bìa nằm trong một khung adjustbox tự co lại nếu cao hơn trang, nên không bao giờ tràn sang trang sau.
 \AddToHookNext{shipout/background}{
 	\begin{tikzpicture}[remember picture,overlay]
 		\node at (current page.center) {\includegraphics[width=19.4cm]{background.png}};
 	\end{tikzpicture}
 }
 \thispagestyle{empty}
-\begin{center}
-	\textbf{\large ĐẠI HỌC QUỐC GIA THÀNH PHỐ HỒ CHÍ MINH\\
-		TRƯỜNG ĐẠI HỌC BÁCH KHOA \\ KHOA KHOA HỌC ỨNG DỤNG \\\textunderscore\textunderscore\textunderscore\textunderscore\textunderscore\textunderscore\textunderscore\textunderscore\textunderscore\textunderscore\textunderscore\textunderscore\textunderscore}
-\end{center}
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.4\linewidth]{01_logobachkhoasang}
-\end{figure}
-\begin{center}
-	\textbf{\Large MÔ HÌNH THỐNG KÊ (AS3179) \\}
-	\LARGE
-	\begin{center}
-		\noindent\rule{450pt}{0.8pt}
-		\vspace{0.5em}
-		\begin{flushleft}
-			\hspace{60pt}\textbf{\large Bài tập lớn:}
-		\end{flushleft}
-		{\LARGE\textbf{KIỂM CHỨNG THỰC NGHIỆM\\CÁC MÔ HÌNH ARMA VÀ ARIMA\\TRÊN DỮ LIỆU CHUỖI THỜI GIAN}}\\
-		\noindent\rule{450pt}{0.8pt}
-	\end{center}
-	\textbf{\large HỌC KỲ \TODO{mã học kỳ} \\}
-	\textbf{\large Giảng viên: \TODO{họ tên giảng viên}\\}
-	\textbf{\large Chuyên đề: Mô hình chuỗi thời gian\\}
-	\large
-	\begin{flushleft}
-		\hspace{1.5cm}\textbf{\large Danh sách sinh viên thực hiện: }
-	\end{flushleft}
-	\begin{center}
-		\large
-		\begin{tabular}{|c|c|c|c|c|}
-			\hline
-			\textbf{STT} & \textbf{\hspace{1cm}Họ\hspace{1cm}} & \textbf{Tên} & \hspace{0.3cm}\textbf{MSSV}\hspace{0.3cm} & \textbf{\hspace{1.5cm}Ghi chú\hspace{1.5cm}} \\
-			\hline
-			1 & Lý Anh & Quân & 2412896 & \\
-			\hline
-			2 & Vũ Trần Hoàng & Quân & 2412928 & \\
-			\hline
-			3 & Hồ Lê Ngọc & Quang & 2412819 & \\
-			\hline
-			4 & Phạm Nhật & Quang & 2412846 & \\
-			\hline
-			5 & Phạm Anh & Quốc & 2412939 & \\
-			\hline
-		\end{tabular}
-	\end{center}
-	\textbf{\textit{Thành phố Hồ Chí Minh, tháng 11 năm 2026.}}
-\end{center}
+\begin{adjustbox}{max totalsize={\textwidth}{\textheight},center}
+\begin{minipage}{\textwidth}
+\centering
+\textbf{\large ĐẠI HỌC QUỐC GIA THÀNH PHỐ HỒ CHÍ MINH\\
+	TRƯỜNG ĐẠI HỌC BÁCH KHOA\\
+	KHOA KHOA HỌC ỨNG DỤNG}\\[2pt]
+\rule{0.55\textwidth}{0.6pt}
+
+\vspace{0.4cm}
+\includegraphics[height=3.3cm]{01_logobachkhoasang}
+
+\vspace{0.4cm}
+\textbf{\Large MÔ HÌNH THỐNG KÊ (AS3179)}
+
+\vspace{0.3cm}
+\noindent\rule{\textwidth}{0.8pt}\\[6pt]
+{\large\textbf{BÀI TẬP LỚN}}\\[6pt]
+{\Large\textbf{KIỂM CHỨNG THỰC NGHIỆM\\CÁC MÔ HÌNH ARMA VÀ ARIMA\\TRÊN DỮ LIỆU CHUỖI THỜI GIAN}}\\[6pt]
+\noindent\rule{\textwidth}{0.8pt}
+
+\vspace{0.5cm}
+\large
+\begin{tabular}{@{}r@{\hspace{0.8em}}l@{}}
+	\textbf{Học kỳ:} & 261 \\
+	\textbf{Lớp:} & L01 \\
+	\textbf{Nhóm:} & 7 \\
+	\textbf{Giảng viên:} & TS. Nguyễn Tiến Dũng \\
+\end{tabular}
+
+\vspace{0.5cm}
+\textbf{Danh sách sinh viên thực hiện}\\[4pt]
+\normalsize
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{|c|l|l|c|p{3.2cm}|}
+	\hline
+	\textbf{STT} & \textbf{Họ} & \textbf{Tên} & \textbf{MSSV} & \textbf{Ghi chú} \\
+	\hline
+	1 & Lý Anh & Quân & 2412896 & \\
+	\hline
+	2 & Vũ Trần Hoàng & Quân & 2412928 & \\
+	\hline
+	3 & Hồ Lê Ngọc & Quang & 2412819 & \\
+	\hline
+	4 & Phạm Nhật & Quang & 2412846 & \\
+	\hline
+	5 & Phạm Anh & Quốc & 2412939 & \\
+	\hline
+\end{tabular}
+
+\vspace{0.6cm}
+\large\textbf{\textit{Thành phố Hồ Chí Minh, tháng 11 năm 2026}}
+\end{minipage}
+\end{adjustbox}
 \newpage
 
 % ================= ĐẦU/CHÂN TRANG VÀ MỤC LỤC =================
@@ -105,7 +112,7 @@
 \renewcommand{\footrulewidth}{1pt}
 \fancyhead{}
 \lhead{\includegraphics[width=8cm]{bklogo}}
-\rhead{\textbf{\large {\color{blue}Mô hình thống kê (AS3179)}\\ \small{Kiểm chứng thực nghiệm các mô hình ARMA và ARIMA}}}
+\rhead{\textbf{\large {\color{blue}Mô hình thống kê - HK261}\\ \small{Nhóm 7 - Lớp L01}}}
 \fancyfoot{}
 \cfoot{Trang \thepage}
 \setcounter{page}{1}
