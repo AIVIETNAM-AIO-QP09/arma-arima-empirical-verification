@@ -1,7 +1,7 @@
 """Tái lập từng con số "Kết quả kỳ vọng" của Bài 11–12 (docs/reference_values.md) bằng đúng lệnh Python của Mục 6.
 
 Dung sai = độ chính xác làm tròn mà bài giảng in. KHÔNG sửa giá trị kỳ vọng cho test xanh: số nào lệch thì đánh
-xfail trong XFAIL kèm lý do đã điều tra. Bảng so sánh được ghi ra reports/tables/lecture_reference_check.md.
+xfail trong XFAIL kèm lý do đã điều tra. Bảng so sánh được ghi ra outputs/tables/lecture_reference_check.md.
 """
 import warnings
 from functools import cache

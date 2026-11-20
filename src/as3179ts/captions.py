@@ -12,14 +12,14 @@ DS = "Bộ dữ liệu"
 ARTIFACTS = {
     # ---------------- Khám phá dữ liệu ----------------
     "tab_eda_descriptive": _t("Thống kê mô tả của biến được mô hình hóa trong sáu bộ dữ liệu", DS,
-                              "n: số quan sát; SD: độ lệch chuẩn (mẫu số $n-1$); độ lệch: skewness; kurtosis dư: kurtosis trừ 3. HU, NI: thang gốc; LY: $\\log_{10}$; DR: \\%; AP, DP: log."),
+                              "n: số quan sát; SD: độ lệch chuẩn (mẫu số $n-1$); độ lệch: skewness; kurtosis dư: kurtosis trừ 3. HU, NI: thang gốc; LY: $\\log_{10}$; DR: %; AP, DP: log."),
     # ---------------- Bài 11 ----------------
     "tab_b11_01_stationarity": _t("Kiểm tra trực quan tính dừng: trung bình và phương sai trượt, $\\hat\\rho(1)$ và $Q_{LB}(10)$ của chuỗi và của bình phương độ lệch", DS,
                                   "Cửa sổ trượt 20 năm (HU, LY) và 250 ngày giao dịch (DR). $Q_{LB}$ tính trên mức nước gốc của HU (có xu thế)."),
     "tab_b11_02_gamma_properties": _t("Tính chất của hàm tự hiệp phương sai mẫu với mẫu số $n$ và $n-h$", DS,
                                       "Ma trận $\\hat\\Gamma$ cỡ $n\\times n$; trị riêng nhỏ nhất âm nghĩa là không xác định không âm."),
-    "tab_b11_03_mean_se": _t("Sai số chuẩn của trung bình mẫu: giả định iid và có xét phụ thuộc (Định lý 1)", DS,
-                             "$\\hat\\tau$ Bartlett cắt cụt ở $K=\\lfloor4(n/100)^{2/9}\\rfloor$; công thức Định lý 1(a) thay $\\hat\\gamma$ chỉ dùng độ trễ $h\\le n/4$; dấu – nghĩa là công thức plug-in cho phương sai âm (ACF dao động, LY), không dùng được."),
+    "tab_b11_03_mean_se": _t("Sai số chuẩn của trung bình mẫu: giả định iid và có xét phụ thuộc", DS,
+                             "$\\hat\\tau$ Bartlett cắt cụt ở $K=\\lfloor4(n/100)^{2/9}\\rfloor$; công thức đầy đủ của $\Var\bar Y$ thay $\\hat\\gamma$ chỉ dùng độ trễ $h\\le n/4$; dấu – nghĩa là công thức plug-in cho phương sai âm (ACF dao động, LY), không dùng được."),
     "tab_b11_03_slope_se": _t("Hệ số dốc xu thế của hồ Huron: OLS (sai số iid) so với ML có sai số AR(2)", "Phương pháp"),
     "tab_b11_03_coverage": _t("Độ phủ của khoảng tin cậy 95% cho trung bình, AR(1) với $\\phi=0.6$, $n=100$, $B=2000$", "Khoảng tin cậy",
                               "MCSE: sai số Monte Carlo $\\sqrt{p(1-p)/B}$. Trung bình thật $\\mu=0$."),

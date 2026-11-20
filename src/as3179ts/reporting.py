@@ -1,4 +1,4 @@
-"""Xuất bảng kết quả: CSV (đủ chữ số), Markdown và LaTeX (booktabs) vào reports/tables/, tên tab_b<bài>_<mục>_<nội dung>.
+"""Xuất bảng kết quả: CSV (đủ chữ số), Markdown và LaTeX (booktabs) vào outputs/tables/, tên tab_b<bài>_<mục>_<nội dung>.
 
 Chú thích (caption), nhãn cột, định dạng số nằm ở một nơi (captions.py) để mọi bảng trình bày nhất quán.
 """
@@ -136,7 +136,7 @@ def _to_latex_tall(d: pd.DataFrame, cells: list, n_idx: int, name: str, caption:
     names = list(d.columns[n_idx:])
     header = " & ".join(tex(c) for c in ["Đại lượng"] + labels) + r" \\"
     body = "\n".join(" & ".join(tex(x) for x in [names[k]] + [row[n_idx + k] for row in cells]) + r" \\" for k in range(len(names)))
-    spec = "l" + "r" * len(cells)
+    spec = "|" + "|".join("l" + "r" * len(cells)) + "|"
     notes = rf"\par\vspace{{2pt}}{{\footnotesize\textit{{Ghi chú:}} {tex(note)}}}" if note else ""
     return (f"\\begin{{table}}[H]\n\\centering\\footnotesize\n\\caption{{{tex(caption)}}}\\label{{tab:{name}}}\n"
             f"\\begin{{adjustbox}}{{max width=\\linewidth}}\n\\begin{{tabular}}{{{spec}}}\n\\toprule\n{header}\n\\midrule\n{body}\n\\bottomrule\n"
@@ -159,13 +159,14 @@ def to_latex(df: pd.DataFrame, name: str, caption: str, fmt: dict | None = None,
     long_text = [j for j in range(ncol) if not numeric[j] and maxlen[j] > 28]
     share = {j: min(maxlen[j], 60) for j in long_text}
     frac = 0.97 if len(long_text) == ncol else 0.72
-    spec = ""
+    cols = []
     for j in range(ncol):
         if j in long_text:
             w = frac * share[j] / sum(share.values())
-            spec += r">{\raggedright\arraybackslash}p{\dimexpr " + f"{w:.3f}" + r"\linewidth-2\tabcolsep\relax}"
+            cols.append(r">{\raggedright\arraybackslash}p{\dimexpr " + f"{w:.3f}" + r"\linewidth-2\tabcolsep\relax}")
         else:
-            spec += "r" if numeric[j] else ("c" if pd.api.types.is_bool_dtype(d.iloc[:, j]) else "l")
+            cols.append("r" if numeric[j] else ("c" if pd.api.types.is_bool_dtype(d.iloc[:, j]) else "l"))
+    spec = "|" + "|".join(cols) + "|"   # có đường kẻ dọc giữa các cột
     header = " & ".join(tex(c) for c in d.columns) + r" \\"
     end = r" \\[12pt]" if long_text else r" \\"   # bảng có cột chữ dài: thêm khoảng cách giữa các hàng
     body = "\n".join(" & ".join(tex(x) for x in row) + end for row in cells)
@@ -178,7 +179,7 @@ def to_latex(df: pd.DataFrame, name: str, caption: str, fmt: dict | None = None,
 
 def save_table(df: pd.DataFrame, name: str, caption: str | None = None, fmt: dict | None = None, index_label: str | None = None,
                note: str | None = None) -> pd.DataFrame:
-    """Lưu df thành reports/tables/<name>.csv / .md / .tex; caption, nhãn chỉ số, ghi chú lấy từ captions.ARTIFACTS nếu không truyền.
+    """Lưu df thành outputs/tables/<name>.csv / .md / .tex; caption, nhãn chỉ số, ghi chú lấy từ captions.ARTIFACTS nếu không truyền.
 
     Trả về df để hiển thị trong notebook.
     """

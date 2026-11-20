@@ -6,8 +6,8 @@ SEED = 3179  # giống bài giảng; mọi mô phỏng dùng numpy.random.defaul
 ROOT = Path(__file__).resolve().parents[2]
 DATA_RAW = ROOT / "data" / "raw"
 DATA_PROCESSED = ROOT / "data" / "processed"
-FIG_DIR = ROOT / "reports" / "figures"
-TABLE_DIR = ROOT / "reports" / "tables"
+FIG_DIR = ROOT / "outputs" / "figures"
+TABLE_DIR = ROOT / "outputs" / "tables"
 LECTURE_DIR = ROOT / "docs" / "lectures"
 
 AP_TRAIN_N = 120      # AirPassengers: 1949-01..1958-12

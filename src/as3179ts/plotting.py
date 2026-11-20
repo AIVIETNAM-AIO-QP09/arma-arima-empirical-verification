@@ -1,4 +1,4 @@
-"""Style hình thống nhất và lưu hình vào reports/figures/ (PNG 300 dpi, tên fig_b<bài>_<mục>_<nội dung>)."""
+"""Style hình thống nhất và lưu hình vào outputs/figures/ (PNG 300 dpi, tên fig_b<bài>_<mục>_<nội dung>)."""
 import matplotlib
 
 matplotlib.use("Agg")  # chạy không cần màn hình (nbconvert, run_all)
@@ -23,7 +23,7 @@ plt.rcParams.update({
 
 
 def save_figure(fig, name: str) -> str:
-    """Lưu fig thành reports/figures/<name>.png (300 dpi, nền trắng); trả về đường dẫn."""
+    """Lưu fig thành outputs/figures/<name>.png (300 dpi, nền trắng); trả về đường dẫn."""
     from .captions import caption_of
 
     caption_of(name)  # mọi hình phải có chú thích trong captions.py
@@ -42,7 +42,7 @@ def show_figure(path: str):
     from IPython.display import Image, display
     from PIL import Image as PILImage
 
-    # nhúng bản thu nhỏ (rộng ≤ 1600 px) để notebook nhẹ; file PNG 300 dpi gốc vẫn nằm ở reports/figures
+    # nhúng bản thu nhỏ (rộng ≤ 1600 px) để notebook nhẹ; file PNG 300 dpi gốc vẫn nằm ở outputs/figures
     img = PILImage.open(path)
     img.thumbnail((1600, 1600))
     buf = io.BytesIO()
