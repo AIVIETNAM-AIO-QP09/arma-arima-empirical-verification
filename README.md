@@ -36,14 +36,14 @@ Chỉ `scripts/01_download_data.py` dùng mạng (bỏ qua nếu `data/raw/` đ�
 | `notebooks/` | `00_kham_pha_du_lieu`, `bai11_arma` (11.1–11.14), `bai12_arima_du_bao` (12.1–12.14 + ⋆) |
 | `tests/` | `test_data`, `test_manual_vs_library` (hàm tay khớp statsmodels), `test_lecture_reference` (tái lập số liệu bài giảng) |
 | `reports/figures`, `reports/tables` | 26 hình PNG 300 dpi (`fig_b<bài>_<mục>_<nội dung>`) và 63 bảng (`tab_b<bài>_<mục>_<nội dung>` ở 3 dạng: `.csv` đủ chữ số, `.md`, `.tex` booktabs sẵn caption/nhãn). Chú thích của từng hình/bảng nằm ở `src/as3179ts/captions.py` |
-| `reports/report/` | khung báo cáo LaTeX theo template: `main.tex`, `chapters/` (7 chương, tài liệu tham khảo, phụ lục), `assets/` (logo, nền bìa); bố cục: `docs/report_outline.md` |
+| `reports/report/` | khung báo cáo LaTeX theo template: `main.tex`, `chapters/` (8 chương, tài liệu tham khảo, phụ lục), `assets/` (logo, nền bìa); bố cục: `docs/report_outline.md` |
 | `docs/` | đặc tả, 2 PDF bài giảng, text trích từ PDF, `theory_checklist.md`, `reference_values.md` |
 
 ## Ánh xạ ID lý thuyết → notebook → mục báo cáo
 
-- **11.1–11.14** → `notebooks/bai11_arma.ipynb`, section `## 11.x` → báo cáo Mục **4.4**, mục con `11.x`.
-- **12.1–12.14 (+ ⋆)** → `notebooks/bai12_arima_du_bao.ipynb`, section `## 12.x` → báo cáo Mục **4.5**, mục con `12.x`.
-- EDA → `notebooks/00_kham_pha_du_lieu.ipynb` → Mục **4.3**; bảng tổng hợp cuối mỗi notebook → Mục **4.6**.
+- **11.1–11.14** → `notebooks/bai11_arma.ipynb`, section `## 11.x` → báo cáo **Chương 4** (kiểm chứng mục 2.1).
+- **12.1–12.14 (+ ⋆)** → `notebooks/bai12_arima_du_bao.ipynb`, section `## 12.x` → báo cáo **Chương 5** (chuỗi không dừng, ARIMA) và **Chương 6** (dự báo).
+- EDA → `notebooks/00_kham_pha_du_lieu.ipynb` → mục **3.2** của báo cáo; bảng tổng hợp cuối mỗi notebook → **Chương 7** (Bảng 7.1).
 - Danh sách và trạng thái: `docs/theory_checklist.md`. Mỗi section có đủ 6 tiểu mục theo đặc tả; hai tiểu mục *Phân tích và diễn giải* và *Nhận xét* là `TODO(nhóm)`.
 
 ## Quy ước

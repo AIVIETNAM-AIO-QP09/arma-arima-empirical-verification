@@ -19,5 +19,65 @@ Thành viên & Công việc cụ thể & Tỷ lệ đóng góp \\
 \clearpage
 \section*{PHỤ LỤC B. MÃ NGUỒN VÀ TÁI LẬP}
 \addcontentsline{toc}{section}{Phụ lục B. Mã nguồn và tái lập}
+\setcounter{table}{0}\renewcommand{\thetable}{B.\arabic{table}}
 
-\TODO{Cấu trúc thư mục mã nguồn (\texttt{src/as3179ts}, \texttt{scripts}, \texttt{notebooks}, \texttt{tests}); lệnh chạy lại toàn bộ (\texttt{python run\_all.py}); hạt giống; phiên bản phần mềm (\texttt{requirements-lock.txt}). Mã đầy đủ nộp kèm dưới dạng \texttt{.py} và \texttt{.ipynb}.}
+Toàn bộ kết quả trong báo cáo (số liệu, bảng và hình) được sinh bằng mã Python đi kèm và có thể chạy lại từ đầu. Phụ lục này mô tả cấu trúc mã nguồn, cách chạy lại, hạt giống và phiên bản phần mềm. Mã đầy đủ được nộp kèm dưới dạng \texttt{.py} và \texttt{.ipynb}.
+
+\subsection*{B.1. Cấu trúc thư mục}
+
+\begin{table}[H]
+\centering\small
+\caption{Cấu trúc thư mục của mã nguồn}\label{tab:cautruc}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\linewidth}{@{}p{3.6cm}X@{}}
+\toprule
+Thư mục & Nội dung \\
+\midrule
+\texttt{data/raw} & năm tệp CSV gốc tải từ Rdatasets, kèm tệp \texttt{checksums.txt}; không sửa tay \\
+\texttt{data/processed} & sáu tệp đã làm sạch và biến đổi (mỗi bộ dữ liệu một tệp) \\
+\texttt{src/as3179ts} & các hàm dùng chung: \texttt{acf\_tools} (tự tương quan, Ljung--Box), \texttt{arma\_tools} (ARMA, Yule--Walker, trọng số $\psi$), \texttt{forecast\_tools} (dự báo, phương sai sai số dự báo), \texttt{evaluation} (thước đo sai số, gốc cuốn chiếu, Diebold--Mariano), \texttt{simulation} (mô phỏng), \texttt{plotting} và \texttt{reporting} (hình, bảng), \texttt{data}, \texttt{config} \\
+\texttt{scripts} & các bước chạy từng phần: tải dữ liệu, làm sạch, biên dịch báo cáo, đóng gói \\
+\texttt{notebooks} & ba sổ tay Jupyter: \texttt{00\_kham\_pha\_du\_lieu} (mục 3.2), \texttt{bai11\_arma} (Chương 4), \texttt{bai12\_arima\_du\_bao} (Chương 5 và 6) \\
+\texttt{tests} & các kiểm thử tự động \\
+\texttt{reports} & hình (\texttt{figures}, PNG), bảng (\texttt{tables}, ba dạng \texttt{.csv}, \texttt{.md}, \texttt{.tex}) và mã LaTeX của báo cáo (\texttt{report}) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\noindent Các hàm trong \texttt{acf\_tools}, \texttt{arma\_tools}, \texttt{forecast\_tools} và \texttt{evaluation} được nhóm tự cài đặt theo công thức ở Chương 2, không gọi \texttt{statsmodels}; thư viện này chỉ được dùng để đối chiếu (mục 3.3).
+
+\subsection*{B.2. Cài đặt và chạy lại}
+
+Cần Python 3.11 hoặc 3.12. Các lệnh dưới đây chạy trong PowerShell trên Windows, từ thư mục gốc của dự án:
+\begin{codeblock}
+py -3.12 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt -e .
+.\.venv\Scripts\python.exe -m ipykernel install --user --name as3179-ts
+.\.venv\Scripts\python.exe run_all.py
+\end{codeblock}
+Lệnh \texttt{run\_all.py} chạy tuần tự bốn bước: tải dữ liệu, làm sạch dữ liệu, chạy kiểm thử, rồi thực thi ba sổ tay để sinh lại toàn bộ bảng và hình (mất vài phút vì có nhiều mô phỏng và khớp lại mô hình). Chỉ bước tải dữ liệu cần kết nối mạng, và được bỏ qua nếu thư mục \texttt{data/raw} đã có sẵn dữ liệu. Thêm tùy chọn \texttt{-{}-with-report} để biên dịch luôn báo cáo PDF (cần có LaTeX, biên dịch bằng \texttt{pdflatex} hai lượt).
+
+\subsection*{B.3. Hạt giống và tính tái lập}
+
+Hạt giống duy nhất là $3179$, khai báo một lần trong \texttt{config.py}. Mỗi mô phỏng nhận một dòng số ngẫu nhiên riêng sinh ra từ hạt giống đó (\texttt{simulation.child\_rng}), nên kết quả không phụ thuộc vào thứ tự chạy các ô trong sổ tay và việc thêm hay bớt một mô phỏng không làm đổi kết quả của các mô phỏng khác.
+
+\subsection*{B.4. Phiên bản phần mềm}
+
+Kết quả trong báo cáo được tạo với Python 3.12.14 và các gói sau (danh sách đầy đủ trong \texttt{requirements-lock.txt}):
+
+\begin{table}[H]
+\centering\small
+\caption{Phiên bản phần mềm chính}\label{tab:phienban}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}lllllll@{}}
+\toprule
+\texttt{statsmodels} & \texttt{numpy} & \texttt{pandas} & \texttt{scipy} & \texttt{matplotlib} & \texttt{pytest} & \texttt{nbconvert} \\
+\midrule
+0.15.0 & 2.5.5 & 3.1.1 & 1.18.1 & 3.11.2 & 9.2.0 & 7.17.2 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{B.5. Kiểm thử}
+
+Bộ kiểm thử gồm $177$ kiểm thử đạt. Chúng kiểm tra dữ liệu (số quan sát, giá trị thiếu, thứ tự thời gian), kiểm tra các hàm tự cài đặt khớp với \texttt{statsmodels} (sai khác không quá $10^{-8}$), và kiểm tra việc sinh bảng. Thêm $9$ kiểm thử đối chiếu với các giá trị tham chiếu cho trước được đánh dấu là kỳ vọng không đạt (\texttt{xfail}), vì những giá trị đó khác nhau chút ít do cách làm tròn, tối ưu số hoặc dòng số ngẫu nhiên; từng trường hợp có ghi lý do trong mã kiểm thử.
