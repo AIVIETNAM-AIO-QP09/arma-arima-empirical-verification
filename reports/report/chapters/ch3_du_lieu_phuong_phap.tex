@@ -81,7 +81,7 @@ chẳng hạn khoảng $0.005$ khi $B=2000$ và $\hat p\approx0.95$; với một
 \noidung{Đánh giá dự báo}
 Với hai bộ dự báo, dữ liệu được chia theo thời gian như ở mục 3.2. Mô hình chỉ được khớp trên phần huấn luyện, rồi dự báo và so với phần kiểm định. Để kết quả không phụ thuộc vào đúng một điểm chia, nhóm còn đánh giá theo gốc cuốn chiếu: mô hình được khớp lại tại mỗi gốc, dự báo cho nhiều chân trời, và sai số được tính trung bình riêng cho từng chân trời (mục 2.3.3). Các mốc chuẩn so sánh là dự báo trung bình, naive, naive mùa vụ và dự báo có trôi; độ chính xác đo bằng MAE, RMSE, MAPE và MASE; sự khác biệt giữa hai phương pháp được kiểm tra bằng kiểm định Diebold--Mariano.
 
-\TODO{điểm bắt đầu của gốc cuốn chiếu và chân trời tối đa cho từng bộ dữ liệu.}
+Cụ thể, với Nile, gốc đầu tiên khớp mô hình trên 80 năm đầu và chân trời dự báo tối đa là 5 năm; với AirPassengers, gốc đầu tiên khớp trên 108 tháng đầu và chân trời tối đa là 12 tháng. Ngoài ra, dự báo một bước trên phần kiểm định (AirPassengers từ tháng thứ 121, Nile từ năm thứ 81) cũng được thực hiện bằng cách khớp lại mô hình tại từng gốc.
 
 \noidung{Tái lập}
 Mọi kết quả đều tái lập được. Các mô phỏng dùng bộ sinh số giả ngẫu nhiên của \texttt{numpy} với hạt giống cố định \texttt{3179}, và mỗi mô phỏng nhận một dòng số ngẫu nhiên riêng sinh ra từ hạt giống đó, nên việc thêm hay bớt một mô phỏng không làm đổi kết quả của các mô phỏng khác. Phần mềm gồm Python 3.12.14 cùng các gói \texttt{statsmodels} 0.15.0, \texttt{numpy} 2.5.5, \texttt{pandas} 3.1.1, \texttt{scipy} 1.18.1 và \texttt{matplotlib} 3.11.2, được cài trong một môi trường ảo riêng. Toàn bộ quy trình, từ tải dữ liệu đến sinh bảng và hình của báo cáo, chạy được bằng một lệnh; cấu trúc mã nguồn và cách chạy được ghi ở Phụ lục B.
@@ -107,4 +107,4 @@ Không phù hợp & Trái với dạng hoặc chiều hướng mà lý thuyết 
 
 Một số sai khác nhỏ đến từ cách tính hoặc từ sai số số học (ví dụ hai thư viện làm tròn hay tối ưu hóa hơi khác nhau) chứ không do lý thuyết sai. Những sai khác này được nêu rõ trong phần nhận xét của từng nội dung và không bị tính là không phù hợp. Khi kết quả phù hợp một phần hoặc không phù hợp, nhóm phải giải thích nguyên nhân dựa trên đặc điểm của dữ liệu hoặc điều kiện áp dụng của lý thuyết.
 
-\TODO{nhóm xác nhận các ngưỡng ($10^{-8}$, $3$ MCSE, mức ý nghĩa 5\%) và cách xử lý các ước lượng bằng tối ưu hóa số.}
+Với các ước lượng tính bằng tối ưu hóa số (như cực đại hợp lý), hai cách cài đặt chỉ khớp nhau đến sai số của thuật toán tối ưu, nên ta so ở mức làm tròn của giá trị được báo cáo thay vì mức $10^{-8}$.
