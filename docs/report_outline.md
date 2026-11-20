@@ -27,14 +27,16 @@ Mỗi mục cấp 4 có sáu thành phần cố định: *Nội dung lý thuyế
 - **Chương 3. Dữ liệu và phương pháp:** 3.1 Mô tả dữ liệu (Bảng 3.1) · 3.2 Xử lý dữ liệu (tiền xử lý; khám phá) · 3.3 Phương pháp kiểm chứng (đối chiếu với phần mềm; mô phỏng; đánh giá dự báo; tái lập) · 3.4 Tiêu chí đánh giá (thang xếp loại)
 - **Chương 4. Kiểm chứng chuỗi dừng và mô hình ARMA:** 4.1 Chuỗi dừng và tự tương quan · 4.2 Mô hình ARMA
 - **Chương 5. Kiểm chứng chuỗi không dừng và dự báo:** 5.1 Chuỗi không dừng và ARIMA · 5.2 Dự báo · 5.3 Đánh giá dự báo
-- **Chương 6. Thảo luận:** 6.1 Mức độ phù hợp (Bảng 6.1) · 6.2 Khác biệt giữa các bộ dữ liệu · 6.3 Ảnh hưởng của đặc điểm dữ liệu · 6.4 Giả thiết mô hình · 6.5 Hạn chế
+- **Chương 6. Thảo luận:** 6.1 Mức độ phù hợp (Bảng 6.1) · 6.2 Khác biệt giữa các bộ dữ liệu · 6.3 Ảnh hưởng của đặc điểm dữ liệu · 6.4 Mức độ thỏa mãn giả thiết · 6.5 Hạn chế
 - **Chương 7. Kết luận**
 - **Tài liệu tham khảo** (nhóm Tài liệu; nhóm Nguồn dữ liệu)
 - **Phụ lục:** A. Phân công nhiệm vụ · B. Mã nguồn và tái lập
 
 ## Quyết định đã chốt
 - Phần mở rộng (đồng tích hợp log DAX ~ log SMI, Engle–Granger) **nhét thành đoạn ngắn cuối** `2.3.1(b)` (lý thuyết) và `5.1.1(b)` (kiểm chứng), gắn nhãn "mở rộng"; không tạo mục riêng; danh mục vẫn 28 nội dung. Nguồn: notebook Bài 12, mục ⋆, bảng `tab_b12_ext_cointegration`.
-- Còn chờ quyết: dòng "cặp bài giảng" trên bìa; ký hiệu cấp 4 (`a)` hay `(a)`); cần cấp 5 `(i)` không; tên 6.4.
+- Ký hiệu cấp 4 là `a)`; có dùng cấp 5 `(i), (ii), (iii)`; mục 6.4 đổi tên thành **"Mức độ thỏa mãn giả thiết"** (song song với 6.1 "Mức độ phù hợp"; phương án dự phòng: "Điều kiện áp dụng").
+- Khung LaTeX theo template người dùng cung cấp (bìa có logo và nền, đầu/chân trang, mục lục): `reports/report/main.tex` + `chapters/`.
+- Còn chờ quyết: dòng "cặp bài giảng" trên bìa (đang để TODO); danh sách thành viên, học kỳ, giảng viên (TODO).
 
 ## Bảng đối ứng số hiệu (nội bộ)
 | Địa chỉ báo cáo | Mã notebook | Nội dung | Bộ dữ liệu chính |

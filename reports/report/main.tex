@@ -1,0 +1,123 @@
+% Báo cáo AS3179: khung theo template (trang bìa, đầu/chân trang, mục lục) và bố cục trong docs/report_outline.md.
+% Biên dịch: pdfLaTeX với -shell-escape (cần cho gói minted): python scripts/04_build_report.py, hoặc Overleaf (compiler pdfLaTeX).
+% Chương 1, 2, 3, 6, 7, tài liệu tham khảo, phụ lục: chapters/*.tex. Chương 4, 5 có hình/bảng chèn tự động từ reports/.
+\documentclass[11pt]{article}
+\usepackage[includeheadfoot,textheight=21cm,textwidth=17cm,headheight=10mm]{geometry}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor,fancyhdr,indentfirst,array,graphicx,setspace,titlesec,tikz,float,booktabs,longtable,adjustbox,caption,enumitem,needspace,placeins,xurl}
+\usepackage{minted}
+\usepackage[hidelinks]{hyperref}
+
+% --- đường dẫn hình/bảng (script 06 đổi ../figures, ../tables thành figures, tables cho Overleaf) ---
+\newcommand{\figdir}{../figures}
+\newcommand{\tabdir}{../tables}
+\graphicspath{{assets/}}
+
+% --- ký hiệu và macro dùng chung ---
+\newcommand{\TODO}[1]{{\color{red}\textbf{[TODO(nhóm): #1]}}}
+\newcommand{\figx}[2]{\begin{figure}[H]\centering\includegraphics[width=\linewidth]{\figdir/#1.png}\caption{#2}\label{fig:#1}\end{figure}}
+% cấp 4: a), b), c)... (tự đánh chữ, đặt lại sau mỗi mục cấp 3)
+\newcounter{noidung}[subsubsection]
+\renewcommand{\thenoidung}{\alph{noidung}}
+\newcommand{\noidung}[1]{\refstepcounter{noidung}\Needspace{8\baselineskip}\par\medskip\noindent\textbf{\thenoidung) #1}\par\smallskip}
+% sáu thành phần của mỗi nội dung kiểm chứng và nhãn cấp 5: (i), (ii), (iii)
+\newcommand{\tp}[1]{\par\smallskip\noindent\textbf{\textit{#1.}}\ }
+\newcommand{\bodl}[1]{\par\noindent\textit{#1}\ }
+
+% --- định dạng các cấp tiêu đề ---
+\titleformat{\section}{\normalfont\Large\bfseries}{CHƯƠNG \thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\normalfont\normalsize\bfseries\itshape}{\thesubsubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{0pt}{14pt}
+\titlespacing*{\subsection}{0pt}{14pt}{6pt}
+\titlespacing*{\subsubsection}{0pt}{10pt}{4pt}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
+\captionsetup{font=small,labelfont=bf}
+\setstretch{1.15}
+\setlength{\parindent}{1cm}
+\renewcommand*{\contentsname}{\LARGE\textbf{Mục lục}}
+\setminted{fontsize=\footnotesize,breaklines,frame=single}
+
+\begin{document}
+
+% ================= TRANG BÌA =================
+\AddToHookNext{shipout/background}{
+	\begin{tikzpicture}[remember picture,overlay]
+		\node at (current page.center) {\includegraphics[width=19.4cm]{background.png}};
+	\end{tikzpicture}
+}
+\thispagestyle{empty}
+\begin{center}
+	\textbf{\large ĐẠI HỌC QUỐC GIA THÀNH PHỐ HỒ CHÍ MINH\\
+		TRƯỜNG ĐẠI HỌC BÁCH KHOA \\ KHOA KHOA HỌC ỨNG DỤNG \\\textunderscore\textunderscore\textunderscore\textunderscore\textunderscore\textunderscore\textunderscore\textunderscore\textunderscore\textunderscore\textunderscore\textunderscore\textunderscore}
+\end{center}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.4\linewidth]{01_logobachkhoasang}
+\end{figure}
+\begin{center}
+	\textbf{\Large MÔ HÌNH THỐNG KÊ (AS3179) \\}
+	\LARGE
+	\begin{center}
+		\noindent\rule{450pt}{0.8pt}
+		\vspace{0.5em}
+		\begin{flushleft}
+			\hspace{60pt}\textbf{\large Bài tập lớn:}
+		\end{flushleft}
+		{\LARGE\textbf{KIỂM CHỨNG THỰC NGHIỆM\\CÁC MÔ HÌNH ARMA VÀ ARIMA\\TRÊN DỮ LIỆU CHUỖI THỜI GIAN}}\\
+		\noindent\rule{450pt}{0.8pt}
+	\end{center}
+	\textbf{\large HỌC KỲ \TODO{mã học kỳ} \\}
+	\textbf{\large Giảng viên: \TODO{họ tên giảng viên}\\}
+	\textbf{\large Chuyên đề: Mô hình chuỗi thời gian \TODO{giữ hay bỏ ``(cặp bài giảng 11--12)''}\\}
+	\large
+	\begin{flushleft}
+		\hspace{1.5cm}\textbf{\large Danh sách sinh viên thực hiện: }
+	\end{flushleft}
+	\begin{center}
+		\large
+		\begin{tabular}{|c|c|c|c|c|}
+			\hline
+			\textbf{STT} & \textbf{\hspace{1cm}Họ\hspace{1cm}} & \textbf{Tên} & \hspace{0.3cm}\textbf{MSSV}\hspace{0.3cm} & \textbf{\hspace{1.5cm}Ghi chú\hspace{1.5cm}} \\
+			\hline
+			1 & \TODO{họ} & \TODO{tên} & \TODO{MSSV} & \\
+			\hline
+			2 & \TODO{họ} & \TODO{tên} & \TODO{MSSV} & \\
+			\hline
+			3 & \TODO{họ} & \TODO{tên} & \TODO{MSSV} & \\
+			\hline
+		\end{tabular}
+	\end{center}
+	\textbf{\textit{Thành phố Hồ Chí Minh, tháng 11 năm 2026.}}
+\end{center}
+\newpage
+
+% ================= ĐẦU/CHÂN TRANG VÀ MỤC LỤC =================
+\pagestyle{fancy}
+\renewcommand{\footrulewidth}{1pt}
+\fancyhead{}
+\lhead{\includegraphics[width=8cm]{bk_name_en}}
+\rhead{\textbf{\large {\color{blue}Mô hình thống kê (AS3179)}\\ \small{Kiểm chứng thực nghiệm các mô hình ARMA và ARIMA}}}
+\fancyfoot{}
+\cfoot{Trang \thepage}
+\setcounter{page}{1}
+
+\tableofcontents
+\newpage
+
+% ================= NỘI DUNG =================
+\input{chapters/ch1_gioi_thieu}
+\input{chapters/ch2_co_so_ly_thuyet}
+\input{chapters/ch3_du_lieu_phuong_phap}
+\input{chapters/ch4_chuoi_dung_arma}
+\input{chapters/ch5_chuoi_khong_dung_du_bao}
+\input{chapters/ch6_thao_luan}
+\input{chapters/ch7_ket_luan}
+\input{chapters/tai_lieu_tham_khao}
+\input{chapters/phu_luc}
+
+\end{document}

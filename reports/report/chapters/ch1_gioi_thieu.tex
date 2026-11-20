@@ -1,0 +1,81 @@
+% CHƯƠNG 1. GIỚI THIỆU
+\clearpage
+\section[Giới thiệu]{GIỚI THIỆU}
+
+\TODO{Đoạn dẫn của chương (2--3 câu) và câu nối sang Chương 2.}
+
+\subsection{Bối cảnh}
+\TODO{Vai trò của mô hình chuỗi thời gian; vì sao cần kiểm chứng lý thuyết bằng dữ liệu thực; giới hạn (độ lệch giữa giả thiết lý thuyết và dữ liệu thực tế).}
+
+\subsection{Mục tiêu}
+\TODO{Mục tiêu tổng quát và các câu hỏi kiểm chứng. Bản nháp ba câu hỏi (Chương 7 sẽ lần lượt trả lời):}
+\begin{enumerate}[label=\textbf{CH\arabic*.}]
+	\item \TODO{Các kết quả lý thuyết về cấu trúc phụ thuộc và mô hình ARMA có được thỏa mãn trên dữ liệu thực hay không?}
+	\item \TODO{Các kết quả lý thuyết về chuỗi không dừng, mô hình ARIMA và dự báo có được thỏa mãn trên dữ liệu thực hay không?}
+	\item \TODO{Mức độ phù hợp phụ thuộc thế nào vào đặc điểm của từng bộ dữ liệu, và giả thiết nào bị vi phạm?}
+\end{enumerate}
+
+\subsection{Phạm vi}
+\TODO{Đối tượng: sáu bộ dữ liệu (xem Bảng~\ref{tab:dulieu}); phương pháp được dùng và không được dùng (không dùng GARCH, Prophet, học máy); mô tả ngắn 28 nội dung kiểm chứng.}
+
+\begin{longtable}{@{}p{2.2cm}p{6.6cm}p{5.2cm}p{2.2cm}@{}}
+\caption{Danh mục các nội dung kiểm chứng}\label{tab:danhmuc}\\
+\toprule
+Địa chỉ & Nội dung & Bộ dữ liệu áp dụng & Hình thức \\
+\midrule
+\endfirsthead
+\toprule
+Địa chỉ & Nội dung & Bộ dữ liệu áp dụng & Hình thức \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+4.1.1(a) & Tính dừng và nhiễu trắng & Hồ Huron, Linh miêu, DAX (suất sinh lợi) & Dữ liệu thực \\
+4.1.1(b) & Tính chất của tự hiệp phương sai & Hồ Huron, Linh miêu, DAX (suất sinh lợi) & Dữ liệu thực \\
+4.1.1(c) & Trung bình mẫu của chuỗi phụ thuộc & Hồ Huron & Cả hai \\
+4.1.2(a) & Tự tương quan và kiểm định Ljung–Box & Hồ Huron, Linh miêu, DAX (suất sinh lợi) & Cả hai \\
+4.1.2(b) & Tự tương quan riêng phần & Hồ Huron, Linh miêu, DAX (suất sinh lợi) & Dữ liệu thực \\
+4.2.1(a) & Quá trình tuyến tính & Hồ Huron, Linh miêu & Dữ liệu thực \\
+4.2.1(b) & Mô hình AR(1) & Hồ Huron & Dữ liệu thực \\
+4.2.1(c) & Mô hình AR(p) và hệ Yule–Walker & Linh miêu, Hồ Huron & Dữ liệu thực \\
+4.2.1(d) & Mô hình AR(2) & Linh miêu & Dữ liệu thực \\
+4.2.2(a) & Mô hình MA(q) & DAX (suất sinh lợi), Hồ Huron & Cả hai \\
+4.2.2(b) & Mô hình ARMA(p, q) & Hồ Huron, Linh miêu & Dữ liệu thực \\
+4.2.3(a) & Ước lượng tham số & Linh miêu, Hồ Huron & Cả hai \\
+4.2.3(b) & Lựa chọn bậc & Linh miêu, Hồ Huron & Dữ liệu thực \\
+4.2.3(c) & Chẩn đoán phần dư & Hồ Huron, Linh miêu, DAX (suất sinh lợi) & Dữ liệu thực \\
+5.1.1(a) & Xu thế tất định và ngẫu nhiên & Nile, AirPassengers, DAX (log giá) & Dữ liệu thực \\
+5.1.1(b) & Bước ngẫu nhiên & DAX (log giá) & Mô phỏng \\
+5.1.1(c) & Sai phân và sai phân quá mức & Nile, DAX (log giá) & Cả hai \\
+5.1.1(d) & Kiểm định nghiệm đơn vị & Nile, AirPassengers, DAX (log giá) & Cả hai \\
+5.1.2(a) & Mô hình ARIMA và độ trôi & Nile, DAX (log giá) & Dữ liệu thực \\
+5.1.2(b) & Mô hình ARIMA mùa vụ & AirPassengers & Dữ liệu thực \\
+5.2.1(a) & Ảnh hưởng vĩnh viễn của cú sốc & Nile, DAX (log giá) & Dữ liệu thực \\
+5.2.1(b) & Làm trơn mũ và mô hình mức cục bộ & Nile & Dữ liệu thực \\
+5.2.2(a) & Dự báo tối ưu và khoảng dự báo & Nile, AirPassengers, DAX (log giá) & Cả hai \\
+5.2.2(b) & Dự báo trên thang logarit & AirPassengers, DAX (log giá) & Dữ liệu thực \\
+5.3.1(a) & Mốc chuẩn và thước đo sai số & Nile, AirPassengers, DAX (log giá) & Dữ liệu thực \\
+5.3.1(b) & Gốc cuốn chiếu & Nile, AirPassengers, DAX (log giá) & Dữ liệu thực \\
+5.3.2(a) & Hàm mất mát và kiểm định Diebold–Mariano & AirPassengers, Nile & Dữ liệu thực \\
+5.3.2(b) & Quy trình báo cáo dự báo & Nile, AirPassengers, DAX (log giá) & Dữ liệu thực \\
+\end{longtable}
+
+\subsection{Bố cục}
+\TODO{Mô tả ngắn từng chương; quy ước đọc báo cáo: địa chỉ dạng \texttt{4.2.1(c)}; thang xếp loại \emph{phù hợp / phù hợp một phần / không phù hợp}; mỗi nội dung kiểm chứng gồm sáu thành phần cố định.}
+
+\begin{table}[H]
+\centering\small
+\caption{Đối ứng giữa cơ sở lý thuyết và kiểm chứng}\label{tab:doiung}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Cơ sở lý thuyết (Chương 2) & Kiểm chứng & Nội dung \\
+\midrule
+2.1 Chuỗi dừng và tự tương quan & 4.1 (Chương 4) & 5 nội dung \\
+2.2 Mô hình ARMA & 4.2 (Chương 4) & 9 nội dung \\
+2.3 Chuỗi không dừng và ARIMA & 5.1 (Chương 5) & 6 nội dung \\
+2.4 Dự báo & 5.2 (Chương 5) & 4 nội dung \\
+2.5 Đánh giá dự báo & 5.3 (Chương 5) & 4 nội dung \\
+2.6 Mô phỏng Monte Carlo & dùng xuyên suốt Chương 4 và 5 & --- \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,53 @@
+% CHƯƠNG 3. DỮ LIỆU VÀ PHƯƠNG PHÁP
+\clearpage
+\section[Dữ liệu và phương pháp]{DỮ LIỆU VÀ PHƯƠNG PHÁP}
+
+\TODO{Đoạn dẫn của chương và câu nối sang Chương 4.}
+
+\subsection{Mô tả dữ liệu}
+\TODO{Nguồn chung (Rdatasets, gói \texttt{datasets}), ngày tải; vì sao chỉ số DAX được dùng ở hai dạng (suất sinh lợi và log giá); lưu ý DAX không có ngày lịch, chỉ có chỉ số ngày giao dịch. Chép trích dẫn nguyên văn từ tài liệu R của từng bộ vào mục Tài liệu tham khảo.}
+
+\begin{table}[H]
+\centering\small
+\caption{Sáu bộ dữ liệu được sử dụng}\label{tab:dulieu}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{@{}p{2.6cm}p{2.8cm}p{2.0cm}p{4.0cm}rp{2.6cm}p{3.2cm}@{}}
+\toprule
+Bộ dữ liệu & Nguồn (R) & Quan sát & Biến được mô hình hóa & $n$ & Thời gian & Phép biến đổi \\
+\midrule
+Hồ Huron & \texttt{LakeHuron} & hằng năm & mực nước hồ (ft so với mực nước biển) & 98 & 1875--1972 & không; biến xu thế $x=\text{năm}-1920$ \\
+Linh miêu & \texttt{lynx} & hằng năm & số linh miêu bị bẫy, vùng sông Mackenzie & 114 & 1821--1934 & $\log_{10}$ \\
+DAX (suất sinh lợi) & \texttt{EuStockMarkets}, cột DAX & ngày giao dịch & suất sinh lợi log (\%) & 1859 & $t=2,\dots,1860$ & $100\,\Delta\log P_t$ \\
+Nile & \texttt{Nile} & hằng năm & lưu lượng sông Nile tại Aswan ($10^8\,\mathrm{m}^3$) & 100 & 1871--1970 & không \\
+AirPassengers & \texttt{AirPassengers} & hằng tháng & hành khách hàng không quốc tế (nghìn người) & 144 & 01/1949--12/1960 & $\log$; huấn luyện 120, kiểm định 24 \\
+DAX (log giá) & \texttt{EuStockMarkets}, cột DAX & ngày giao dịch & log giá đóng cửa & 1860 & $t=1,\dots,1860$ & $\log P_t$; huấn luyện 1500, kiểm định 360 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\subsection{Xử lý dữ liệu}
+\noidung{Tiền xử lý}
+\TODO{Các kiểm tra (thiếu giá trị, trùng lặp, đơn điệu thời gian, giá trị dương trước khi lấy log) và các phép biến đổi; chia tập huấn luyện/kiểm định.}
+\noidung{Khám phá dữ liệu}
+\TODO{Nhận xét ngắn từ bảng mô tả và các hình tổng quan: xu thế, mùa vụ, đổi mức, cụm biến động. Chỉ giữ những gì phục vụ mô hình.}
+\input{\tabdir/tab_eda_descriptive.tex}
+\figx{fig_eda_HU_overview}{HU: mực nước hồ Huron với xu thế tuyến tính OLS, ACF và PACF mẫu}
+\figx{fig_eda_LY_overview}{LY: $\log_{10}$ số linh miêu bị bẫy, ACF và PACF mẫu}
+\figx{fig_eda_DR_overview}{DR: suất sinh lợi log ngày của DAX, ACF và PACF mẫu}
+\figx{fig_eda_NI_overview}{NI: lưu lượng sông Nile (trung bình trước và sau 1899), ACF và PACF mẫu}
+\figx{fig_eda_AP_overview}{AP: log số hành khách (huấn luyện \textbar{} kiểm định), ACF và PACF mẫu}
+\figx{fig_eda_DP_overview}{DP: log giá DAX (huấn luyện \textbar{} kiểm định), ACF và PACF mẫu}
+
+\subsection{Phương pháp kiểm chứng}
+\noidung{Đối chiếu với phần mềm}
+\TODO{Các đại lượng có công thức được cài đặt theo công thức lý thuyết rồi đối chiếu với thư viện (\texttt{statsmodels}); báo cáo sai khác.}
+\noidung{Mô phỏng}
+\TODO{Mô hình đã khớp trên dữ liệu thực làm ``sự thật'' mô phỏng; số lần lặp $B$; sai số Monte Carlo (xem 2.6).}
+\noidung{Đánh giá dự báo}
+\TODO{Chia tập huấn luyện/kiểm định theo thời gian; gốc cuốn chiếu (xem 2.5).}
+\noidung{Tái lập}
+\TODO{Hạt giống \texttt{3179}, phiên bản phần mềm, cấu trúc mã nguồn; chỉ dẫn tới Phụ lục B.}
+
+\subsection{Tiêu chí đánh giá}
+\TODO{Thang xếp loại \emph{phù hợp / phù hợp một phần / không phù hợp} với ngưỡng cụ thể (dung sai, mức ý nghĩa, MCSE); cách xử lý các sai khác nhỏ do ước lượng số.}

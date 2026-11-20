@@ -36,7 +36,7 @@ Chỉ `scripts/01_download_data.py` dùng mạng (bỏ qua nếu `data/raw/` đ�
 | `notebooks/` | `00_kham_pha_du_lieu`, `bai11_arma` (11.1–11.14), `bai12_arima_du_bao` (12.1–12.14 + ⋆) |
 | `tests/` | `test_data`, `test_manual_vs_library` (hàm tay khớp statsmodels), `test_lecture_reference` (tái lập số liệu bài giảng) |
 | `reports/figures`, `reports/tables` | 26 hình PNG 300 dpi (`fig_b<bài>_<mục>_<nội dung>`) và 63 bảng (`tab_b<bài>_<mục>_<nội dung>` ở 3 dạng: `.csv` đủ chữ số, `.md`, `.tex` booktabs sẵn caption/nhãn). Chú thích của từng hình/bảng nằm ở `src/as3179ts/captions.py` |
-| `reports/report/` | khung báo cáo LaTeX (`report.tex` + `sec_bai11.tex`, `sec_bai12.tex`, `theory_table.tex`) |
+| `reports/report/` | khung báo cáo LaTeX theo template: `main.tex`, `chapters/` (7 chương, tài liệu tham khảo, phụ lục), `assets/` (logo, nền bìa); bố cục: `docs/report_outline.md` |
 | `docs/` | đặc tả, 2 PDF bài giảng, text trích từ PDF, `theory_checklist.md`, `reference_values.md` |
 
 ## Ánh xạ ID lý thuyết → notebook → mục báo cáo

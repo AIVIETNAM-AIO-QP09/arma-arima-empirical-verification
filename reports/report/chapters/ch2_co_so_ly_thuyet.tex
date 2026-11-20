@@ -1,0 +1,96 @@
+% CHƯƠNG 2. CƠ SỞ LÝ THUYẾT: chỉ phát biểu kết quả (không chứng minh); mọi lý thuyết của báo cáo nằm ở đây.
+\clearpage
+\section[Cơ sở lý thuyết]{CƠ SỞ LÝ THUYẾT}
+
+\TODO{Đoạn dẫn: chương hệ thống hóa một lần các kết quả lý thuyết được kiểm chứng ở Chương 4 và 5; không chứng minh; ký hiệu thống nhất ($B$ toán tử lùi, $\nabla=1-B$, $\gamma(h)$, $\rho(h)$, $\alpha(h)$, $\phi(z)$, $\theta(z)$, $\psi_j$, $\Psi_j$). Mỗi kết quả mang địa chỉ trùng với mục kiểm chứng tương ứng (ví dụ kết quả \texttt{2.2.1(c)} được kiểm chứng ở \texttt{4.2.1(c)}).}
+
+\subsection{Chuỗi dừng và tự tương quan}
+
+\subsubsection{Tính dừng và cấu trúc phụ thuộc}
+\noidung{Tính dừng và nhiễu trắng}
+\TODO{Phát biểu: định nghĩa chuỗi dừng (nghiêm ngặt, yếu), nhiễu trắng và nhiễu iid; phân biệt không tương quan với độc lập.}
+\noidung{Tính chất của tự hiệp phương sai}
+\TODO{Phát biểu: tính chất của hàm tự hiệp phương sai và hàm tự tương quan (đối xứng, bị chặn, xác định không âm); ước lượng mẫu và vai trò của mẫu số.}
+\noidung{Trung bình mẫu của chuỗi phụ thuộc}
+\TODO{Phát biểu: phương sai của trung bình mẫu khi có phụ thuộc, cỡ mẫu hiệu dụng, trường hợp AR(1); sai số chuẩn của hệ số hồi quy với sai số tự tương quan; ước lượng phương sai dài hạn.}
+
+\subsubsection{Công cụ chẩn đoán}
+\noidung{Tự tương quan và kiểm định Ljung–Box}
+\TODO{Phát biểu: tự tương quan mẫu, dải tin cậy iid và dải Bartlett, thống kê Ljung–Box và phân phối tiệm cận.}
+\noidung{Tự tương quan riêng phần}
+\TODO{Phát biểu: định nghĩa, đệ quy Durbin--Levinson, tính chất cắt cụt của AR(p), dải tin cậy.}
+
+\subsection{Mô hình ARMA}
+
+\subsubsection{Quá trình tuyến tính và mô hình AR}
+\noidung{Quá trình tuyến tính}
+\TODO{Phát biểu: toán tử lùi, quá trình tuyến tính, tính nhân quả, trọng số $\psi_j$, biểu thức của tự hiệp phương sai.}
+\noidung{Mô hình AR(1)}
+\TODO{Phát biểu: nghiệm dừng nhân quả, hàm tự tương quan, dự báo và sai số bình phương trung bình.}
+\noidung{Mô hình AR(p) và hệ Yule–Walker}
+\TODO{Phát biểu: điều kiện nhân quả theo nghiệm của đa thức đặc trưng; phương trình Yule--Walker.}
+\noidung{Mô hình AR(2)}
+\TODO{Phát biểu: miền nhân quả (tam giác), nghiệm phức và chu kỳ tắt dần.}
+
+\subsubsection{Mô hình MA và ARMA}
+\noidung{Mô hình MA(q)}
+\TODO{Phát biểu: tự tương quan cắt cụt sau độ trễ $q$; MA(1) và cận $|\rho(1)|\le 1/2$; tính khả nghịch.}
+\noidung{Mô hình ARMA(p, q)}
+\TODO{Phát biểu: điều kiện nhân quả và khả nghịch, nghiệm chung, biểu diễn $\psi(z)=\theta(z)/\phi(z)$, thừa tham số.}
+
+\subsubsection{Ước lượng và chẩn đoán mô hình}
+\noidung{Ước lượng tham số}
+\TODO{Phát biểu: Yule--Walker, bình phương tối thiểu có điều kiện, cực đại hợp lý; phân phối tiệm cận.}
+\noidung{Lựa chọn bậc}
+\TODO{Phát biểu: tiêu chuẩn AIC, BIC; thẩm định theo thứ tự thời gian.}
+\noidung{Chẩn đoán phần dư}
+\TODO{Phát biểu: phần dư là nhiễu trắng; Ljung--Box với bậc tự do hiệu chỉnh; phần dư bình phương và cụm biến động.}
+
+\subsection{Chuỗi không dừng và ARIMA}
+
+\subsubsection{Tính không dừng và nghiệm đơn vị}
+\noidung{Xu thế tất định và ngẫu nhiên}
+\TODO{Phát biểu: dừng quanh xu thế và chuỗi tích hợp $I(d)$; nghiệm đơn vị.}
+\noidung{Bước ngẫu nhiên}
+\TODO{Phát biểu: kỳ vọng, phương sai, hiệp phương sai và tương quan của bước ngẫu nhiên; hồi quy giả mạo giữa hai chuỗi $I(1)$ độc lập; \emph{mở rộng:} đồng tích hợp và kiểm định Engle--Granger.}
+\noidung{Sai phân và sai phân quá mức}
+\TODO{Phát biểu: tác dụng và hệ quả của sai phân; dấu hiệu và chi phí của sai phân thừa và thiếu.}
+\noidung{Kiểm định nghiệm đơn vị}
+\TODO{Phát biểu: Dickey--Fuller, ADF và KPSS; phân phối không chuẩn tắc; cách đọc kết hợp hai kiểm định.}
+
+\subsubsection{Mô hình ARIMA}
+\noidung{Mô hình ARIMA và độ trôi}
+\TODO{Phát biểu: định nghĩa ARIMA(p, d, q), hằng số và độ trôi.}
+\noidung{Mô hình ARIMA mùa vụ}
+\TODO{Phát biểu: sai phân mùa vụ, mô hình SARIMA và mô hình airline; tự tương quan đặc trưng; các cách mô hình hóa mùa vụ khác.}
+
+\subsection{Dự báo}
+
+\subsubsection{Hàm dự báo}
+\noidung{Ảnh hưởng vĩnh viễn của cú sốc}
+\TODO{Phát biểu: trọng số $\Psi_k$ và giới hạn $\theta(1)/\phi(1)$.}
+\noidung{Làm trơn mũ và mô hình mức cục bộ}
+\TODO{Phát biểu: ARIMA(0,1,1) và làm trơn mũ đơn; mô hình mức cục bộ; dạng hàm dự báo dài hạn.}
+
+\subsubsection{Khoảng dự báo}
+\noidung{Dự báo tối ưu và khoảng dự báo}
+\TODO{Phát biểu: dự báo sai số bình phương trung bình nhỏ nhất, phương sai sai số dự báo, khoảng dự báo.}
+\noidung{Dự báo trên thang logarit}
+\TODO{Phát biểu: khoảng chuyển đổi; trung vị và trung bình của dự báo sau khi lấy mũ.}
+
+\subsection{Đánh giá dự báo}
+
+\subsubsection{Đánh giá độ chính xác}
+\noidung{Mốc chuẩn và thước đo sai số}
+\TODO{Phát biểu: dự báo mốc chuẩn; MAE, RMSE, MAPE, MASE.}
+\noidung{Gốc cuốn chiếu}
+\TODO{Phát biểu: đánh giá theo gốc cuốn chiếu; đưa bước chọn mô hình vào thiết kế đánh giá.}
+
+\subsubsection{So sánh và báo cáo}
+\noidung{Hàm mất mát và kiểm định Diebold–Mariano}
+\TODO{Phát biểu: hàm mất mát và phiếm hàm; thống kê Diebold--Mariano.}
+\noidung{Quy trình báo cáo dự báo}
+\TODO{Phát biểu: trình tự các bước xây dựng và báo cáo mô hình ARIMA.}
+
+\subsection{Mô phỏng Monte Carlo}
+\TODO{Nguyên tắc mô phỏng; sai số Monte Carlo $\sqrt{p(1-p)/B}$ của một tỷ lệ; độ phủ của khoảng tin cậy; hạt giống ngẫu nhiên và tính tái lập.}
