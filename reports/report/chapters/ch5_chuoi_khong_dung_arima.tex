@@ -1,0 +1,111 @@
+% CHƯƠNG 5: sáu thành phần cố định cho mỗi nội dung; hình/bảng chèn tự động; ô TODO do nhóm điền.
+\clearpage
+\section[Kiểm chứng chuỗi không dừng và mô hình ARIMA]{KIỂM CHỨNG CHUỖI KHÔNG DỪNG VÀ MÔ HÌNH ARIMA}
+
+\TODO{Đoạn dẫn: các bộ dữ liệu áp dụng (Nile, AirPassengers, DAX log giá); cách đọc một nội dung; câu nối sang Chương 6.}
+
+\subsection{Chuỗi không dừng}
+
+\noidung{Xu thế tất định và ngẫu nhiên}
+\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.2.1(a)}
+\tp{Cách triển khai} Dữ liệu thực. \textit{Bộ áp dụng:} Nile, AirPassengers, DAX (log giá). \TODO{quy trình cụ thể, tham số riêng của mục này}
+\tp{Mã lệnh Python} \TODO{đoạn mã lõi 10--20 dòng (chỉ ký tự ASCII và chữ Việt, không dùng ký hiệu Hy Lạp trong mã); mã đầy đủ ở notebook}
+\tp{Kết quả tính toán}
+\input{\tabdir/tab_b12_01_levels_vs_differences.tex}
+\figx{fig_b12_01_levels_vs_differences}{Chuỗi, ACF của chuỗi gốc và ACF của sai phân bậc một cho NI, AP (log, huấn luyện), DP (log)}
+\TODO{chọn bảng/hình giữ lại, bỏ bớt phần phụ; viết câu dẫn}
+\tp{Phân tích và diễn giải}
+\bodl{(i) Nile.} \TODO{diễn giải gắn với 2.2.1(a)}
+
+\bodl{(ii) AirPassengers.} \TODO{diễn giải gắn với 2.2.1(a)}
+
+\bodl{(iii) DAX (log giá).} \TODO{diễn giải gắn với 2.2.1(a)}
+
+\tp{Nhận xét} \TODO{xếp loại (phù hợp / phù hợp một phần / không phù hợp); nếu sai lệch thì nêu nguyên nhân}
+
+\noidung{Bước ngẫu nhiên}
+\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.2.1(b)}
+\tp{Cách triển khai} Mô phỏng. \textit{Bộ áp dụng:} DAX (log giá). \textit{Không áp dụng cho:} Nile, AirPassengers \TODO{lý do ngắn}. \TODO{quy trình cụ thể, tham số riêng của mục này}
+\tp{Mã lệnh Python} \TODO{đoạn mã lõi 10--20 dòng (chỉ ký tự ASCII và chữ Việt, không dùng ký hiệu Hy Lạp trong mã); mã đầy đủ ở notebook}
+\tp{Kết quả tính toán}
+\input{\tabdir/tab_b12_02_rw_correlation.tex}
+\input{\tabdir/tab_b12_02_rw_sample_acf.tex}
+\input{\tabdir/tab_b12_02_rw_variance.tex}
+\input{\tabdir/tab_b12_02_spurious_regression.tex}
+\input{\tabdir/tab_b12_ext_cointegration.tex}
+\figx{fig_b12_02_rw_variance}{Bước ngẫu nhiên mô phỏng: $\operatorname{Var}Y_t$ so với $t\hat\sigma^2$ (trái), 50 đường mẫu (phải)}
+\TODO{chọn bảng/hình giữ lại, bỏ bớt phần phụ; viết câu dẫn}
+\tp{Phân tích và diễn giải}
+\bodl{(i) DAX (log giá).} \TODO{diễn giải gắn với 2.2.1(b)}
+
+\tp{Nhận xét} \TODO{xếp loại (phù hợp / phù hợp một phần / không phù hợp); nếu sai lệch thì nêu nguyên nhân}
+
+\subsection{Mô hình ARIMA}
+
+\noidung{Mô hình ARIMA và độ trôi}
+\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.2.2(a)}
+\tp{Cách triển khai} Dữ liệu thực. \textit{Bộ áp dụng:} Nile, DAX (log giá). \textit{Không áp dụng cho:} AirPassengers \TODO{lý do ngắn}. \TODO{quy trình cụ thể, tham số riêng của mục này}
+\tp{Mã lệnh Python} \TODO{đoạn mã lõi 10--20 dòng (chỉ ký tự ASCII và chữ Việt, không dùng ký hiệu Hy Lạp trong mã); mã đầy đủ ở notebook}
+\tp{Kết quả tính toán}
+\input{\tabdir/tab_b12_05_arima_params.tex}
+\input{\tabdir/tab_b12_05_fit_stats.tex}
+\input{\tabdir/tab_b12_05_rw_manual_vs_arima.tex}
+\figx{fig_b12_05_drift_forecast}{DP: dự báo 100 ngày giao dịch của log DAX có và không có độ trôi}
+\TODO{chọn bảng/hình giữ lại, bỏ bớt phần phụ; viết câu dẫn}
+\tp{Phân tích và diễn giải}
+\bodl{(i) Nile.} \TODO{diễn giải gắn với 2.2.2(a)}
+
+\bodl{(ii) DAX (log giá).} \TODO{diễn giải gắn với 2.2.2(a)}
+
+\tp{Nhận xét} \TODO{xếp loại (phù hợp / phù hợp một phần / không phù hợp); nếu sai lệch thì nêu nguyên nhân}
+
+\noidung{Mô hình ARIMA mùa vụ}
+\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.2.2(b)}
+\tp{Cách triển khai} Dữ liệu thực. \textit{Bộ áp dụng:} AirPassengers. \textit{Không áp dụng cho:} Nile, DAX (log giá) \TODO{lý do ngắn}. \TODO{quy trình cụ thể, tham số riêng của mục này}
+\tp{Mã lệnh Python} \TODO{đoạn mã lõi 10--20 dòng (chỉ ký tự ASCII và chữ Việt, không dùng ký hiệu Hy Lạp trong mã); mã đầy đủ ở notebook}
+\tp{Kết quả tính toán}
+\input{\tabdir/tab_b12_10_airline_acf.tex}
+\input{\tabdir/tab_b12_10_sd.tex}
+\input{\tabdir/tab_b12_10_seasonality_models.tex}
+\figx{fig_b12_10_airline_acf}{ACF của $\nabla\nabla_{12}$ log AP (que) và ACF lý thuyết của mô hình airline (chấm)}
+\TODO{chọn bảng/hình giữ lại, bỏ bớt phần phụ; viết câu dẫn}
+\tp{Phân tích và diễn giải}
+\bodl{(i) AirPassengers.} \TODO{diễn giải gắn với 2.2.2(b)}
+
+\tp{Nhận xét} \TODO{xếp loại (phù hợp / phù hợp một phần / không phù hợp); nếu sai lệch thì nêu nguyên nhân}
+
+\subsection{Xây dựng mô hình ARIMA}
+
+\noidung{Sai phân và sai phân quá mức}
+\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.2.3(a)}
+\tp{Cách triển khai} Cả hai. \textit{Bộ áp dụng:} Nile, DAX (log giá). \textit{Không áp dụng cho:} AirPassengers \TODO{lý do ngắn}. \TODO{quy trình cụ thể, tham số riêng của mục này}
+\tp{Mã lệnh Python} \TODO{đoạn mã lõi 10--20 dòng (chỉ ký tự ASCII và chữ Việt, không dùng ký hiệu Hy Lạp trong mã); mã đầy đủ ở notebook}
+\tp{Kết quả tính toán}
+\input{\tabdir/tab_b12_03_cost_simulation.tex}
+\input{\tabdir/tab_b12_03_overdifferencing.tex}
+\TODO{chọn bảng/hình giữ lại, bỏ bớt phần phụ; viết câu dẫn}
+\tp{Phân tích và diễn giải}
+\bodl{(i) Nile.} \TODO{diễn giải gắn với 2.2.3(a)}
+
+\bodl{(ii) DAX (log giá).} \TODO{diễn giải gắn với 2.2.3(a)}
+
+\tp{Nhận xét} \TODO{xếp loại (phù hợp / phù hợp một phần / không phù hợp); nếu sai lệch thì nêu nguyên nhân}
+
+\noidung{Kiểm định nghiệm đơn vị}
+\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.2.3(b)}
+\tp{Cách triển khai} Cả hai. \textit{Bộ áp dụng:} Nile, AirPassengers, DAX (log giá). \TODO{quy trình cụ thể, tham số riêng của mục này}
+\tp{Mã lệnh Python} \TODO{đoạn mã lõi 10--20 dòng (chỉ ký tự ASCII và chữ Việt, không dùng ký hiệu Hy Lạp trong mã); mã đầy đủ ở notebook}
+\tp{Kết quả tính toán}
+\input{\tabdir/tab_b12_04_adf_power.tex}
+\input{\tabdir/tab_b12_04_null_distribution.tex}
+\input{\tabdir/tab_b12_04_unit_root_tests.tex}
+\figx{fig_b12_04_dickey_fuller_null}{Phân phối mô phỏng của $\tau$ dưới H$_0$ so với $N(0,1)$ và giá trị tới hạn 5\%}
+\TODO{chọn bảng/hình giữ lại, bỏ bớt phần phụ; viết câu dẫn}
+\tp{Phân tích và diễn giải}
+\bodl{(i) Nile.} \TODO{diễn giải gắn với 2.2.3(b)}
+
+\bodl{(ii) AirPassengers.} \TODO{diễn giải gắn với 2.2.3(b)}
+
+\bodl{(iii) DAX (log giá).} \TODO{diễn giải gắn với 2.2.3(b)}
+
+\tp{Nhận xét} \TODO{xếp loại (phù hợp / phù hợp một phần / không phù hợp); nếu sai lệch thì nêu nguyên nhân}

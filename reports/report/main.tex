@@ -1,12 +1,14 @@
 % Báo cáo AS3179: khung theo template (trang bìa, đầu/chân trang, mục lục) và bố cục trong docs/report_outline.md.
 % Biên dịch: pdfLaTeX hai lượt: VS Code (LaTeX Workshop, tự biên dịch khi lưu), hoặc python scripts/04_build_report.py, hoặc Overleaf (pdfLaTeX).
 % Khối mã: \begin{codeblock} ... \end{codeblock} (chỉ ký tự ASCII và chữ Việt, không dùng chữ Hy Lạp trong mã).
-% Chương 1, 2, 3, 6, 7, tài liệu tham khảo, phụ lục: chapters/*.tex. Chương 4, 5 có hình/bảng chèn tự động từ reports/.
+% Chương 1, 2, 3, 7, 8, tài liệu tham khảo, phụ lục: chapters/*.tex. Chương 4, 5, 6 có hình/bảng chèn tự động từ reports/.
 \documentclass[11pt]{article}
-\usepackage[includeheadfoot,textheight=21cm,textwidth=17cm,headheight=10mm]{geometry}
+\usepackage[includeheadfoot,textheight=21cm,textwidth=17cm,headheight=38pt]{geometry}
 \usepackage[vietnamese]{babel}
 \usepackage{amsmath,amssymb}
-\usepackage{xcolor,fancyhdr,indentfirst,array,graphicx,setspace,titlesec,tikz,float,booktabs,longtable,adjustbox,caption,enumitem,needspace,placeins,xurl}
+\usepackage{xcolor,fancyhdr,indentfirst,array,graphicx,setspace,titlesec,tikz,float,booktabs,longtable,tabularx,adjustbox,caption,enumitem,needspace,placeins,xurl}
+\usepackage[framemethod=default]{mdframed}
+\usepackage{etoolbox}
 \usepackage{fvextra}  % khối mã Python (thuần LaTeX, không cần shell-escape)
 \usepackage[hidelinks]{hyperref}
 
@@ -17,10 +19,21 @@
 % --- ký hiệu và macro dùng chung ---
 \newcommand{\TODO}[1]{{\color{red}\textbf{[TODO(nhóm): #1]}}}
 \newcommand{\figx}[2]{\begin{figure}[H]\centering\includegraphics[width=\linewidth]{\figdir/#1.png}\caption{#2}\label{fig:#1}\end{figure}}
+
+% --- ký hiệu toán và khung kết quả lý thuyết (Chương 2) ---
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newmdenv[linewidth=2.5pt,topline=false,bottomline=false,rightline=false,linecolor=blue!55!black,backgroundcolor=blue!4,
+  innerleftmargin=10pt,innerrightmargin=8pt,innertopmargin=3pt,innerbottommargin=3pt,skipabove=4pt,skipbelow=3pt,nobreak=true]{kqbox}
+\newenvironment{kq}{\begin{kqbox}\small}{\end{kqbox}}
+\newcommand{\kiemchung}[1]{\par\nopagebreak[4]\vspace{-2pt}\hfill{\small\itshape$\rightarrow$ Kiểm chứng tại mục #1.}\par\smallskip}
+
 % cấp 4: a), b), c)... (tự đánh chữ, đặt lại sau mỗi mục cấp 3)
 \newcounter{noidung}[subsubsection]
 \renewcommand{\thenoidung}{\alph{noidung}}
-\newcommand{\noidung}[1]{\refstepcounter{noidung}\Needspace{8\baselineskip}\par\medskip\noindent\textbf{\thenoidung) #1}\par\smallskip}
+\newcommand{\noidung}[1]{\refstepcounter{noidung}\Needspace{6\baselineskip}\par\medskip\noindent\textbf{\thenoidung) #1}\par\nopagebreak\smallskip}
 % sáu thành phần của mỗi nội dung kiểm chứng và nhãn cấp 5: (i), (ii), (iii)
 \newcommand{\tp}[1]{\par\smallskip\noindent\textbf{\textit{#1.}}\ }
 \newcommand{\bodl}[1]{\par\noindent\textit{#1}\ }
@@ -32,12 +45,15 @@
 \titlespacing*{\section}{0pt}{0pt}{14pt}
 \titlespacing*{\subsection}{0pt}{14pt}{6pt}
 \titlespacing*{\subsubsection}{0pt}{10pt}{4pt}
+% tiêu đề không bị bỏ lơ ở cuối trang: giữ chỗ cho vài dòng nội dung sau tiêu đề
+\pretocmd{\subsection}{\Needspace{9\baselineskip}}{}{}
+\pretocmd{\subsubsection}{\Needspace{8\baselineskip}}{}{}
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
 \counterwithin{figure}{section}
 \counterwithin{table}{section}
 \captionsetup{font=small,labelfont=bf}
-\setstretch{1.15}
+\setstretch{1.08}
 \setlength{\parindent}{1cm}
 \renewcommand*{\contentsname}{\LARGE\textbf{Mục lục}}
 \DefineVerbatimEnvironment{codeblock}{Verbatim}{fontsize=\footnotesize,frame=single,framesep=2mm,breaklines=true,breakanywhere=true}
@@ -125,9 +141,10 @@
 \input{chapters/ch2_co_so_ly_thuyet}
 \input{chapters/ch3_du_lieu_phuong_phap}
 \input{chapters/ch4_chuoi_dung_arma}
-\input{chapters/ch5_chuoi_khong_dung_du_bao}
-\input{chapters/ch6_thao_luan}
-\input{chapters/ch7_ket_luan}
+\input{chapters/ch5_chuoi_khong_dung_arima}
+\input{chapters/ch6_du_bao}
+\input{chapters/ch7_thao_luan}
+\input{chapters/ch8_ket_luan}
 \input{chapters/tai_lieu_tham_khao}
 \input{chapters/phu_luc}
 

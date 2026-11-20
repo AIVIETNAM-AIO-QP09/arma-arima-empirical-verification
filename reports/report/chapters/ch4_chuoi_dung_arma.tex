@@ -4,9 +4,7 @@
 
 \TODO{Đoạn dẫn: các bộ dữ liệu áp dụng (Hồ Huron, Linh miêu, DAX suất sinh lợi); cách đọc một nội dung; câu nối sang Chương 5.}
 
-\subsection{Chuỗi dừng và tự tương quan}
-
-\subsubsection{Tính dừng và cấu trúc phụ thuộc}
+\subsection{Chuỗi dừng}
 
 \noidung{Tính dừng và nhiễu trắng}
 \tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.1.1(a)}
@@ -56,49 +54,8 @@
 
 \tp{Nhận xét} \TODO{xếp loại (phù hợp / phù hợp một phần / không phù hợp); nếu sai lệch thì nêu nguyên nhân}
 
-\subsubsection{Công cụ chẩn đoán}
-
-\noidung{Tự tương quan và kiểm định Ljung–Box}
-\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.1.2(a)}
-\tp{Cách triển khai} Cả hai. \textit{Bộ áp dụng:} Hồ Huron, Linh miêu, DAX (suất sinh lợi). \TODO{quy trình cụ thể, tham số riêng của mục này}
-\tp{Mã lệnh Python} \TODO{đoạn mã lõi 10--20 dòng (chỉ ký tự ASCII và chữ Việt, không dùng ký hiệu Hy Lạp trong mã); mã đầy đủ ở notebook}
-\tp{Kết quả tính toán}
-\input{\tabdir/tab_b11_04_acf_ljungbox.tex}
-\input{\tabdir/tab_b11_04_simulation.tex}
-\figx{fig_b11_04_acf_bands}{ACF mẫu và dải 95\% (đứt nét: iid $\pm1.96/\sqrt n$; chấm: Bartlett MA(1)); độ trễ vượt dải tô cam đỏ}
-\TODO{chọn bảng/hình giữ lại, bỏ bớt phần phụ; viết câu dẫn}
-\tp{Phân tích và diễn giải}
-\bodl{(i) Hồ Huron.} \TODO{diễn giải gắn với 2.1.2(a)}
-
-\bodl{(ii) Linh miêu.} \TODO{diễn giải gắn với 2.1.2(a)}
-
-\bodl{(iii) DAX (suất sinh lợi).} \TODO{diễn giải gắn với 2.1.2(a)}
-
-\tp{Nhận xét} \TODO{xếp loại (phù hợp / phù hợp một phần / không phù hợp); nếu sai lệch thì nêu nguyên nhân}
-
-\noidung{Tự tương quan riêng phần}
-\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.1.2(b)}
-\tp{Cách triển khai} Dữ liệu thực. \textit{Bộ áp dụng:} Hồ Huron, Linh miêu, DAX (suất sinh lợi). \TODO{quy trình cụ thể, tham số riêng của mục này}
-\tp{Mã lệnh Python} \TODO{đoạn mã lõi 10--20 dòng (chỉ ký tự ASCII và chữ Việt, không dùng ký hiệu Hy Lạp trong mã); mã đầy đủ ở notebook}
-\tp{Kết quả tính toán}
-\input{\tabdir/tab_b11_11_pacf.tex}
-\figx{fig_b11_11_pacf}{PACF mẫu (Durbin--Levinson) của HU đã khử xu thế, LY và DR}
-\TODO{chọn bảng/hình giữ lại, bỏ bớt phần phụ; viết câu dẫn}
-\tp{Phân tích và diễn giải}
-\bodl{(i) Hồ Huron.} \TODO{diễn giải gắn với 2.1.2(b)}
-
-\bodl{(ii) Linh miêu.} \TODO{diễn giải gắn với 2.1.2(b)}
-
-\bodl{(iii) DAX (suất sinh lợi).} \TODO{diễn giải gắn với 2.1.2(b)}
-
-\tp{Nhận xét} \TODO{xếp loại (phù hợp / phù hợp một phần / không phù hợp); nếu sai lệch thì nêu nguyên nhân}
-
-\subsection{Mô hình ARMA}
-
-\subsubsection{Quá trình tuyến tính và mô hình AR}
-
 \noidung{Quá trình tuyến tính}
-\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.2.1(a)}
+\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.1.1(d)}
 \tp{Cách triển khai} Dữ liệu thực. \textit{Bộ áp dụng:} Hồ Huron, Linh miêu. \textit{Không áp dụng cho:} DAX (suất sinh lợi) \TODO{lý do ngắn}. \TODO{quy trình cụ thể, tham số riêng của mục này}
 \tp{Mã lệnh Python} \TODO{đoạn mã lõi 10--20 dòng (chỉ ký tự ASCII và chữ Việt, không dùng ký hiệu Hy Lạp trong mã); mã đầy đủ ở notebook}
 \tp{Kết quả tính toán}
@@ -106,14 +63,16 @@
 \figx{fig_b11_05_acf_theory}{ACF mẫu (que) và ACF lý thuyết của AR(2) khớp bằng ML (đường)}
 \TODO{chọn bảng/hình giữ lại, bỏ bớt phần phụ; viết câu dẫn}
 \tp{Phân tích và diễn giải}
-\bodl{(i) Hồ Huron.} \TODO{diễn giải gắn với 2.2.1(a)}
+\bodl{(i) Hồ Huron.} \TODO{diễn giải gắn với 2.1.1(d)}
 
-\bodl{(ii) Linh miêu.} \TODO{diễn giải gắn với 2.2.1(a)}
+\bodl{(ii) Linh miêu.} \TODO{diễn giải gắn với 2.1.1(d)}
 
 \tp{Nhận xét} \TODO{xếp loại (phù hợp / phù hợp một phần / không phù hợp); nếu sai lệch thì nêu nguyên nhân}
 
+\subsection{Mô hình ARMA}
+
 \noidung{Mô hình AR(1)}
-\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.2.1(b)}
+\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.1.2(a)}
 \tp{Cách triển khai} Dữ liệu thực. \textit{Bộ áp dụng:} Hồ Huron. \textit{Không áp dụng cho:} Linh miêu, DAX (suất sinh lợi) \TODO{lý do ngắn}. \TODO{quy trình cụ thể, tham số riêng của mục này}
 \tp{Mã lệnh Python} \TODO{đoạn mã lõi 10--20 dòng (chỉ ký tự ASCII và chữ Việt, không dùng ký hiệu Hy Lạp trong mã); mã đầy đủ ở notebook}
 \tp{Kết quả tính toán}
@@ -122,26 +81,26 @@
 \input{\tabdir/tab_b11_06_ar1_simulation.tex}
 \TODO{chọn bảng/hình giữ lại, bỏ bớt phần phụ; viết câu dẫn}
 \tp{Phân tích và diễn giải}
-\bodl{(i) Hồ Huron.} \TODO{diễn giải gắn với 2.2.1(b)}
+\bodl{(i) Hồ Huron.} \TODO{diễn giải gắn với 2.1.2(a)}
 
 \tp{Nhận xét} \TODO{xếp loại (phù hợp / phù hợp một phần / không phù hợp); nếu sai lệch thì nêu nguyên nhân}
 
 \noidung{Mô hình AR(p) và hệ Yule–Walker}
-\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.2.1(c)}
+\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.1.2(b)}
 \tp{Cách triển khai} Dữ liệu thực. \textit{Bộ áp dụng:} Linh miêu, Hồ Huron. \textit{Không áp dụng cho:} DAX (suất sinh lợi) \TODO{lý do ngắn}. \TODO{quy trình cụ thể, tham số riêng của mục này}
 \tp{Mã lệnh Python} \TODO{đoạn mã lõi 10--20 dòng (chỉ ký tự ASCII và chữ Việt, không dùng ký hiệu Hy Lạp trong mã); mã đầy đủ ở notebook}
 \tp{Kết quả tính toán}
 \input{\tabdir/tab_b11_07_yule_walker.tex}
 \TODO{chọn bảng/hình giữ lại, bỏ bớt phần phụ; viết câu dẫn}
 \tp{Phân tích và diễn giải}
-\bodl{(i) Linh miêu.} \TODO{diễn giải gắn với 2.2.1(c)}
+\bodl{(i) Linh miêu.} \TODO{diễn giải gắn với 2.1.2(b)}
 
-\bodl{(ii) Hồ Huron.} \TODO{diễn giải gắn với 2.2.1(c)}
+\bodl{(ii) Hồ Huron.} \TODO{diễn giải gắn với 2.1.2(b)}
 
 \tp{Nhận xét} \TODO{xếp loại (phù hợp / phù hợp một phần / không phù hợp); nếu sai lệch thì nêu nguyên nhân}
 
 \noidung{Mô hình AR(2)}
-\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.2.1(d)}
+\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.1.2(c)}
 \tp{Cách triển khai} Dữ liệu thực. \textit{Bộ áp dụng:} Linh miêu. \textit{Không áp dụng cho:} Hồ Huron, DAX (suất sinh lợi) \TODO{lý do ngắn}. \TODO{quy trình cụ thể, tham số riêng của mục này}
 \tp{Mã lệnh Python} \TODO{đoạn mã lõi 10--20 dòng (chỉ ký tự ASCII và chữ Việt, không dùng ký hiệu Hy Lạp trong mã); mã đầy đủ ở notebook}
 \tp{Kết quả tính toán}
@@ -149,14 +108,12 @@
 \figx{fig_b11_08_ar2_triangle}{Tam giác nhân quả AR(2) với điểm HU, LY (trái) và ACF mẫu của LY so với AR(2)-YW (phải)}
 \TODO{chọn bảng/hình giữ lại, bỏ bớt phần phụ; viết câu dẫn}
 \tp{Phân tích và diễn giải}
-\bodl{(i) Linh miêu.} \TODO{diễn giải gắn với 2.2.1(d)}
+\bodl{(i) Linh miêu.} \TODO{diễn giải gắn với 2.1.2(c)}
 
 \tp{Nhận xét} \TODO{xếp loại (phù hợp / phù hợp một phần / không phù hợp); nếu sai lệch thì nêu nguyên nhân}
 
-\subsubsection{Mô hình MA và ARMA}
-
 \noidung{Mô hình MA(q)}
-\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.2.2(a)}
+\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.1.2(d)}
 \tp{Cách triển khai} Cả hai. \textit{Bộ áp dụng:} DAX (suất sinh lợi), Hồ Huron. \textit{Không áp dụng cho:} Linh miêu \TODO{lý do ngắn}. \TODO{quy trình cụ thể, tham số riêng của mục này}
 \tp{Mã lệnh Python} \TODO{đoạn mã lõi 10--20 dòng (chỉ ký tự ASCII và chữ Việt, không dùng ký hiệu Hy Lạp trong mã); mã đầy đủ ở notebook}
 \tp{Kết quả tính toán}
@@ -165,14 +122,14 @@
 \figx{fig_b11_09_ma2_acf}{MA(2) mô phỏng: trung bình ACF mẫu so với ACF lý thuyết cắt cụt sau độ trễ 2}
 \TODO{chọn bảng/hình giữ lại, bỏ bớt phần phụ; viết câu dẫn}
 \tp{Phân tích và diễn giải}
-\bodl{(i) DAX (suất sinh lợi).} \TODO{diễn giải gắn với 2.2.2(a)}
+\bodl{(i) DAX (suất sinh lợi).} \TODO{diễn giải gắn với 2.1.2(d)}
 
-\bodl{(ii) Hồ Huron.} \TODO{diễn giải gắn với 2.2.2(a)}
+\bodl{(ii) Hồ Huron.} \TODO{diễn giải gắn với 2.1.2(d)}
 
 \tp{Nhận xét} \TODO{xếp loại (phù hợp / phù hợp một phần / không phù hợp); nếu sai lệch thì nêu nguyên nhân}
 
 \noidung{Mô hình ARMA(p, q)}
-\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.2.2(b)}
+\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.1.2(e)}
 \tp{Cách triển khai} Dữ liệu thực. \textit{Bộ áp dụng:} Hồ Huron, Linh miêu. \textit{Không áp dụng cho:} DAX (suất sinh lợi) \TODO{lý do ngắn}. \TODO{quy trình cụ thể, tham số riêng của mục này}
 \tp{Mã lệnh Python} \TODO{đoạn mã lõi 10--20 dòng (chỉ ký tự ASCII và chữ Việt, không dùng ký hiệu Hy Lạp trong mã); mã đầy đủ ở notebook}
 \tp{Kết quả tính toán}
@@ -181,16 +138,51 @@
 \input{\tabdir/tab_b11_10_overparameterized.tex}
 \TODO{chọn bảng/hình giữ lại, bỏ bớt phần phụ; viết câu dẫn}
 \tp{Phân tích và diễn giải}
-\bodl{(i) Hồ Huron.} \TODO{diễn giải gắn với 2.2.2(b)}
+\bodl{(i) Hồ Huron.} \TODO{diễn giải gắn với 2.1.2(e)}
 
-\bodl{(ii) Linh miêu.} \TODO{diễn giải gắn với 2.2.2(b)}
+\bodl{(ii) Linh miêu.} \TODO{diễn giải gắn với 2.1.2(e)}
 
 \tp{Nhận xét} \TODO{xếp loại (phù hợp / phù hợp một phần / không phù hợp); nếu sai lệch thì nêu nguyên nhân}
 
-\subsubsection{Ước lượng và chẩn đoán mô hình}
+\subsection{Xây dựng mô hình ARMA}
+
+\noidung{Tự tương quan và kiểm định Ljung–Box}
+\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.1.3(a)}
+\tp{Cách triển khai} Cả hai. \textit{Bộ áp dụng:} Hồ Huron, Linh miêu, DAX (suất sinh lợi). \TODO{quy trình cụ thể, tham số riêng của mục này}
+\tp{Mã lệnh Python} \TODO{đoạn mã lõi 10--20 dòng (chỉ ký tự ASCII và chữ Việt, không dùng ký hiệu Hy Lạp trong mã); mã đầy đủ ở notebook}
+\tp{Kết quả tính toán}
+\input{\tabdir/tab_b11_04_acf_ljungbox.tex}
+\input{\tabdir/tab_b11_04_simulation.tex}
+\figx{fig_b11_04_acf_bands}{ACF mẫu và dải 95\% (đứt nét: iid $\pm1.96/\sqrt n$; chấm: Bartlett MA(1)); độ trễ vượt dải tô cam đỏ}
+\TODO{chọn bảng/hình giữ lại, bỏ bớt phần phụ; viết câu dẫn}
+\tp{Phân tích và diễn giải}
+\bodl{(i) Hồ Huron.} \TODO{diễn giải gắn với 2.1.3(a)}
+
+\bodl{(ii) Linh miêu.} \TODO{diễn giải gắn với 2.1.3(a)}
+
+\bodl{(iii) DAX (suất sinh lợi).} \TODO{diễn giải gắn với 2.1.3(a)}
+
+\tp{Nhận xét} \TODO{xếp loại (phù hợp / phù hợp một phần / không phù hợp); nếu sai lệch thì nêu nguyên nhân}
+
+\noidung{Tự tương quan riêng phần}
+\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.1.3(b)}
+\tp{Cách triển khai} Dữ liệu thực. \textit{Bộ áp dụng:} Hồ Huron, Linh miêu, DAX (suất sinh lợi). \TODO{quy trình cụ thể, tham số riêng của mục này}
+\tp{Mã lệnh Python} \TODO{đoạn mã lõi 10--20 dòng (chỉ ký tự ASCII và chữ Việt, không dùng ký hiệu Hy Lạp trong mã); mã đầy đủ ở notebook}
+\tp{Kết quả tính toán}
+\input{\tabdir/tab_b11_11_pacf.tex}
+\figx{fig_b11_11_pacf}{PACF mẫu (Durbin--Levinson) của HU đã khử xu thế, LY và DR}
+\TODO{chọn bảng/hình giữ lại, bỏ bớt phần phụ; viết câu dẫn}
+\tp{Phân tích và diễn giải}
+\bodl{(i) Hồ Huron.} \TODO{diễn giải gắn với 2.1.3(b)}
+
+\bodl{(ii) Linh miêu.} \TODO{diễn giải gắn với 2.1.3(b)}
+
+\bodl{(iii) DAX (suất sinh lợi).} \TODO{diễn giải gắn với 2.1.3(b)}
+
+\tp{Nhận xét} \TODO{xếp loại (phù hợp / phù hợp một phần / không phù hợp); nếu sai lệch thì nêu nguyên nhân}
 
 \noidung{Ước lượng tham số}
-\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.2.3(a)}
+\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.1.3(c)}
 \tp{Cách triển khai} Cả hai. \textit{Bộ áp dụng:} Linh miêu, Hồ Huron. \textit{Không áp dụng cho:} DAX (suất sinh lợi) \TODO{lý do ngắn}. \TODO{quy trình cụ thể, tham số riêng của mục này}
 \tp{Mã lệnh Python} \TODO{đoạn mã lõi 10--20 dòng (chỉ ký tự ASCII và chữ Việt, không dùng ký hiệu Hy Lạp trong mã); mã đầy đủ ở notebook}
 \tp{Kết quả tính toán}
@@ -198,14 +190,14 @@
 \input{\tabdir/tab_b11_12_simulation.tex}
 \TODO{chọn bảng/hình giữ lại, bỏ bớt phần phụ; viết câu dẫn}
 \tp{Phân tích và diễn giải}
-\bodl{(i) Linh miêu.} \TODO{diễn giải gắn với 2.2.3(a)}
+\bodl{(i) Linh miêu.} \TODO{diễn giải gắn với 2.1.3(c)}
 
-\bodl{(ii) Hồ Huron.} \TODO{diễn giải gắn với 2.2.3(a)}
+\bodl{(ii) Hồ Huron.} \TODO{diễn giải gắn với 2.1.3(c)}
 
 \tp{Nhận xét} \TODO{xếp loại (phù hợp / phù hợp một phần / không phù hợp); nếu sai lệch thì nêu nguyên nhân}
 
 \noidung{Lựa chọn bậc}
-\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.2.3(b)}
+\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.1.3(d)}
 \tp{Cách triển khai} Dữ liệu thực. \textit{Bộ áp dụng:} Linh miêu, Hồ Huron. \textit{Không áp dụng cho:} DAX (suất sinh lợi) \TODO{lý do ngắn}. \TODO{quy trình cụ thể, tham số riêng của mục này}
 \tp{Mã lệnh Python} \TODO{đoạn mã lõi 10--20 dòng (chỉ ký tự ASCII và chữ Việt, không dùng ký hiệu Hy Lạp trong mã); mã đầy đủ ở notebook}
 \tp{Kết quả tính toán}
@@ -216,14 +208,14 @@
 \figx{fig_b11_13_ic_ly}{LY: AIC và BIC (trừ giá trị nhỏ nhất) theo bậc AR; dấu sao là bậc được chọn}
 \TODO{chọn bảng/hình giữ lại, bỏ bớt phần phụ; viết câu dẫn}
 \tp{Phân tích và diễn giải}
-\bodl{(i) Linh miêu.} \TODO{diễn giải gắn với 2.2.3(b)}
+\bodl{(i) Linh miêu.} \TODO{diễn giải gắn với 2.1.3(d)}
 
-\bodl{(ii) Hồ Huron.} \TODO{diễn giải gắn với 2.2.3(b)}
+\bodl{(ii) Hồ Huron.} \TODO{diễn giải gắn với 2.1.3(d)}
 
 \tp{Nhận xét} \TODO{xếp loại (phù hợp / phù hợp một phần / không phù hợp); nếu sai lệch thì nêu nguyên nhân}
 
 \noidung{Chẩn đoán phần dư}
-\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.2.3(c)}
+\tp{Nội dung lý thuyết cần kiểm chứng} \TODO{một câu mệnh đề cần kiểm chứng; dẫn mục 2.1.3(e)}
 \tp{Cách triển khai} Dữ liệu thực. \textit{Bộ áp dụng:} Hồ Huron, Linh miêu, DAX (suất sinh lợi). \TODO{quy trình cụ thể, tham số riêng của mục này}
 \tp{Mã lệnh Python} \TODO{đoạn mã lõi 10--20 dòng (chỉ ký tự ASCII và chữ Việt, không dùng ký hiệu Hy Lạp trong mã); mã đầy đủ ở notebook}
 \tp{Kết quả tính toán}
@@ -231,10 +223,10 @@
 \figx{fig_b11_14_residual_acf}{ACF của phần dư (trái) và của phần dư bình phương (phải) cho các mô hình được chọn}
 \TODO{chọn bảng/hình giữ lại, bỏ bớt phần phụ; viết câu dẫn}
 \tp{Phân tích và diễn giải}
-\bodl{(i) Hồ Huron.} \TODO{diễn giải gắn với 2.2.3(c)}
+\bodl{(i) Hồ Huron.} \TODO{diễn giải gắn với 2.1.3(e)}
 
-\bodl{(ii) Linh miêu.} \TODO{diễn giải gắn với 2.2.3(c)}
+\bodl{(ii) Linh miêu.} \TODO{diễn giải gắn với 2.1.3(e)}
 
-\bodl{(iii) DAX (suất sinh lợi).} \TODO{diễn giải gắn với 2.2.3(c)}
+\bodl{(iii) DAX (suất sinh lợi).} \TODO{diễn giải gắn với 2.1.3(e)}
 
 \tp{Nhận xét} \TODO{xếp loại (phù hợp / phù hợp một phần / không phù hợp); nếu sai lệch thì nêu nguyên nhân}
