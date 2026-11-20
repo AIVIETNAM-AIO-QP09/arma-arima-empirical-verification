@@ -1,18 +1,18 @@
 % Báo cáo AS3179: khung theo template (trang bìa, đầu/chân trang, mục lục) và bố cục trong docs/report_outline.md.
-% Biên dịch: pdfLaTeX với -shell-escape (cần cho gói minted): python scripts/04_build_report.py, hoặc Overleaf (compiler pdfLaTeX).
+% Biên dịch: pdfLaTeX hai lượt: VS Code (LaTeX Workshop, tự biên dịch khi lưu), hoặc python scripts/04_build_report.py, hoặc Overleaf (pdfLaTeX).
+% Khối mã: \begin{codeblock} ... \end{codeblock} (chỉ ký tự ASCII và chữ Việt, không dùng chữ Hy Lạp trong mã).
 % Chương 1, 2, 3, 6, 7, tài liệu tham khảo, phụ lục: chapters/*.tex. Chương 4, 5 có hình/bảng chèn tự động từ reports/.
 \documentclass[11pt]{article}
 \usepackage[includeheadfoot,textheight=21cm,textwidth=17cm,headheight=10mm]{geometry}
 \usepackage[vietnamese]{babel}
 \usepackage{amsmath,amssymb}
 \usepackage{xcolor,fancyhdr,indentfirst,array,graphicx,setspace,titlesec,tikz,float,booktabs,longtable,adjustbox,caption,enumitem,needspace,placeins,xurl}
-\usepackage{minted}
+\usepackage{fvextra}  % khối mã Python (thuần LaTeX, không cần shell-escape)
 \usepackage[hidelinks]{hyperref}
 
 % --- đường dẫn hình/bảng (script 06 đổi ../figures, ../tables thành figures, tables cho Overleaf) ---
 \newcommand{\figdir}{../figures}
 \newcommand{\tabdir}{../tables}
-\graphicspath{{assets/}}
 
 % --- ký hiệu và macro dùng chung ---
 \newcommand{\TODO}[1]{{\color{red}\textbf{[TODO(nhóm): #1]}}}
@@ -40,7 +40,7 @@
 \setstretch{1.15}
 \setlength{\parindent}{1cm}
 \renewcommand*{\contentsname}{\LARGE\textbf{Mục lục}}
-\setminted{fontsize=\footnotesize,breaklines,frame=single}
+\DefineVerbatimEnvironment{codeblock}{Verbatim}{fontsize=\footnotesize,frame=single,framesep=2mm,breaklines=true,breakanywhere=true}
 
 \begin{document}
 
@@ -48,7 +48,7 @@
 % Toàn bộ nội dung bìa nằm trong một khung adjustbox tự co lại nếu cao hơn trang, nên không bao giờ tràn sang trang sau.
 \AddToHookNext{shipout/background}{
 	\begin{tikzpicture}[remember picture,overlay]
-		\node at (current page.center) {\includegraphics[width=19.4cm]{background.png}};
+		\node at (current page.center) {\includegraphics[width=19.4cm]{assets/khung_bia.png}};
 	\end{tikzpicture}
 }
 \thispagestyle{empty}
@@ -61,7 +61,7 @@
 \rule{0.55\textwidth}{0.6pt}
 
 \vspace{0.4cm}
-\includegraphics[height=3.3cm]{01_logobachkhoasang}
+\includegraphics[height=3.3cm]{assets/01_logobachkhoasang}
 
 \vspace{0.4cm}
 \textbf{\Large MÔ HÌNH THỐNG KÊ (AS3179)}
@@ -111,7 +111,7 @@
 \pagestyle{fancy}
 \renewcommand{\footrulewidth}{1pt}
 \fancyhead{}
-\lhead{\includegraphics[width=8cm]{bklogo}}
+\lhead{\includegraphics[width=8cm]{assets/bklogo}}
 \rhead{\textbf{\large {\color{blue}Mô hình thống kê - HK261}\\ \small{Nhóm 7 - Lớp L01}}}
 \fancyfoot{}
 \cfoot{Trang \thepage}

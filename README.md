@@ -58,10 +58,16 @@ Chỉ `scripts/01_download_data.py` dùng mạng (bỏ qua nếu `data/raw/` đ�
 `reports/tables/lecture_reference_check.md` so từng số của bài giảng với giá trị tái lập (xfail kèm lý do trong `tests/test_lecture_reference.py`): phần lớn khác biệt do bài giảng in giá trị R (Ljung–Box của phần dư, SE số), do tối ưu số, hoặc do dòng số ngẫu nhiên khác.
 Riêng hàng *"iid + dịch mức"* trong bảng công suất ADF (0.08) chưa tái lập được (xem ô 12.4).
 
+## Biên dịch báo cáo
+
+**Trong VS Code (khuyến nghị):** cài MiKTeX (`winget install MiKTeX.MiKTeX --scope user`) và extension *LaTeX Workshop* (đã gợi ý trong `.vscode/extensions.json`). Mở `reports/report/main.tex` hoặc bất kỳ file trong `reports/report/chapters/`, lưu file (Ctrl+S) là tự biên dịch (pdfLaTeX hai lượt, thư mục `reports/report/build/`); xem PDF bằng nút *View LaTeX PDF* hoặc Ctrl+Alt+V. Lần biên dịch đầu mất vài phút vì MiKTeX tự tải gói (bật bằng `initexmf --set-config-value="[MPM]AutoInstall=1"`).
+**Dòng lệnh:** `python scripts\04_build_report.py`. **Overleaf:** `python scripts\06_make_overleaf_zip.py`, upload zip, compiler pdfLaTeX, main document `main.tex`.
+Lưu ý: ảnh trong `assets/` luôn gọi bằng đường dẫn `assets/…` (tên trần như `background.png` có thể trùng một tệp có sẵn trong thư viện TeX).
+
 ## Nộp bài
 
 ```powershell
-.\.venv\Scripts\python.exe scripts\04_build_report.py        # cần latexmk hoặc pdflatex
+.\.venv\Scripts\python.exe scripts\04_build_report.py        # cần pdflatex (MiKTeX)
 .\.venv\Scripts\python.exe scripts\05_package_submission.py  # tạo submission/
 ```
 

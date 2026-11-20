@@ -1,6 +1,6 @@
-"""Biên dịch reports/report/main.tex ra PDF (reports/report/build/main.pdf). Cần latexmk hoặc pdflatex (MiKTeX/TeX Live) và gói minted (Python Pygments).
+"""Biên dịch reports/report/main.tex ra PDF (reports/report/build/main.pdf) bằng pdfLaTeX hai lượt (mục lục, tham chiếu chéo).
 
-Dùng -shell-escape vì gói minted. Trên Overleaf không cần script này (chọn compiler pdfLaTeX).
+Cần MiKTeX hoặc TeX Live (pdflatex trên PATH). Trong VS Code dùng extension LaTeX Workshop (cấu hình ở .vscode/settings.json), script này dành cho dòng lệnh.
 """
 import shutil
 import subprocess
@@ -12,15 +12,12 @@ REPORT_DIR = ROOT / "reports" / "report"
 
 
 def main() -> None:
+    if not shutil.which("pdflatex"):
+        sys.exit("Chưa có pdflatex. Cài MiKTeX (winget install MiKTeX.MiKTeX) hoặc dùng Overleaf (scripts/06_make_overleaf_zip.py).")
     (REPORT_DIR / "build").mkdir(exist_ok=True)
-    if shutil.which("latexmk"):
-        cmd = [["latexmk", "-pdf", "-shell-escape", "-interaction=nonstopmode", "-outdir=build", "main.tex"]]
-    elif shutil.which("pdflatex"):
-        cmd = [["pdflatex", "-shell-escape", "-interaction=nonstopmode", "-output-directory=build", "main.tex"]] * 2  # 2 lượt cho mục lục
-    else:
-        sys.exit("Chưa có LaTeX (latexmk/pdflatex). Cài MiKTeX hoặc TeX Live, hoặc dùng Overleaf (scripts/06_make_overleaf_zip.py).")
-    for c in cmd:
-        subprocess.run(c, cwd=REPORT_DIR, check=True)
+    cmd = ["pdflatex", "-interaction=nonstopmode", "-file-line-error", "-output-directory=build", "main.tex"]
+    for _ in range(2):
+        subprocess.run(cmd, cwd=REPORT_DIR, check=True)
     print("PDF:", REPORT_DIR / "build" / "main.pdf")
 
 

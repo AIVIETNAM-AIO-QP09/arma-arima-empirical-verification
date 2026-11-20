@@ -13,7 +13,7 @@ from .config import TABLE_DIR
 GREEK = {"α": r"\alpha", "β": r"\beta", "γ": r"\gamma", "δ": r"\delta", "ε": r"\varepsilon", "η": r"\eta", "θ": r"\theta", "λ": r"\lambda",
          "μ": r"\mu", "ρ": r"\rho", "σ": r"\sigma", "τ": r"\tau", "φ": r"\phi", "ψ": r"\psi", "ω": r"\omega", "Γ": r"\Gamma", "Θ": r"\Theta",
          "Φ": r"\Phi", "Ψ": r"\Psi", "χ": r"\chi", "κ": r"\kappa", "π": r"\pi", "Σ": r"\Sigma", "ℓ": r"\ell"}
-SUB = dict(zip("₀₁₂₃₄₅₆₇₈₉ₙ₊₋", "0123456789n+-"))
+SUB = dict(zip("₀₁₂₃₄₅₆₇₈₉ₙ₊₋ₜₖⱼₐₑₒₓₕₘₚₛ", "0123456789n+-tkjaeoxhmps"))
 SUP = dict(zip("⁰¹²³⁴⁵⁶⁷⁸⁹⁻", "0123456789-"))
 SYM = {"≤": r"\le", "≥": r"\ge", "≈": r"\approx", "∇": r"\nabla", "Δ": r"\Delta", "√": r"\sqrt{}", "∑": r"\sum", "±": r"\pm", "×": r"\times",
        "→": r"\to", "≡": r"\equiv", "⋆": r"\star", "∞": r"\infty", "−": "-", "≠": r"\neq", "∈": r"\in", "·": r"\cdot", "≪": r"\ll"}
@@ -23,7 +23,7 @@ SPECIAL = {"<": r"$<$", ">": r"$>$", "%": r"\%", "&": r"\&", "#": r"\#", "_": r"
 
 def tex(s) -> str:
     """Chuỗi Unicode (có ký hiệu toán) -> LaTeX an toàn cho pdfLaTeX. Đoạn `$...$` có sẵn được giữ nguyên."""
-    s = str(s)
+    s = str(s).replace("Q_LB", "$Q_{LB}$").replace("n_eff", r"$n_{\mathrm{eff}}$")
     parts = re.split(r"(\$[^$]*\$)", s)
     out = []
     for p in parts:
