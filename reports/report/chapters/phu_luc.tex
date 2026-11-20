@@ -1,6 +1,6 @@
 % PHỤ LỤC: A. Phân công nhiệm vụ; B. Mã nguồn và tái lập.
 \clearpage
-\section*{PHỤ LỤC A. PHÂN CÔNG NHIỆM VỤ}
+\section*{\hypertarget{ap:A}{}PHỤ LỤC A. PHÂN CÔNG NHIỆM VỤ}
 \addcontentsline{toc}{section}{Phụ lục A. Phân công nhiệm vụ}
 
 \begin{table}[H]
@@ -19,7 +19,7 @@ Phạm Anh Quốc & Cùng xây dựng, kiểm tra và rà soát nội dung báo 
 \end{table}
 
 \clearpage
-\section*{PHỤ LỤC B. MÃ NGUỒN VÀ TÁI LẬP}
+\section*{\hypertarget{ap:B}{}PHỤ LỤC B. MÃ NGUỒN VÀ TÁI LẬP}
 \addcontentsline{toc}{section}{Phụ lục B. Mã nguồn và tái lập}
 \setcounter{table}{0}\renewcommand{\thetable}{B.\arabic{table}}
 
@@ -39,14 +39,14 @@ Thư mục & Nội dung \\
 \texttt{data/processed} & sáu tệp đã làm sạch và biến đổi (mỗi bộ dữ liệu một tệp) \\
 \texttt{src/as3179ts} & các hàm dùng chung: \texttt{acf\_tools} (tự tương quan, Ljung--Box), \texttt{arma\_tools} (ARMA, Yule--Walker, trọng số $\psi$), \texttt{forecast\_tools} (dự báo, phương sai sai số dự báo), \texttt{evaluation} (thước đo sai số, gốc cuốn chiếu, Diebold--Mariano), \texttt{simulation} (mô phỏng), \texttt{plotting} và \texttt{reporting} (hình, bảng), \texttt{data}, \texttt{config} \\
 \texttt{scripts} & các bước chạy từng phần: tải dữ liệu, làm sạch, biên dịch báo cáo, đóng gói \\
-\texttt{notebooks} & ba sổ tay Jupyter: \texttt{00\_kham\_pha\_du\_lieu} (mục 3.2), \texttt{bai11\_arma} (Chương 4), \texttt{bai12\_arima\_du\_bao} (Chương 5 và 6) \\
+\texttt{notebooks} & ba sổ tay Jupyter: \texttt{00\_kham\_pha\_du\_lieu} (\muc{3.2}), \texttt{bai11\_arma} (\chg{4}), \texttt{bai12\_arima\_du\_bao} (\chg{5} và \chn{6}) \\
 \texttt{tests} & các kiểm thử tự động \\
 \texttt{reports} & hình (\texttt{figures}, PNG), bảng (\texttt{tables}, ba dạng \texttt{.csv}, \texttt{.md}, \texttt{.tex}) và mã LaTeX của báo cáo (\texttt{report}) \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-\noindent Các hàm trong \texttt{acf\_tools}, \texttt{arma\_tools}, \texttt{forecast\_tools} và \texttt{evaluation} được nhóm tự cài đặt theo công thức ở Chương 2, không gọi \texttt{statsmodels}; thư viện này chỉ được dùng để đối chiếu (mục 3.3).
+\noindent Các hàm trong \texttt{acf\_tools}, \texttt{arma\_tools}, \texttt{forecast\_tools} và \texttt{evaluation} được nhóm tự cài đặt theo công thức ở \chg{2}, không gọi \texttt{statsmodels}; thư viện này chỉ được dùng để đối chiếu (\muc{3.3}).
 
 \subsection*{B.2. Cài đặt và chạy lại}
 

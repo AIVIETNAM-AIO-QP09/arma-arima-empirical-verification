@@ -3,14 +3,14 @@
 % Khối mã: \begin{codeblock} ... \end{codeblock} (chỉ ký tự ASCII và chữ Việt, không dùng chữ Hy Lạp trong mã).
 % Chương 1, 2, 3, 7, 8, tài liệu tham khảo, phụ lục: chapters/*.tex. Chương 4, 5, 6 có hình/bảng chèn tự động từ reports/.
 \documentclass[11pt]{article}
-\usepackage[includeheadfoot,textheight=25cm,textwidth=17cm,headheight=28pt]{geometry}
+\usepackage[includeheadfoot,textheight=23.4cm,textwidth=17cm,headheight=28pt]{geometry}
 \usepackage[vietnamese]{babel}
 \usepackage{amsmath,amssymb}
 \usepackage{xcolor,fancyhdr,indentfirst,array,graphicx,setspace,titlesec,tikz,float,booktabs,longtable,tabularx,adjustbox,caption,enumitem,needspace,placeins,xurl}
 \usepackage[framemethod=default]{mdframed}
 \usepackage{etoolbox}
 \usepackage{listings}  % khối mã Python có tô màu cú pháp (thuần LaTeX, không cần shell-escape)
-\usepackage[hidelinks]{hyperref}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
 \usepackage{tocloft}
 \setlength{\cftbeforesecskip}{4pt}\setlength{\cftbeforesubsecskip}{0pt}
 
@@ -20,7 +20,22 @@
 
 % --- ký hiệu và macro dùng chung ---
 \newcommand{\TODO}[1]{{\color{red}\textbf{[TODO(nhóm): #1]}}}
-\newcommand{\figx}[2]{\begin{figure}[H]\centering\includegraphics[width=0.84\linewidth]{\figdir/#1.png}\caption{#2}\label{fig:#1}\end{figure}}
+\newcommand{\figx}[2]{\begin{figure}[H]\centering\includegraphics[width=0.95\linewidth]{\figdir/#1.png}\caption{#2}\label{fig:#1}\end{figure}}
+
+% --- liên kết bấm được tới chương, mục, nội dung kiểm chứng, tài liệu tham khảo ---
+\makeatletter
+\newcommand{\chg}[1]{\hyperlink{ch:#1}{Chương #1}}            % Chương N
+\newcommand{\chn}[1]{\hyperlink{ch:#1}{#1}}                    % chỉ số N (khi liệt kê nhiều chương)
+\newcommand{\muc}[1]{\hyperlink{mc:#1}{mục #1}}                % mục N.M hoặc N.M.K
+\newcommand{\Muc}[1]{\hyperlink{mc:#1}{Mục #1}}
+\newcommand{\phuluc}[1]{\hyperlink{ap:#1}{Phụ lục #1}}
+\def\ndlk#1{\@ndlk#1\relax}                                    % địa chỉ nội dung dạng 4.2(c)
+\def\@ndlk#1(#2)#3\relax{\hyperlink{nd:#1#2}{#1(#2)}}
+\def\mucnd#1{\@mucnd#1\relax}
+\def\@mucnd#1(#2)#3\relax{\hyperlink{nd:#1#2}{mục #1(#2)}}
+\newcommand{\tlk}[1]{[\def\tl@sep{}\@for\@tempa:=#1\do{\tl@sep\hyperlink{tl\@tempa}{\@tempa}\def\tl@sep{, }}]}   % [2, 3]
+\newcommand{\dlk}[1]{\hyperlink{dl#1}{[DL#1]}}                 % [DL2]
+\makeatother
 
 % --- ký hiệu toán và khung kết quả lý thuyết (Chương 2) ---
 \newcommand{\E}{\mathrm{E}}
@@ -30,20 +45,21 @@
 \newmdenv[linewidth=2.5pt,topline=false,bottomline=false,rightline=false,linecolor=blue!55!black,backgroundcolor=blue!4,
   innerleftmargin=10pt,innerrightmargin=8pt,innertopmargin=3pt,innerbottommargin=3pt,skipabove=4pt,skipbelow=3pt,nobreak=true]{kqbox}
 \newenvironment{kq}{\begin{kqbox}\small}{\end{kqbox}}
-\newcommand{\kiemchung}[1]{\par\nopagebreak[4]\vspace{-2pt}\hfill{\small\itshape$\rightarrow$ Kiểm chứng tại mục #1.}\par\smallskip}
+\newcommand{\kiemchung}[1]{\par\nopagebreak[4]\vspace{-2pt}\hfill{\small\itshape$\rightarrow$ Kiểm chứng tại mục \ndlk{#1}.}\par\smallskip}
 
 % cấp 4: a), b), c)... (tự đánh chữ, đặt lại sau mỗi mục cấp 3)
 \newcounter{noidung}[subsubsection]
 \renewcommand{\thenoidung}{\alph{noidung}}
-\newcommand{\noidung}[1]{\refstepcounter{noidung}\Needspace{6\baselineskip}\par\medskip\noindent\textbf{\thenoidung) #1}\par\nopagebreak\smallskip}
+\newcommand{\noidung}[1]{\refstepcounter{noidung}\Needspace{6\baselineskip}\ifnum\value{section}=2\hypertarget{nd:\thesubsubsection\thenoidung}{}\else\hypertarget{nd:\thesubsection\thenoidung}{}\fi\par\medskip\noindent\textbf{\thenoidung) #1}\par\nopagebreak\smallskip}
 % sáu thành phần của mỗi nội dung kiểm chứng và nhãn cấp 5: (i), (ii), (iii)
 \newcommand{\tp}[1]{\par\Needspace{4\baselineskip}\smallskip\noindent\textbf{\textit{#1.}}\ }
 \newcommand{\bodl}[1]{\par\noindent\textit{#1}\ }
 
 % --- định dạng các cấp tiêu đề ---
-\titleformat{\section}{\normalfont\Large\bfseries}{CHƯƠNG \thesection.}{0.6em}{}
-\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{0.6em}{}
-\titleformat{\subsubsection}{\normalfont\normalsize\bfseries\itshape}{\thesubsubsection}{0.6em}{}
+\titleformat{\section}{\normalfont\Large\bfseries}{CHƯƠNG \thesection.}{0.6em}{\hypertarget{ch:\thesection}{}}
+\titleformat{name=\section,numberless}{\normalfont\Large\bfseries}{}{0pt}{}
+\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{0.6em}{\hypertarget{mc:\thesubsection}{}}
+\titleformat{\subsubsection}{\normalfont\normalsize\bfseries\itshape}{\thesubsubsection}{0.6em}{\hypertarget{mc:\thesubsubsection}{}}
 \titlespacing*{\section}{0pt}{0pt}{14pt}
 \titlespacing*{\subsection}{0pt}{14pt}{6pt}
 \titlespacing*{\subsubsection}{0pt}{10pt}{4pt}
@@ -54,7 +70,7 @@
 \setcounter{tocdepth}{2}
 \counterwithin{figure}{section}
 \counterwithin{table}{section}
-\captionsetup{font=small,labelfont=bf}
+\captionsetup{font=small,labelfont=bf,labelsep=period}
 \setstretch{1.04}
 \setlength{\parindent}{1cm}
 \renewcommand*{\contentsname}{\LARGE\textbf{Mục lục}}
@@ -151,10 +167,10 @@
 \lhead{\includegraphics[width=5.2cm]{assets/bklogo}}
 \rhead{\textbf{\normalsize {\color{blue}Mô hình thống kê - HK261}\\ \footnotesize{Nhóm 7 - Lớp L01}}}
 \fancyfoot{}
-\cfoot{Trang \thepage}
+\rfoot{Trang \thepage}
 \setcounter{page}{1}
 
-{\setstretch{0.84}\tableofcontents\thispagestyle{fancy}}
+{\hypersetup{linkcolor=black}\setstretch{0.84}\tableofcontents\thispagestyle{fancy}}
 \newpage
 
 % ================= NỘI DUNG =================

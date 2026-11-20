@@ -3,7 +3,7 @@
 \clearpage
 \section[Cơ sở lý thuyết]{CƠ SỞ LÝ THUYẾT}
 
-Chương này tổng hợp kiến thức lý thuyết mà các chương sau dùng đến, theo mạch từ đơn giản đến phức tạp. Mục 2.1 nói về chuỗi dừng và mô hình ARMA, mục 2.2 về chuỗi không dừng và mô hình ARIMA, còn mục 2.3 về dự báo và đánh giá dự báo. Các kết quả được phát biểu gọn cùng điều kiện áp dụng và không chứng minh, vì phần chứng minh có trong [2, 3]. Mỗi kết quả mang một địa chỉ \texttt{2.m.n(z)} và được kiểm chứng ở Chương 4, 5 hoặc 6 tùy mục chứa nó; địa chỉ trong chương kiểm chứng chỉ cần cộng $3$ vào số mục, chẳng hạn \texttt{2.1.2(b)} được kiểm chứng tại \texttt{4.2(b)}. Các ký hiệu toán học chính được tóm tắt trong Bảng~\ref{tab:kyhieu}.
+Chương này tổng hợp kiến thức lý thuyết mà các chương sau dùng đến, theo mạch từ đơn giản đến phức tạp. \Muc{2.1} nói về chuỗi dừng và mô hình ARMA, \muc{2.2} về chuỗi không dừng và mô hình ARIMA, còn \muc{2.3} về dự báo và đánh giá dự báo. Các kết quả được phát biểu gọn cùng điều kiện áp dụng và không chứng minh, vì phần chứng minh có trong \tlk{2,3}. Mỗi kết quả mang một địa chỉ \texttt{2.m.n(z)} và được kiểm chứng ở \chg{4}, \chn{5} hoặc \chn{6} tùy mục chứa nó; địa chỉ trong chương kiểm chứng chỉ cần cộng $3$ vào số mục, chẳng hạn \texttt{2.1.2(b)} được kiểm chứng tại \texttt{4.2(b)}. Các ký hiệu toán học chính được tóm tắt trong Bảng~\ref{tab:kyhieu}.
 
 \begin{table}[H]
 \centering\small
@@ -28,7 +28,7 @@ $\hat Y_{n+h|n}$, $e_n(h)$ & dự báo $h$ bước tại thời điểm $n$ và 
 % ======================= Chuỗi dừng và mô hình ARMA =======================
 \subsection{Chuỗi dừng và mô hình ARMA}
 
-Mọi mô hình trong báo cáo bắt đầu từ một câu hỏi: cấu trúc phụ thuộc của chuỗi có ổn định theo thời gian hay không? Mục này trình bày khái niệm chuỗi dừng, họ mô hình ARMA, rồi cách nhận dạng, ước lượng và kiểm tra mô hình. Nội dung được kiểm chứng ở Chương 4.
+Mọi mô hình trong báo cáo bắt đầu từ một câu hỏi: cấu trúc phụ thuộc của chuỗi có ổn định theo thời gian hay không? Mục này trình bày khái niệm chuỗi dừng, họ mô hình ARMA, rồi cách nhận dạng, ước lượng và kiểm tra mô hình. Nội dung được kiểm chứng ở \chg{4}.
 
 \subsubsection{Chuỗi dừng}
 
@@ -41,7 +41,7 @@ Dữ liệu ta có chỉ là một dãy số $y_1,\dots,y_n$ quan sát một l�
 \item \emph{Nhiễu trắng} $\varepsilon_t\sim WN(0,\sigma^2)$: dừng yếu, trung bình $0$, $\gamma(0)=\sigma^2$ và $\gamma(h)=0$ với $h\neq0$. Nếu các $\varepsilon_t$ còn độc lập và cùng phân phối thì gọi là \emph{nhiễu iid}.
 \end{enumerate}
 \end{kq}
-Nói đơn giản, chuỗi dừng yếu có mức trung bình cố định và độ phụ thuộc giữa hai thời điểm chỉ phụ thuộc khoảng cách giữa chúng. Dừng nghiêm ngặt kéo theo dừng yếu khi $\E Y_t^2<\infty$, và với quá trình Gauss hai khái niệm trùng nhau; từ đây ``dừng'' được hiểu là dừng yếu. Cũng cần phân biệt nhiễu trắng với nhiễu iid, vốn là điều kiện mạnh hơn: suất sinh lợi tài chính thường không tự tương quan nhưng bình phương của chúng thì có, vì biến động lớn tụ thành từng cụm, và điều này giúp ta đọc đúng phần dư ở mục 2.1.3.
+Nói đơn giản, chuỗi dừng yếu có mức trung bình cố định và độ phụ thuộc giữa hai thời điểm chỉ phụ thuộc khoảng cách giữa chúng. Dừng nghiêm ngặt kéo theo dừng yếu khi $\E Y_t^2<\infty$, và với quá trình Gauss hai khái niệm trùng nhau; từ đây ``dừng'' được hiểu là dừng yếu. Cũng cần phân biệt nhiễu trắng với nhiễu iid, vốn là điều kiện mạnh hơn: suất sinh lợi tài chính thường không tự tương quan nhưng bình phương của chúng thì có, vì biến động lớn tụ thành từng cụm, và điều này giúp ta đọc đúng phần dư ở \muc{2.1.3}.
 
 \kiemchung{4.1(a)}
 
@@ -59,7 +59,7 @@ Từ dữ liệu, tự hiệp phương sai mẫu và tự tương quan mẫu t�
 \[
 \hat\gamma(h)=\frac1n\sum_{t=1}^{n-h}(y_{t+h}-\bar y)(y_t-\bar y),\qquad \hat\rho(h)=\frac{\hat\gamma(h)}{\hat\gamma(0)},\qquad \hat\gamma(-h)=\hat\gamma(h).
 \]
-Ta chia cho $n$ chứ không phải $n-h$ vì cách này bảo đảm $\hat\Gamma_n$ xác định không âm, nhờ đó mô hình AR khớp bằng Yule--Walker luôn nhân quả, như sẽ thấy ở mục 2.1.3; cái giá là $\hat\gamma(h)$ hơi chệch ở độ trễ lớn, nên chỉ đọc $\hat\rho(h)$ khi $h$ nhỏ so với $n$, thường là $h\le n/4$. Khi chuỗi có xu thế hoặc dịch mức, $\hat\rho(h)$ giảm rất chậm, phản ánh tính không dừng chứ không phải ``trí nhớ'' thật sự.
+Ta chia cho $n$ chứ không phải $n-h$ vì cách này bảo đảm $\hat\Gamma_n$ xác định không âm, nhờ đó mô hình AR khớp bằng Yule--Walker luôn nhân quả, như sẽ thấy ở \muc{2.1.3}; cái giá là $\hat\gamma(h)$ hơi chệch ở độ trễ lớn, nên chỉ đọc $\hat\rho(h)$ khi $h$ nhỏ so với $n$, thường là $h\le n/4$. Khi chuỗi có xu thế hoặc dịch mức, $\hat\rho(h)$ giảm rất chậm, phản ánh tính không dừng chứ không phải ``trí nhớ'' thật sự.
 \kiemchung{4.1(b)}
 
 \noidung{Trung bình mẫu của chuỗi phụ thuộc}
@@ -83,7 +83,7 @@ Ta dùng toán tử lùi $B$, xác định bởi $BY_t=Y_{t-1}$ và do đó $B^j
 \item Quá trình tuyến tính là dừng yếu, có trung bình $\mu$ và $\gamma(h)=\sigma^2\sum_j\psi_j\psi_{j+h}$.
 \end{enumerate}
 \end{kq}
-Mọi mô hình ARMA ở mục 2.1.2 đều quy về quá trình tuyến tính nhân quả, nên ý (ii) cho cách tính tự hiệp phương sai từ các $\psi_j$.
+Mọi mô hình ARMA ở \muc{2.1.2} đều quy về quá trình tuyến tính nhân quả, nên ý (ii) cho cách tính tự hiệp phương sai từ các $\psi_j$.
 \kiemchung{4.1(d)}
 
 \subsubsection{Mô hình ARMA}
@@ -100,7 +100,7 @@ Giá trị hiện tại của chuỗi phụ thuộc vào chính quá khứ của
 \item Dự báo tuyến tính tốt nhất của $Y_{n+h}$ từ $Y_n,Y_{n-1},\dots$ là $\mu+\phi^h(Y_n-\mu)$, với sai số bình phương trung bình $\sigma^2(1-\phi^{2h})/(1-\phi^2)\to\gamma(0)$ khi $h\to\infty$.
 \end{enumerate}
 \end{kq}
-Có thể hình dung $\phi$ là độ ``dai dẳng'': mỗi kỳ, ảnh hưởng của một cú sốc còn lại $\phi$ lần, nên dự báo quay về $\mu$ nhanh nếu $|\phi|$ nhỏ và chậm nếu $|\phi|$ gần $1$. Trường hợp $|\phi|=1$ ở (iii), nơi cú sốc không bao giờ tắt, là điểm khởi đầu của mục 2.2.
+Có thể hình dung $\phi$ là độ ``dai dẳng'': mỗi kỳ, ảnh hưởng của một cú sốc còn lại $\phi$ lần, nên dự báo quay về $\mu$ nhanh nếu $|\phi|$ nhỏ và chậm nếu $|\phi|$ gần $1$. Trường hợp $|\phi|=1$ ở (iii), nơi cú sốc không bao giờ tắt, là điểm khởi đầu của \muc{2.2}.
 \kiemchung{4.2(a)}
 
 \noidung{Mô hình AR(p) và hệ Yule--Walker}
@@ -116,7 +116,7 @@ hay ở dạng ma trận $\Gamma_p\boldsymbol\phi=\boldsymbol\gamma_p$, với $\
 \item $\rho(h)$ thỏa cùng phương trình sai phân: nếu các nghiệm $z_1,\dots,z_p$ phân biệt thì $\rho(h)=\sum_ic_iz_i^{-|h|}$, là tổ hợp của các hàm mũ tắt dần ứng với nghiệm thực và các dao động sin tắt dần ứng với cặp nghiệm phức.
 \end{enumerate}
 \end{kq}
-Điều kiện nghiệm ở (i) được kiểm tra mỗi khi khớp một mô hình AR, còn phương trình Yule--Walker ở (ii) cho phép tính $\rho(h)$ từ các hệ số hoặc ngược lại ước lượng hệ số từ $\hat\rho(h)$, như ở mục 2.1.3. Nghiệm nằm \emph{trên} vòng tròn đơn vị, $z=1$, là trường hợp đặc biệt dẫn sang mục 2.2.
+Điều kiện nghiệm ở (i) được kiểm tra mỗi khi khớp một mô hình AR, còn phương trình Yule--Walker ở (ii) cho phép tính $\rho(h)$ từ các hệ số hoặc ngược lại ước lượng hệ số từ $\hat\rho(h)$, như ở \muc{2.1.3}. Nghiệm nằm \emph{trên} vòng tròn đơn vị, $z=1$, là trường hợp đặc biệt dẫn sang \muc{2.2}.
 \kiemchung{4.2(b)}
 
 \noidung{Mô hình AR(2)}
@@ -160,7 +160,7 @@ Tính nhân quả phụ thuộc nghiệm của $\phi$, còn tính khả nghịch
 
 \subsubsection{Xây dựng mô hình ARMA}
 
-Để xây dựng mô hình ARMA cho dữ liệu thực, ta theo chu trình Box--Jenkins [1], gồm nhận dạng bậc từ đồ thị, ACF và PACF, ước lượng bằng cực đại hợp lý và kiểm tra phần dư, rồi quay lại nhận dạng nếu mô hình chưa phù hợp. Dạng của ACF và PACF gợi ý bậc như Bảng~\ref{tab:nhandang}; đây chỉ là quy tắc kinh nghiệm, nên ta lập một danh sách ngắn các ứng viên rồi so bằng AIC, BIC và phần dư.
+Để xây dựng mô hình ARMA cho dữ liệu thực, ta theo chu trình Box--Jenkins \tlk{1}, gồm nhận dạng bậc từ đồ thị, ACF và PACF, ước lượng bằng cực đại hợp lý và kiểm tra phần dư, rồi quay lại nhận dạng nếu mô hình chưa phù hợp. Dạng của ACF và PACF gợi ý bậc như Bảng~\ref{tab:nhandang}; đây chỉ là quy tắc kinh nghiệm, nên ta lập một danh sách ngắn các ứng viên rồi so bằng AIC, BIC và phần dư.
 
 \begin{table}[H]
 \centering\small
@@ -183,12 +183,12 @@ Không dừng & suy giảm rất chậm, gần tuyến tính & $\alpha(1)\approx
 \begin{kq}
 \begin{enumerate}[label=(\roman*),leftmargin=*,itemsep=1pt]
 \item Nếu $Y_t$ iid và có mômen bậc bốn hữu hạn thì với mỗi $H$ cố định, $\sqrt n\,\bigl(\hat\rho(1),\dots,\hat\rho(H)\bigr)\xrightarrow{d}N_H(0,I_H)$. Do đó với nhiễu iid, mỗi $\hat\rho(h)$ nằm trong dải xấp xỉ 95\% $\pm1.96/\sqrt n$.
-\item \emph{Thống kê Ljung--Box} [5, 6]:
+\item \emph{Thống kê Ljung--Box} \tlk{5,6}:
 \[
 Q_{LB}(H)=n(n+2)\sum_{h=1}^{H}\frac{\hat\rho(h)^2}{n-h}\ \xrightarrow{d}\ \chi^2_H.
 \]
 Giá trị lớn bác bỏ giả thuyết ``không có tự tương quan đến độ trễ $H$''. Với phần dư của mô hình ARMA$(p,q)$, bậc tự do giảm còn $H-p-q$.
-\item \emph{Công thức Bartlett} [7]: nếu $Y_t=\mu+\sum_j\psi_j\varepsilon_{t-j}$ với $\varepsilon_t$ iid, $\E\varepsilon_t^4<\infty$ và $\rho(h)=0$ khi $|h|>q$ (tức MA$(q)$) thì với $h>q$ ta có $\sqrt n\,\hat\rho(h)\xrightarrow{d}N\bigl(0,\,1+2\sum_{k=1}^{q}\rho(k)^2\bigr)$.
+\item \emph{Công thức Bartlett} \tlk{7}: nếu $Y_t=\mu+\sum_j\psi_j\varepsilon_{t-j}$ với $\varepsilon_t$ iid, $\E\varepsilon_t^4<\infty$ và $\rho(h)=0$ khi $|h|>q$ (tức MA$(q)$) thì với $h>q$ ta có $\sqrt n\,\hat\rho(h)\xrightarrow{d}N\bigl(0,\,1+2\sum_{k=1}^{q}\rho(k)^2\bigr)$.
 \end{enumerate}
 \end{kq}
 Dải $\pm1.96/\sqrt n$ ở (i) là hai đường ngang giới hạn trên biểu đồ ACF. Khi nhìn nhiều độ trễ, khoảng $5\%$ số gai vượt dải chỉ do ngẫu nhiên, nên kiểm định Ljung--Box, gom nhiều độ trễ vào một con số, đáng tin hơn từng gai riêng lẻ; công thức Bartlett cho biết dải rộng hơn khi chuỗi có cấu trúc MA.
@@ -215,7 +215,7 @@ Hai tính chất cắt cụt ở (ii) và (iii) là cơ sở dùng cặp ACF, PA
 \noidung{Ước lượng tham số}
 \begin{kq}
 \begin{enumerate}[label=(\roman*),leftmargin=*,itemsep=1pt]
-\item \emph{Yule--Walker:} $\hat{\boldsymbol\phi}=\hat\Gamma_p^{-1}\hat{\boldsymbol\gamma}_p$ và $\hat\sigma^2=\hat\gamma(0)-\hat{\boldsymbol\phi}^\top\hat{\boldsymbol\gamma}_p$. Khi $\hat\gamma$ dùng mẫu số $n$ như ở mục 2.1.1(b) và dữ liệu không hằng, mô hình AR$(p)$ khớp được luôn nhân quả.
+\item \emph{Yule--Walker:} $\hat{\boldsymbol\phi}=\hat\Gamma_p^{-1}\hat{\boldsymbol\gamma}_p$ và $\hat\sigma^2=\hat\gamma(0)-\hat{\boldsymbol\phi}^\top\hat{\boldsymbol\gamma}_p$. Khi $\hat\gamma$ dùng mẫu số $n$ như ở \mucnd{2.1.1(b)} và dữ liệu không hằng, mô hình AR$(p)$ khớp được luôn nhân quả.
 \item Với AR$(p)$ nhân quả và nhiễu iid, các ước lượng Yule--Walker, bình phương tối thiểu có điều kiện và cực đại hợp lý Gauss đều thỏa $\sqrt n(\hat{\boldsymbol\phi}-\boldsymbol\phi)\xrightarrow{d}N_p\bigl(\mathbf0,\sigma^2\Gamma_p^{-1}\bigr)$; với AR(1), $\Var\hat\phi\approx(1-\phi^2)/n$.
 \item Với ARMA$(p,q)$ nhân quả, khả nghịch và nhiễu iid, ước lượng cực đại hợp lý Gauss, tính từ hàm hợp lý chính xác, là ước lượng nhất quán và xấp xỉ chuẩn khi $n$ lớn; ma trận hiệp phương sai của nó được ước lượng bằng nghịch đảo ma trận thông tin quan sát.
 \end{enumerate}
@@ -243,13 +243,13 @@ Nếu mô hình đã nắm bắt hết cấu trúc phụ thuộc thì phần dư
 \item ACF của $\hat\varepsilon_t^2$: nếu bình phương phần dư còn tự tương quan thì chuỗi còn cụm biến động, và mô hình ARMA cho trung bình là chưa đủ.
 \end{enumerate}
 \end{kq}
-Hai công cụ đầu cho cái nhìn trực quan, Ljung--Box cho kết luận định lượng, còn ACF của bình phương phần dư bổ sung điều ba công cụ kia không thấy được. Sai số chuẩn của hệ số ước lượng từ dữ liệu phụ thuộc cũng phải tính đến sự phụ thuộc đó (mục 2.1.1(c)).
+Hai công cụ đầu cho cái nhìn trực quan, Ljung--Box cho kết luận định lượng, còn ACF của bình phương phần dư bổ sung điều ba công cụ kia không thấy được. Sai số chuẩn của hệ số ước lượng từ dữ liệu phụ thuộc cũng phải tính đến sự phụ thuộc đó (\mucnd{2.1.1(c)}).
 \kiemchung{4.3(e)}
 
 % ======================= Chuỗi không dừng và mô hình ARIMA =======================
 \subsection{Chuỗi không dừng và mô hình ARIMA}
 
-Nhiều chuỗi thực tế không dừng: chúng trôi dần, có xu thế hoặc lặp lại theo mùa. Mục này phân biệt các dạng không dừng, giới thiệu mô hình ARIMA, tức ARMA áp dụng lên chuỗi đã sai phân, và cách quyết định có nên lấy sai phân. Nội dung được kiểm chứng ở Chương 5.
+Nhiều chuỗi thực tế không dừng: chúng trôi dần, có xu thế hoặc lặp lại theo mùa. Mục này phân biệt các dạng không dừng, giới thiệu mô hình ARIMA, tức ARMA áp dụng lên chuỗi đã sai phân, và cách quyết định có nên lấy sai phân. Nội dung được kiểm chứng ở \chg{5}.
 
 \subsubsection{Chuỗi không dừng}
 
@@ -262,7 +262,7 @@ Cho $\{Y_t\}$ là một chuỗi thời gian và $\nabla Y_t=Y_t-Y_{t-1}$.
 \item Mô hình $\phi(B)Y_t=\theta(B)\varepsilon_t$ có $d$ \emph{nghiệm đơn vị} nếu $\phi(z)=(1-z)^d\tilde\phi(z)$ với $\tilde\phi(z)\ne0$ trên $|z|\le1$; đặc biệt $\phi(1)=0$.
 \end{enumerate}
 \end{kq}
-Điểm khác biệt nằm ở phản ứng với cú sốc: với chuỗi dừng quanh xu thế, cú sốc tắt dần và chuỗi quay về $\mu_t$; với chuỗi $I(1)$, cú sốc làm dịch chuyển vĩnh viễn quỹ đạo tương lai. Điều kiện $v>0$ ở (ii) loại trường hợp sai phân quá mức (2.2.3(a)); $v=\gamma(0)\tau$ là đại lượng ở 2.1.1(c).
+Điểm khác biệt nằm ở phản ứng với cú sốc: với chuỗi dừng quanh xu thế, cú sốc tắt dần và chuỗi quay về $\mu_t$; với chuỗi $I(1)$, cú sốc làm dịch chuyển vĩnh viễn quỹ đạo tương lai. Điều kiện $v>0$ ở (ii) loại trường hợp sai phân quá mức (\ndlk{2.2.3(a)}); $v=\gamma(0)\tau$ là đại lượng ở \ndlk{2.1.1(c)}.
 \kiemchung{5.1(a)}
 
 \noidung{Bước ngẫu nhiên}
@@ -276,7 +276,7 @@ Cho $Y_t=Y_0+\delta t+\sum_{j=1}^{t}\varepsilon_j$, với $Y_0$ cố định và
 \item $\nabla Y_t=\delta+\varepsilon_t$: một lần lấy sai phân đưa chuỗi về nhiễu iid quanh độ trôi.
 \end{enumerate}
 \end{kq}
-ACF giảm chậm gần tuyến tính là dấu hiệu đặc trưng của chuỗi không dừng, và một lần sai phân đưa bước ngẫu nhiên về dạng dừng. Từ đây có cảnh báo về \emph{hồi quy giả mạo}: nếu $X_t$ và $Y_t$ là hai bước ngẫu nhiên độc lập mà ta vẫn hồi quy $Y$ theo $X$ bằng bình phương tối thiểu thông thường, kiểm định $H_0:\beta_1=0$ bác bỏ với tần suất cao hơn rất nhiều mức danh nghĩa. Ngược lại, hai chuỗi $I(1)$ có thể thực sự gắn bó: nếu tồn tại $\beta$ để $Y_t-\beta X_t$ là $I(0)$ thì chúng \emph{đồng tích hợp} [12]; đây là phần mở rộng ngoài danh mục chính, chỉ xét ngắn.
+ACF giảm chậm gần tuyến tính là dấu hiệu đặc trưng của chuỗi không dừng, và một lần sai phân đưa bước ngẫu nhiên về dạng dừng. Từ đây có cảnh báo về \emph{hồi quy giả mạo}: nếu $X_t$ và $Y_t$ là hai bước ngẫu nhiên độc lập mà ta vẫn hồi quy $Y$ theo $X$ bằng bình phương tối thiểu thông thường, kiểm định $H_0:\beta_1=0$ bác bỏ với tần suất cao hơn rất nhiều mức danh nghĩa. Ngược lại, hai chuỗi $I(1)$ có thể thực sự gắn bó: nếu tồn tại $\beta$ để $Y_t-\beta X_t$ là $I(0)$ thì chúng \emph{đồng tích hợp} \tlk{12}; đây là phần mở rộng ngoài danh mục chính, chỉ xét ngắn.
 
 \kiemchung{5.1(b)}
 
@@ -314,7 +314,7 @@ Mô hình airline chỉ có hai tham số nhưng mô tả được cả xu thế
 
 \subsubsection{Xây dựng mô hình ARIMA}
 
-So với ARMA, xây dựng ARIMA có thêm việc chọn số lần sai phân $d$, sau đó làm như ở mục 2.1.3. Quyết định này cần dựa trên bằng chứng, nên phần này nói về cái giá của sai phân thừa hoặc thiếu và về các kiểm định nghiệm đơn vị.
+So với ARMA, xây dựng ARIMA có thêm việc chọn số lần sai phân $d$, sau đó làm như ở \muc{2.1.3}. Quyết định này cần dựa trên bằng chứng, nên phần này nói về cái giá của sai phân thừa hoặc thiếu và về các kiểm định nghiệm đơn vị.
 
 \noidung{Sai phân và sai phân quá mức}
 \begin{kq}
@@ -333,9 +333,9 @@ Sai phân thừa làm dự báo kém đi gấp đôi, sai phân thiếu có th�
 Ngoài đồ thị và ACF, quyết định lấy sai phân nên dựa trên kiểm định. Xét $Y_t=\phi Y_{t-1}+\varepsilon_t$ với $\varepsilon_t$ iid $(0,\sigma^2)$, $Y_0=0$, kiểm định $H_0:\phi=1$ với đối thuyết $|\phi|<1$.
 \begin{kq}
 \begin{enumerate}[label=(\roman*),leftmargin=*,itemsep=1pt]
-\item \emph{Dickey--Fuller} [8]: dưới $H_0$, thống kê $t$ là $\tau=(\hat\phi-1)/\mathrm{SE}(\hat\phi)$ hội tụ về $\bigl\{W(1)^2-1\bigr\}\big/\bigl\{2\bigl(\int_0^1W^2\bigr)^{1/2}\bigr\}$, với $W$ là chuyển động Brown chuẩn. Phân phối giới hạn này không phải phân phối chuẩn: nó lệch trái và nằm lệch về phía âm. Khi mô hình có hệ số chặn, hoặc hệ số chặn kèm xu thế, $W$ được thay bằng bản đã trừ trung bình hoặc đã khử xu thế. Giá trị tới hạn 5\% là $-1.95$ khi không có hệ số chặn, $-2.86$ khi có hệ số chặn và $-3.41$ khi có cả chặn lẫn xu thế.
+\item \emph{Dickey--Fuller} \tlk{8}: dưới $H_0$, thống kê $t$ là $\tau=(\hat\phi-1)/\mathrm{SE}(\hat\phi)$ hội tụ về $\bigl\{W(1)^2-1\bigr\}\big/\bigl\{2\bigl(\int_0^1W^2\bigr)^{1/2}\bigr\}$, với $W$ là chuyển động Brown chuẩn. Phân phối giới hạn này không phải phân phối chuẩn: nó lệch trái và nằm lệch về phía âm. Khi mô hình có hệ số chặn, hoặc hệ số chặn kèm xu thế, $W$ được thay bằng bản đã trừ trung bình hoặc đã khử xu thế. Giá trị tới hạn 5\% là $-1.95$ khi không có hệ số chặn, $-2.86$ khi có hệ số chặn và $-3.41$ khi có cả chặn lẫn xu thế.
 \item \emph{Dickey--Fuller mở rộng, viết tắt ADF:} với AR$(p)$, viết $\nabla Y_t=\alpha+\beta Y_{t-1}+\sum_{i=1}^{p-1}a_i\nabla Y_{t-i}+\varepsilon_t$ với $\beta=-\phi(1)$. Giả thuyết không là $\beta=0$; thống kê $t$ của $\hat\beta$ có cùng giới hạn và giá trị tới hạn như ở (i).
-\item \emph{KPSS} [9]: giả thuyết không được đảo lại, $H_0$ là chuỗi dừng quanh một mức hoặc quanh một xu thế. Bác bỏ $H_0$ khi $\eta=n^{-2}\sum_tS_t^2/\hat v$ lớn, trong đó $S_t$ là các tổng riêng của phần dư và $\hat v$ là phương sai dài hạn của chúng.
+\item \emph{KPSS} \tlk{9}: giả thuyết không được đảo lại, $H_0$ là chuỗi dừng quanh một mức hoặc quanh một xu thế. Bác bỏ $H_0$ khi $\eta=n^{-2}\sum_tS_t^2/\hat v$ lớn, trong đó $S_t$ là các tổng riêng của phần dư và $\hat v$ là phương sai dài hạn của chúng.
 \end{enumerate}
 \end{kq}
 Điểm cần chú ý là phân phối giới hạn không chuẩn: dùng giá trị tới hạn $-1.645$ của phân phối chuẩn sẽ bác bỏ nghiệm đơn vị sai với tần suất cao hơn nhiều mức danh nghĩa. Vì giả thuyết không của ADF và KPSS ngược nhau nên đọc chúng cùng nhau: ADF bác bỏ và KPSS không bác bỏ thì ủng hộ $I(0)$, ngược lại ủng hộ $I(1)$, còn cùng bác bỏ hoặc cùng không bác bỏ thì dữ liệu không khớp khuôn mẫu nào, thường do điểm gãy như dịch mức. ADF không bác bỏ cũng chưa chứng minh có nghiệm đơn vị, vì kiểm định yếu khi $\phi$ gần $1$ hoặc $n$ nhỏ.
@@ -345,7 +345,7 @@ Ngoài đồ thị và ACF, quyết định lấy sai phân nên dựa trên ki�
 % ======================= Dự báo và đánh giá dự báo =======================
 \subsection{Dự báo và đánh giá dự báo}
 
-Ưu điểm lớn của ARIMA là cho phép dự báo kèm mức bất định. Mục này trình bày hàm dự báo, khoảng dự báo kể cả khi chuỗi đã lấy logarit, rồi cách đánh giá dự báo trung thực. Nội dung được kiểm chứng ở Chương 6 và có thể tham khảo thêm ở [4].
+Ưu điểm lớn của ARIMA là cho phép dự báo kèm mức bất định. Mục này trình bày hàm dự báo, khoảng dự báo kể cả khi chuỗi đã lấy logarit, rồi cách đánh giá dự báo trung thực. Nội dung được kiểm chứng ở \chg{6} và có thể tham khảo thêm ở \tlk{4}.
 
 \subsubsection{Hàm dự báo}
 
@@ -397,7 +397,7 @@ Cho $Y$ theo ARIMA$(p,d,q)$ với $\varepsilon_t$ iid $(0,\sigma^2)$ và $\Psi(z
 \item Với $d=0$, độ rộng khoảng hội tụ về $2z\sqrt{\gamma(0)}$; với $d=1$ nó tăng như $\sigma|\psi(1)|\sqrt h$; với $d=2$ nó tăng như $h^{3/2}$.
 \end{enumerate}
 \end{kq}
-Ý (iv) cho thấy sai phân giúp dự báo xu thế nhưng đánh đổi bằng độ chắc chắn, vì khoảng ngày càng rộng. Công thức ở (iii) chưa tính đến việc tham số và bậc mô hình được chọn từ dữ liệu, và sai số thực tế thường nặng đuôi hơn phân phối chuẩn, nên khoảng thường hơi hẹp; cần kiểm tra độ phủ bằng mô phỏng hoặc gốc cuốn chiếu, như ở mục 2.3.3.
+Ý (iv) cho thấy sai phân giúp dự báo xu thế nhưng đánh đổi bằng độ chắc chắn, vì khoảng ngày càng rộng. Công thức ở (iii) chưa tính đến việc tham số và bậc mô hình được chọn từ dữ liệu, và sai số thực tế thường nặng đuôi hơn phân phối chuẩn, nên khoảng thường hơi hẹp; cần kiểm tra độ phủ bằng mô phỏng hoặc gốc cuốn chiếu, như ở \muc{2.3.3}.
 \kiemchung{6.2(a)}
 
 \noidung{Dự báo trên thang logarit}
@@ -407,7 +407,7 @@ Giả sử phân phối dự báo của $\log Y_{n+h}$ khi biết $\mathcal F_n$
 \begin{enumerate}[label=(\roman*),leftmargin=*,itemsep=1pt]
 \item Nếu $(L,U)$ là khoảng $(1-a)$ cho $\log Y_{n+h}$ thì $(e^L,e^U)$ là khoảng $(1-a)$ cho $Y_{n+h}$, vì phép biến đổi tăng giữ nguyên thứ tự nên chuyển phân vị thành phân vị.
 \item $e^m$ là \emph{trung vị} của $Y_{n+h}$, trong khi \emph{trung bình} là $\E(Y_{n+h}\mid\mathcal F_n)=e^{m+s^2/2}>e^m$.
-\item Nên báo cáo trung vị nếu độ chính xác được đánh giá bằng sai số tuyệt đối, và báo cáo trung bình nếu đánh giá bằng sai số bình phương hoặc khi cần cộng gộp qua các chuỗi hay các kỳ (mục 2.3.3(c)).
+\item Nên báo cáo trung vị nếu độ chính xác được đánh giá bằng sai số tuyệt đối, và báo cáo trung bình nếu đánh giá bằng sai số bình phương hoặc khi cần cộng gộp qua các chuỗi hay các kỳ (\mucnd{2.3.3(c)}).
 \end{enumerate}
 \end{kq}
 Hai giá trị $e^m$ và $e^{m+s^2/2}$ khác nhau không đáng kể ở chân trời ngắn, chẳng hạn chỉ lệch $0.08\%$ khi $s=0.04$, nhưng đáng kể ở chân trời dài, chẳng hạn lệch $4.6\%$ khi $s=0.3$. Cần nêu rõ báo cáo đại lượng nào, và không nên lấy mũ dự báo trên thang logarit rồi gọi đó là giá trị kỳ vọng.
@@ -432,7 +432,7 @@ Cho $y_1,\dots,y_n$ là dữ liệu huấn luyện, $y_{n+1},\dots,y_{n+m}$ là 
 với $Q=\frac1{n-s}\sum_{t=s+1}^{n}|y_t-y_{t-s}|$ là MAE một bước của phương pháp naive mùa vụ trên mẫu huấn luyện ($s=1$ nếu không có mùa vụ).
 \end{enumerate}
 \end{kq}
-Một mô hình phức tạp chỉ có ý nghĩa khi vượt được các mốc chuẩn đơn giản. Về các thước đo [11]: MASE không phụ thuộc đơn vị, vẫn tính được khi có $y_i=0$, và $\mathrm{MASE}<1$ nghĩa là tốt hơn naive mùa vụ một bước trong mẫu huấn luyện. MAPE bất đối xứng vì dự báo thấp có $|e_i|/y_{n+i}\le1$ còn dự báo cao không bị chặn, nên cực tiểu hóa MAPE kéo dự báo xuống thấp, và MAPE không xác định khi $y_{n+i}=0$. Một con số như ``RMSE $=42$'' chỉ có nghĩa khi nêu rõ chân trời, giai đoạn, mốc chuẩn và thang đo.
+Một mô hình phức tạp chỉ có ý nghĩa khi vượt được các mốc chuẩn đơn giản. Về các thước đo \tlk{11}: MASE không phụ thuộc đơn vị, vẫn tính được khi có $y_i=0$, và $\mathrm{MASE}<1$ nghĩa là tốt hơn naive mùa vụ một bước trong mẫu huấn luyện. MAPE bất đối xứng vì dự báo thấp có $|e_i|/y_{n+i}\le1$ còn dự báo cao không bị chặn, nên cực tiểu hóa MAPE kéo dự báo xuống thấp, và MAPE không xác định khi $y_{n+i}=0$. Một con số như ``RMSE $=42$'' chỉ có nghĩa khi nêu rõ chân trời, giai đoạn, mốc chuẩn và thang đo.
 \kiemchung{6.3(a)}
 
 \noidung{Gốc cuốn chiếu}
@@ -446,14 +446,14 @@ Có hai quy tắc đi kèm. Thứ nhất, không chia ngẫu nhiên dữ liệu 
 \begin{kq}
 \begin{enumerate}[label=(\roman*),leftmargin=*,itemsep=1pt]
 \item \emph{Thước đo nhắm đến đại lượng nào.} Nếu $\E Y^2<\infty$ thì $\arg\min_c\E(Y-c)^2=\E Y$; nếu $\E|Y|<\infty$ thì $\arg\min_c\E|Y-c|$ là một trung vị của $Y$. Do đó RMSE hướng đến trung bình của phân phối dự báo, còn MAE hướng đến trung vị; trên dữ liệu lệch, hai thước đo này khác nhau và có thể xếp hạng các phương pháp khác nhau.
-\item \emph{Kiểm định Diebold--Mariano} [10]: với hàm mất mát $L$, đặt $d_t=L(e_{1t})-L(e_{2t})$. Nếu $d_t$ dừng với trung bình $0$ dưới giả thuyết hai phương pháp chính xác như nhau thì $DM=\bar d\big/\sqrt{\hat v/m}\xrightarrow{d}N(0,1)$, trong đó $\hat v$ ước lượng $\sum_k\gamma_d(k)$, tức phương sai dài hạn như ở 2.1.1(c).
+\item \emph{Kiểm định Diebold--Mariano} \tlk{10}: với hàm mất mát $L$, đặt $d_t=L(e_{1t})-L(e_{2t})$. Nếu $d_t$ dừng với trung bình $0$ dưới giả thuyết hai phương pháp chính xác như nhau thì $DM=\bar d\big/\sqrt{\hat v/m}\xrightarrow{d}N(0,1)$, trong đó $\hat v$ ước lượng $\sum_k\gamma_d(k)$, tức phương sai dài hạn như ở \ndlk{2.1.1(c)}.
 \end{enumerate}
 \end{kq}
 Việc chọn thước đo không chỉ là hình thức, vì nó quyết định đại lượng được tối ưu. Kiểm định Diebold--Mariano cần phương sai dài hạn vì các $d_t$ liên tiếp thường tự tương quan: sai số dự báo $h$ bước là MA$(h-1)$ nên $\gamma_d(k)=0$ khi $k\ge h$. Với dự báo một bước thường dùng phân phối $t$ với $m-1$ bậc tự do; kiểm định có thể không đáng tin khi hai mô hình lồng nhau và khớp trên cùng dữ liệu.
 \kiemchung{6.3(c)}
 
 \noidung{Quy trình báo cáo dự báo}
-Từ các kết quả ở mục 2.1 đến 2.3, quy trình xây dựng và báo cáo một mô hình dự báo ARIMA có thể rút gọn thành năm bước; khi mô hình chưa phù hợp, ta quay lại các bước trước.
+Từ các kết quả ở \muc{2.1} đến 2.3, quy trình xây dựng và báo cáo một mô hình dự báo ARIMA có thể rút gọn thành năm bước; khi mô hình chưa phù hợp, ta quay lại các bước trước.
 \begin{enumerate}[label=\textbf{Bước \arabic*.},leftmargin=2.2cm,itemsep=1pt]
 \item \emph{Quan sát và chia dữ liệu:} vẽ đồ thị để xem xu thế, mùa vụ, đổi mức, biến động; tách một khối kiểm định ở cuối chuỗi.
 \item \emph{Biến đổi:} lấy logarit hoặc Box--Cox khi biên độ dao động tăng theo mức; biến đổi trước khi sai phân.

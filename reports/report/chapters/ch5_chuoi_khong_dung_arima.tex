@@ -2,12 +2,12 @@
 \clearpage
 \section[Kiểm chứng chuỗi không dừng và mô hình ARIMA]{KIỂM CHỨNG CHUỖI KHÔNG DỪNG VÀ MÔ HÌNH ARIMA}
 
-Chương này kiểm chứng mục 2.2 trên ba bộ dữ liệu không dừng: lưu lượng sông Nile (NI), số hành khách hàng không (AP, lấy log, phần huấn luyện) và log giá DAX (DP). DP trôi như một bước ngẫu nhiên, NI đổi mức quanh năm 1899, còn AP vừa có xu thế vừa có mùa vụ. Cách đọc giống Chương 4; các mô hình ARIMA khớp ở đây được dùng để dự báo ở Chương 6.
+Chương này kiểm chứng \muc{2.2} trên ba bộ dữ liệu không dừng: lưu lượng sông Nile (NI), số hành khách hàng không (AP, lấy log, phần huấn luyện) và log giá DAX (DP). DP trôi như một bước ngẫu nhiên, NI đổi mức quanh năm 1899, còn AP vừa có xu thế vừa có mùa vụ. Cách đọc giống \chg{4}; các mô hình ARIMA khớp ở đây được dùng để dự báo ở \chg{6}.
 
 \subsection{Chuỗi không dừng}
 
 \noidung{Xu thế tất định và ngẫu nhiên}
-\tp{Nội dung lý thuyết cần kiểm chứng} Trừ xu thế bằng hồi quy không làm hết tính dai dẳng của chuỗi $I(1)$, còn lấy sai phân thì đưa chuỗi $I(1)$ về dạng dừng (kết quả 2.2.1(a)).
+\tp{Nội dung lý thuyết cần kiểm chứng} Trừ xu thế bằng hồi quy không làm hết tính dai dẳng của chuỗi $I(1)$, còn lấy sai phân thì đưa chuỗi $I(1)$ về dạng dừng (kết quả \ndlk{2.2.1(a)}).
 \tp{Cách triển khai} Dữ liệu thực; áp dụng cho NI, AP, DP. Với mỗi chuỗi, ta so chuỗi gốc, chuỗi đã trừ xu thế tuyến tính (bình phương tối thiểu) và sai phân bậc một, qua độ lệch chuẩn và $\hat\rho$ ở độ trễ 1 và 10.
 \tp{Mã lệnh Python}
 \begin{codeblock}
@@ -21,17 +21,17 @@ for ten, y in SERIES.items():                      # NI, AP (log, huan luyen), D
 \input{\tabdir/tab_b12_01_levels_vs_differences.tex}
 \figx{fig_b12_01_levels_vs_differences}{Chuỗi, ACF của chuỗi gốc và ACF của sai phân bậc một cho NI, AP (log, huấn luyện), DP (log)}
 \tp{Phân tích và diễn giải}
-\bodl{(i) Nile.} Chuỗi không có xu thế dài mà chỉ đổi mức quanh năm 1899. Sai phân gần như không giảm độ lệch chuẩn ($169.2$ xuống $168.1$) và đưa $\hat\rho(1)$ về $-0.40$, giá trị âm đáng kể (dấu hiệu sai phân thừa, xem mục 5.3). NI không thuộc hẳn loại nào trong hai loại xu thế.
+\bodl{(i) Nile.} Chuỗi không có xu thế dài mà chỉ đổi mức quanh năm 1899. Sai phân gần như không giảm độ lệch chuẩn ($169.2$ xuống $168.1$) và đưa $\hat\rho(1)$ về $-0.40$, giá trị âm đáng kể (dấu hiệu sai phân thừa, xem \muc{5.3}). NI không thuộc hẳn loại nào trong hai loại xu thế.
 
-\bodl{(ii) AirPassengers.} $\hat\rho(1)=0.95$ và $\hat\rho(10)=0.71$. Trừ xu thế kéo $\hat\rho(10)$ xuống $0.18$, nghĩa là phần lớn tính dai dẳng đến từ xu thế; sai phân giảm độ lệch chuẩn từ $0.39$ xuống $0.11$. Nhưng ACF của sai phân vẫn có đỉnh lớn ở độ trễ 12 và 24: mùa vụ chưa được xử lý (mục 5.2). Chỉ riêng ACF khó phân biệt hai loại xu thế ở đây.
+\bodl{(ii) AirPassengers.} $\hat\rho(1)=0.95$ và $\hat\rho(10)=0.71$. Trừ xu thế kéo $\hat\rho(10)$ xuống $0.18$, nghĩa là phần lớn tính dai dẳng đến từ xu thế; sai phân giảm độ lệch chuẩn từ $0.39$ xuống $0.11$. Nhưng ACF của sai phân vẫn có đỉnh lớn ở độ trễ 12 và 24: mùa vụ chưa được xử lý (\muc{5.2}). Chỉ riêng ACF khó phân biệt hai loại xu thế ở đây.
 
 \bodl{(iii) DAX (log giá).} Rõ nhất của xu thế ngẫu nhiên: $\hat\rho(1)=0.998$, $\hat\rho(10)=0.979$, và trừ xu thế gần như không đổi gì ($0.996$ và $0.960$). Sai phân đưa chuỗi về gần nhiễu trắng: $\hat\rho(1)=-0.0004$, độ lệch chuẩn giảm từ $0.363$ xuống $0.0103$.
 
 \tp{Nhận xét} \textbf{Phù hợp một phần.} DP khớp hoàn toàn lý thuyết. Với AP, trừ xu thế làm giảm mạnh tự tương quan nhưng sai phân còn mùa vụ, nên ACF chưa đủ để kết luận. NI chỉ đổi mức, không thuộc cả hai loại.
 
 \noidung{Bước ngẫu nhiên}
-\tp{Nội dung lý thuyết cần kiểm chứng} Với bước ngẫu nhiên $Y_t=\delta+Y_{t-1}+\varepsilon_t$: $\Var Y_t=t\sigma^2$, $\Corr(Y_t,Y_{t+h})=\sqrt{t/(t+h)}$, ACF mẫu giảm chậm gần tuyến tính, và hồi quy giữa hai bước ngẫu nhiên độc lập cho kết quả giả mạo (kết quả 2.2.1(b)).
-\tp{Cách triển khai} Mô phỏng; áp dụng cho DP. NI không áp dụng vì kiểm định ở mục 5.3 bác bỏ nghiệm đơn vị; AP vì có mùa vụ rõ. Ta mô phỏng bước ngẫu nhiên có trôi với $(\hat\delta,\hat\sigma)$ của DAX ($B=2000$ đường, $250$ ngày) để so phương sai, trung bình và tương quan với công thức; mô phỏng bước ngẫu nhiên không trôi $n=200$ cho ACF mẫu; hồi quy một bước ngẫu nhiên độc lập theo một bước khác ($n=100$) để đếm tần suất bác bỏ $H_0:\beta_1=0$ ở mức $5\%$. Cuối cùng là phần mở rộng đồng tích hợp: hồi quy log DAX theo log SMI và kiểm định Engle--Granger.
+\tp{Nội dung lý thuyết cần kiểm chứng} Với bước ngẫu nhiên $Y_t=\delta+Y_{t-1}+\varepsilon_t$: $\Var Y_t=t\sigma^2$, $\Corr(Y_t,Y_{t+h})=\sqrt{t/(t+h)}$, ACF mẫu giảm chậm gần tuyến tính, và hồi quy giữa hai bước ngẫu nhiên độc lập cho kết quả giả mạo (kết quả \ndlk{2.2.1(b)}).
+\tp{Cách triển khai} Mô phỏng; áp dụng cho DP. NI không áp dụng vì kiểm định ở \muc{5.3} bác bỏ nghiệm đơn vị; AP vì có mùa vụ rõ. Ta mô phỏng bước ngẫu nhiên có trôi với $(\hat\delta,\hat\sigma)$ của DAX ($B=2000$ đường, $250$ ngày) để so phương sai, trung bình và tương quan với công thức; mô phỏng bước ngẫu nhiên không trôi $n=200$ cho ACF mẫu; hồi quy một bước ngẫu nhiên độc lập theo một bước khác ($n=100$) để đếm tần suất bác bỏ $H_0:\beta_1=0$ ở mức $5\%$. Cuối cùng là phần mở rộng đồng tích hợp: hồi quy log DAX theo log SMI và kiểm định Engle--Granger.
 \tp{Mã lệnh Python}
 \begin{codeblock}
 d = np.diff(log_dax); delta, sigma = d.mean(), d.std(ddof=1)      # tham so tu DP
@@ -56,7 +56,7 @@ for _ in range(B):                                    # hoi quy gia mao, n = 100
 \subsection{Mô hình ARIMA}
 
 \noidung{Mô hình ARIMA và độ trôi}
-\tp{Nội dung lý thuyết cần kiểm chứng} ARIMA$(p,d,q)$ có $\nabla^dY_t$ là ARMA; hằng số khi $d=1$ là độ trôi $\mu_W=c/\phi(1)$, và bỏ độ trôi làm dự báo dài hạn nằm ngang thay vì đi theo xu thế (kết quả 2.2.2(a)).
+\tp{Nội dung lý thuyết cần kiểm chứng} ARIMA$(p,d,q)$ có $\nabla^dY_t$ là ARMA; hằng số khi $d=1$ là độ trôi $\mu_W=c/\phi(1)$, và bỏ độ trôi làm dự báo dài hạn nằm ngang thay vì đi theo xu thế (kết quả \ndlk{2.2.2(a)}).
 \tp{Cách triển khai} Dữ liệu thực; áp dụng cho NI và DP. AP không áp dụng vì có mùa vụ (xem mục sau). Ta khớp ARIMA$(0,1,1)$ không trôi cho Nile; ARIMA$(0,1,0)$ có trôi và ARIMA$(1,1,0)$ có trôi cho DAX; so độ trôi và phương sai với giá trị tính tay từ chuỗi sai phân, so AIC, rồi dự báo 100 ngày của log DAX có và không có độ trôi.
 \tp{Mã lệnh Python}
 \begin{codeblock}
@@ -75,7 +75,7 @@ du_bao = [f.get_forecast(100).predicted_mean for f in (dp_rw, dp_rw0)]   # co / 
 \tp{Nhận xét} \textbf{Phù hợp.} Độ trôi ước lượng trùng tính tay, và việc có hay không có độ trôi làm dự báo dài hạn khác nhau đúng như lý thuyết. Độ trôi khác $0$ ở mức $5\%$ ($z=2.66$) nhưng chỉ đáng kể khi dự báo xa.
 
 \noidung{Mô hình ARIMA mùa vụ}
-\tp{Nội dung lý thuyết cần kiểm chứng} Với mô hình airline SARIMA$(0,1,1)(0,1,1)_{12}$, chuỗi $\nabla\nabla_{12}Y_t$ là MA(13) có tự tương quan chỉ khác không ở các độ trễ $1$, $11$, $12$, $13$: $\rho(1)=\theta/(1+\theta^2)$, $\rho(12)=\Theta/(1+\Theta^2)$, $\rho(11)=\rho(13)=\rho(1)\rho(12)$ (kết quả 2.2.2(b)).
+\tp{Nội dung lý thuyết cần kiểm chứng} Với mô hình airline SARIMA$(0,1,1)(0,1,1)_{12}$, chuỗi $\nabla\nabla_{12}Y_t$ là MA(13) có tự tương quan chỉ khác không ở các độ trễ $1$, $11$, $12$, $13$: $\rho(1)=\theta/(1+\theta^2)$, $\rho(12)=\Theta/(1+\Theta^2)$, $\rho(11)=\rho(13)=\rho(1)\rho(12)$ (kết quả \ndlk{2.2.2(b)}).
 \tp{Cách triển khai} Dữ liệu thực; áp dụng cho AP (NI và DP không có chu kỳ mùa vụ cố định). Ta khớp airline cho log AP (120 tháng huấn luyện), so ACF mẫu của $\nabla\nabla_{12}$ log AP với ACF lý thuyết từ công thức đóng và từ khai triển MA(13); đồng thời so airline với 11 biến giả và hạng Fourier $K=2,3,4$ bằng AIC và RMSE trên phần kiểm định 1959--1960.
 \tp{Mã lệnh Python}
 \begin{codeblock}
@@ -99,8 +99,8 @@ dong = {1: r1, 11: r1 * r12, 12: r12, 13: r1 * r12}     # cong thuc dong
 \subsection{Xây dựng mô hình ARIMA}
 
 \noidung{Sai phân và sai phân quá mức}
-\tp{Nội dung lý thuyết cần kiểm chứng} Sai phân một chuỗi dừng tạo ra sai phân quá mức: MA(1) với $\theta=-1$, $\rho(1)=-\tfrac12$, không khả nghịch, phương sai dài hạn bằng $0$; sai phân thừa làm dự báo kém đi gấp đôi, sai phân thiếu có thể tệ hơn nhiều (kết quả 2.2.3(a)).
-\tp{Cách triển khai} Cả hai; áp dụng cho NI và DP (AP cần sai phân mùa vụ, xem 5.2(b)). Trên dữ liệu thực, ta so sai phân một và hai lần qua $\hat\rho(1)$, phương sai dài hạn (ước lượng Bartlett) và $\hat\theta$ của MA(1) khớp cho chuỗi đã sai phân. Bằng mô phỏng, ta kiểm tra $\hat\rho(1)$ của nhiễu trắng đã sai phân và hai chi phí: dự báo nhiễu trắng bằng bước ngẫu nhiên, dự báo bước ngẫu nhiên bằng trung bình mẫu ($n=100$).
+\tp{Nội dung lý thuyết cần kiểm chứng} Sai phân một chuỗi dừng tạo ra sai phân quá mức: MA(1) với $\theta=-1$, $\rho(1)=-\tfrac12$, không khả nghịch, phương sai dài hạn bằng $0$; sai phân thừa làm dự báo kém đi gấp đôi, sai phân thiếu có thể tệ hơn nhiều (kết quả \ndlk{2.2.3(a)}).
+\tp{Cách triển khai} Cả hai; áp dụng cho NI và DP (AP cần sai phân mùa vụ, xem \ndlk{5.2(b)}). Trên dữ liệu thực, ta so sai phân một và hai lần qua $\hat\rho(1)$, phương sai dài hạn (ước lượng Bartlett) và $\hat\theta$ của MA(1) khớp cho chuỗi đã sai phân. Bằng mô phỏng, ta kiểm tra $\hat\rho(1)$ của nhiễu trắng đã sai phân và hai chi phí: dự báo nhiễu trắng bằng bước ngẫu nhiên, dự báo bước ngẫu nhiên bằng trung bình mẫu ($n=100$).
 \tp{Mã lệnh Python}
 \begin{codeblock}
 for ten, y in (("NI", NI), ("DP", LD)):
@@ -114,12 +114,12 @@ e_tb.append(w[n] - w[:n].mean())                              # du bao bang trun
 \tp{Kết quả tính toán} Bảng~\ref{tab:tab_b12_03_overdifferencing} và~\ref{tab:tab_b12_03_cost_simulation}.
 \input{\tabdir/tab_b12_03_overdifferencing.tex}
 \input{\tabdir/tab_b12_03_cost_simulation.tex}
-\tp{Phân tích và diễn giải} Với Nile, sai phân một lần cho $\hat\rho(1)=-0.40$ và $\hat\theta=-0.765$, phù hợp với ARIMA$(0,1,1)$ ở mục 5.2; sai phân lần hai đưa $\hat\rho(1)$ xuống $-0.63$, $\hat\theta=-0.999$ (sát biên, sai số chuẩn $2.1$) và độ lệch chuẩn từ $168$ lên $283$: sai phân thừa rõ ràng. Với DAX, sai phân một lần cho gần nhiễu trắng ($\hat\rho(1)=-0.0004$); sai phân lần hai tạo đúng sai phân thừa của lý thuyết: $\hat\rho(1)=-0.486$ sát $-\tfrac12$, $\hat\theta=-0.9986$, độ lệch chuẩn tăng từ $0.0103$ lên $0.0146$, xấp xỉ $\sqrt2$ lần. Phương sai dài hạn ước lượng chỉ giảm ở DAX ($9.7\times10^{-5}$ xuống $2.7\times10^{-5}$, giảm $72\%$, chưa về $0$) và còn tăng ở Nile ($10252$ lên $15391$). Mô phỏng xác nhận phần còn lại: trung bình $\hat\rho(1)$ của nhiễu trắng đã sai phân là $-0.497$ (lý thuyết $-0.5$); dự báo nhiễu trắng bằng bước ngẫu nhiên có phương sai sai số $2.005$ (lý thuyết $2$, gấp đôi mức tối ưu $1$); dự báo bước ngẫu nhiên bằng trung bình mẫu có phương sai $33.7$ (lý thuyết $33.8$), gấp $33$ lần mức tối ưu.
+\tp{Phân tích và diễn giải} Với Nile, sai phân một lần cho $\hat\rho(1)=-0.40$ và $\hat\theta=-0.765$, phù hợp với ARIMA$(0,1,1)$ ở \muc{5.2}; sai phân lần hai đưa $\hat\rho(1)$ xuống $-0.63$, $\hat\theta=-0.999$ (sát biên, sai số chuẩn $2.1$) và độ lệch chuẩn từ $168$ lên $283$: sai phân thừa rõ ràng. Với DAX, sai phân một lần cho gần nhiễu trắng ($\hat\rho(1)=-0.0004$); sai phân lần hai tạo đúng sai phân thừa của lý thuyết: $\hat\rho(1)=-0.486$ sát $-\tfrac12$, $\hat\theta=-0.9986$, độ lệch chuẩn tăng từ $0.0103$ lên $0.0146$, xấp xỉ $\sqrt2$ lần. Phương sai dài hạn ước lượng chỉ giảm ở DAX ($9.7\times10^{-5}$ xuống $2.7\times10^{-5}$, giảm $72\%$, chưa về $0$) và còn tăng ở Nile ($10252$ lên $15391$). Mô phỏng xác nhận phần còn lại: trung bình $\hat\rho(1)$ của nhiễu trắng đã sai phân là $-0.497$ (lý thuyết $-0.5$); dự báo nhiễu trắng bằng bước ngẫu nhiên có phương sai sai số $2.005$ (lý thuyết $2$, gấp đôi mức tối ưu $1$); dự báo bước ngẫu nhiên bằng trung bình mẫu có phương sai $33.7$ (lý thuyết $33.8$), gấp $33$ lần mức tối ưu.
 
 \tp{Nhận xét} \textbf{Phù hợp một phần.} Dấu hiệu chính của sai phân thừa ($\hat\rho(1)\to-0.5$, $\hat\theta\to-1$) và hai chi phí được xác nhận chính xác. Phần chưa khớp là phương sai dài hạn: lý thuyết cho $0$, nhưng ước lượng Bartlett với số độ trễ nhỏ ($K=3$ ở Nile, $K=7$ ở DAX) chỉ giảm một phần ở DAX và còn tăng ở Nile. Nguyên nhân nhiều khả năng là ước lượng cắt cụt không bắt được tự tương quan ở độ trễ xa; cần thử $K$ lớn hơn để khẳng định.
 
 \noidung{Kiểm định nghiệm đơn vị}
-\tp{Nội dung lý thuyết cần kiểm chứng} Thống kê Dickey--Fuller có phân phối giới hạn không chuẩn, lệch trái, với giá trị tới hạn 5\% là $-2.86$ khi có hệ số chặn; ADF (giả thuyết không là nghiệm đơn vị) và KPSS (giả thuyết không là dừng) nên đọc cùng nhau; công suất của ADF thấp khi $\phi$ gần $1$ hoặc $n$ nhỏ (kết quả 2.2.3(b)).
+\tp{Nội dung lý thuyết cần kiểm chứng} Thống kê Dickey--Fuller có phân phối giới hạn không chuẩn, lệch trái, với giá trị tới hạn 5\% là $-2.86$ khi có hệ số chặn; ADF (giả thuyết không là nghiệm đơn vị) và KPSS (giả thuyết không là dừng) nên đọc cùng nhau; công suất của ADF thấp khi $\phi$ gần $1$ hoặc $n$ nhỏ (kết quả \ndlk{2.2.3(b)}).
 \tp{Cách triển khai} Cả hai; áp dụng cho NI, AP, DP. Trên dữ liệu thực, ta chạy ADF (độ trễ chọn theo AIC) và KPSS cho chuỗi gốc (có hệ số chặn, và có cả xu thế) và cho sai phân bậc một. Bằng mô phỏng, ta lấy phân phối của $\tau$ dưới $H_0$ ($B=2000$ bước ngẫu nhiên, $n=200$) so với $-2.86$ và $-1.645$, rồi đo công suất của ADF ($B=1000$) với AR(1) có $\phi=0.95,\,0.9,\,0.8$ ở $n=100$ và $200$, và với nhiễu iid cộng dịch mức.
 \tp{Mã lệnh Python}
 \begin{codeblock}
@@ -140,7 +140,7 @@ ty_le_dung, ty_le_sai = np.mean(tau < -2.86), np.mean(tau < -1.645)       # 0.05
 \tp{Phân tích và diễn giải}
 \bodl{(i) Nile.} ADF bác bỏ nghiệm đơn vị ($-4.05$, $p=0.001$) \emph{và} KPSS cũng bác bỏ tính dừng ($0.869>0.463$): khuôn mẫu ``cùng bác bỏ'' mà lý thuyết gắn với điểm gãy, ở đây là lần đổi mức quanh 1899. Sau sai phân, ADF bác bỏ ($-4.68$) và KPSS không ($0.117$): chuỗi sai phân dừng.
 
-\bodl{(ii) AirPassengers.} ADF không bác bỏ ($p=0.32$; có xu thế $p=0.80$) và KPSS bác bỏ ($1.744>0.463$): nghiêng về $I(1)$; nhưng KPSS có xu thế không bác bỏ ($0.061<0.146$) nên mức dừng quanh xu thế chưa loại trừ được. Sau sai phân bậc một, ADF vẫn không bác bỏ ($p=0.158$), nhiều khả năng do mùa vụ chưa được loại bỏ (ACF ở độ trễ 12 vẫn lớn, mục 5.1(a)).
+\bodl{(ii) AirPassengers.} ADF không bác bỏ ($p=0.32$; có xu thế $p=0.80$) và KPSS bác bỏ ($1.744>0.463$): nghiêng về $I(1)$; nhưng KPSS có xu thế không bác bỏ ($0.061<0.146$) nên mức dừng quanh xu thế chưa loại trừ được. Sau sai phân bậc một, ADF vẫn không bác bỏ ($p=0.158$), nhiều khả năng do mùa vụ chưa được loại bỏ (ACF ở độ trễ 12 vẫn lớn, \mucnd{5.1(a)}).
 
 \bodl{(iii) DAX (log giá).} ADF không bác bỏ ($p=0.996$) và KPSS bác bỏ rõ ($5.75$): thống nhất ủng hộ nghiệm đơn vị. Sau sai phân, ADF bác bỏ mạnh ($-43.1$) và KPSS không ($0.437<0.463$): sai phân bậc một là đủ.
 
