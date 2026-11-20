@@ -29,9 +29,8 @@ def main() -> None:
         else:
             print(f"đã có {path.name} (dùng --force để tải lại)")
         lines.append(f"{hashlib.sha256(path.read_bytes()).hexdigest()}  {path.name}")
-    (DATA_RAW / "checksums.txt").write_text(
-        f"# SHA-256, ghi ngày {date.today().isoformat()}\n" + "\n".join(lines) + "\n", encoding="utf-8"
-    )
+    with open(DATA_RAW / "checksums.txt", "w", encoding="utf-8", newline="\n") as fh:  # newline cố định để git không báo thay đổi giả
+        fh.write(f"# SHA-256, ghi ngày {date.today().isoformat()}\n" + "\n".join(lines) + "\n")
 
 
 if __name__ == "__main__":

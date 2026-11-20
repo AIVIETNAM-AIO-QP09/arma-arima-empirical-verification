@@ -10,7 +10,6 @@ FIG_DIR = ROOT / "reports" / "figures"
 TABLE_DIR = ROOT / "reports" / "tables"
 LECTURE_DIR = ROOT / "docs" / "lectures"
 
-LB_LAGS = 10          # H mặc định của Ljung–Box trong bài giảng (HU, DR); đổi theo từng bộ khi cần
 AP_TRAIN_N = 120      # AirPassengers: 1949-01..1958-12
 AP_TEST_N = 24        # 1959-01..1960-12
 DP_TRAIN_N = 1500     # DAX: 1500 ngày giao dịch đầu

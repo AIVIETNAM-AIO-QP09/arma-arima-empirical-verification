@@ -37,9 +37,17 @@ def save_figure(fig, name: str) -> str:
 
 def show_figure(path: str):
     """Hiển thị hình đã lưu trong notebook (backend Agg không tự vẽ inline)."""
-    from IPython.display import Image, display
+    import io
 
-    display(Image(filename=path, width=760))
+    from IPython.display import Image, display
+    from PIL import Image as PILImage
+
+    # nhúng bản thu nhỏ (rộng ≤ 1600 px) để notebook nhẹ; file PNG 300 dpi gốc vẫn nằm ở reports/figures
+    img = PILImage.open(path)
+    img.thumbnail((1600, 1600))
+    buf = io.BytesIO()
+    img.save(buf, format="PNG", optimize=True)
+    display(Image(data=buf.getvalue(), width=760))
 
 
 def panel_label(ax, text: str) -> None:
