@@ -1,0 +1,14 @@
+\begin{table}[H]
+\centering\small
+\caption{NI: phương sai của mô hình mức cục bộ, từ ARIMA(0,1,1) và từ `UnobservedComponents`}\label{tab:tab_b12_07_local_level}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{|>{\raggedright\arraybackslash}p{\dimexpr 0.720\linewidth-2\tabcolsep\relax}|r|r|r|}
+\toprule
+Nguồn ước lượng & $\sigma^{2}$\_$\varepsilon$ (nhiễu quan sát) & $\sigma^{2}$\_$\eta$ (nhiễu mức) & q = $\sigma^{2}$\_$\eta$/$\sigma^{2}$\_$\varepsilon$ \\
+\midrule
+từ ($\hat{\theta}$, $\hat{\sigma}^{2}$) của ARIMA(0,1,1) & 15108 & 1463.5 & 0.0969 \\
+UnobservedComponents('llevel') & 15078 & 1478.8 & 0.0981 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

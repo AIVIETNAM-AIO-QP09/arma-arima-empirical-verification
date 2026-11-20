@@ -1,0 +1,16 @@
+\begin{table}[H]
+\centering\small
+\caption{DP: độ chính xác dự báo đa bước từ gốc cố định $t=1500$ (thang giá)}\label{tab:tab_b12_11_dp_multistep}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{|l|r|r|r|r|}
+\toprule
+Phương pháp & RMSE & MAE & MAPE (\%) & MASE \\
+\midrule
+naive & 1332.5 & 1085.0 & 22.01 & 80.83 \\
+trôi & 1093.8 & 872.3 & 17.58 & 64.99 \\
+trung bình & 2546.4 & 2422.0 & 52.65 & 180.5 \\
+ARIMA(1,1,0) (trung vị) & 1332.5 & 1085.0 & 22.01 & 80.83 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

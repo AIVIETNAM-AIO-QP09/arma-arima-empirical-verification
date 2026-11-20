@@ -1,0 +1,30 @@
+\begin{table}[H]
+\centering\scriptsize
+\caption{Kiểm định nghiệm đơn vị ADF (H$_0$: có nghiệm đơn vị) và KPSS (H$_0$: dừng)}\label{tab:tab_b12_04_unit_root_tests}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{|l|l|l|l|r|l|r|c|r|}
+\toprule
+bộ & Chuỗi & Kiểm định & Hồi quy & Thống kê & p-value & Tới hạn 5\% & Bác bỏ H$_{0}$ (5\%) & độ trễ \\
+\midrule
+NI & y & ADF & hằng số & -4.049 & 0.0012 & -2.892 & Có & 1 \\
+NI & y & ADF & hằng số + xu thế & -4.791 & 0.0005 & -3.456 & Có & 1 \\
+NI & y & KPSS & hằng số & 0.8691 & $\le$ 0.01 & 0.463 & Có & 5 \\
+NI & y & KPSS & hằng số + xu thế & 0.2376 & $\le$ 0.01 & 0.146 & Có & 4 \\
+NI & $\nabla$y & ADF & hằng số & -4.68 & $<10^{-4}$ & -2.895 & Có & 9 \\
+NI & $\nabla$y & KPSS & hằng số & 0.1171 & $\ge$ 0.10 & 0.463 & Không & 23 \\
+AP & y & ADF & hằng số & -1.925 & 0.3206 & -2.889 & Không & 13 \\
+AP & y & ADF & hằng số + xu thế & -1.575 & 0.8022 & -3.453 & Không & 13 \\
+AP & y & KPSS & hằng số & 1.744 & $\le$ 0.01 & 0.463 & Có & 6 \\
+AP & y & KPSS & hằng số + xu thế & 0.0606 & $\ge$ 0.10 & 0.146 & Không & 4 \\
+AP & $\nabla$y & ADF & hằng số & -2.343 & 0.1584 & -2.889 & Không & 12 \\
+AP & $\nabla$y & KPSS & hằng số & 0.0296 & $\ge$ 0.10 & 0.463 & Không & 1 \\
+DP & y & ADF & hằng số & 1.184 & 0.9959 & -2.863 & Không & 0 \\
+DP & y & ADF & hằng số + xu thế & -1.361 & 0.8719 & -3.413 & Không & 0 \\
+DP & y & KPSS & hằng số & 5.754 & $\le$ 0.01 & 0.463 & Có & 27 \\
+DP & y & KPSS & hằng số + xu thế & 1.139 & $\le$ 0.01 & 0.146 & Có & 27 \\
+DP & $\nabla$y & ADF & hằng số & -43.06 & $<10^{-4}$ & -2.863 & Có & 0 \\
+DP & $\nabla$y & KPSS & hằng số & 0.4372 & 0.061 & 0.463 & Không & 9 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}\par\vspace{2pt}{\footnotesize\textit{Ghi chú:} p-value của KPSS được nội suy từ bảng nên bị chặn trong $[0.01,0.10]$; "$\le0.01$" và "$\ge0.10$" nghĩa là ngoài khoảng bảng. Cột độ trễ: số hạng $\nabla Y_{t-i}$ của ADF (chọn theo AIC) hoặc độ trễ Newey--West của KPSS (`nlags='auto'`).}
+\end{table}
