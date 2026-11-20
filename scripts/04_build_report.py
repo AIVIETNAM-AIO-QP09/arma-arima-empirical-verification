@@ -1,6 +1,8 @@
-"""Biên dịch reports/report/main.tex ra PDF (reports/report/build/main.pdf) bằng pdfLaTeX hai lượt (mục lục, tham chiếu chéo).
+"""Biên dịch report/main.tex ra PDF bằng pdfLaTeX hai lượt (mục lục, tham chiếu chéo).
 
-Cần MiKTeX hoặc TeX Live (pdflatex trên PATH). Trong VS Code dùng extension LaTeX Workshop (cấu hình ở .vscode/settings.json), script này dành cho dòng lệnh.
+Kết quả: report/build/main.pdf, đồng thời sao chép thành report/BaoCao_AS3179_Nhom7.pdf (bản PDF để nộp và xem nhanh).
+Cần MiKTeX hoặc TeX Live (pdflatex trên PATH). Trong VS Code dùng extension LaTeX Workshop (cấu hình ở .vscode/settings.json);
+script này dành cho dòng lệnh.
 """
 import shutil
 import subprocess
@@ -8,7 +10,8 @@ import sys
 
 from as3179ts.config import ROOT
 
-REPORT_DIR = ROOT / "reports" / "report"
+REPORT_DIR = ROOT / "report"
+PDF_NAME = "BaoCao_AS3179_Nhom7.pdf"
 
 
 def main() -> None:
@@ -18,7 +21,8 @@ def main() -> None:
     cmd = ["pdflatex", "-interaction=nonstopmode", "-file-line-error", "-output-directory=build", "main.tex"]
     for _ in range(2):
         subprocess.run(cmd, cwd=REPORT_DIR, check=True)
-    print("PDF:", REPORT_DIR / "build" / "main.pdf")
+    shutil.copy2(REPORT_DIR / "build" / "main.pdf", REPORT_DIR / PDF_NAME)
+    print("PDF:", REPORT_DIR / PDF_NAME)
 
 
 if __name__ == "__main__":

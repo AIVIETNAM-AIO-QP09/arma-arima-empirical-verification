@@ -10,8 +10,9 @@ import zipfile
 from as3179ts.config import FIG_DIR, ROOT, TABLE_DIR
 
 OUT = ROOT / "submission"
-REPORT = ROOT / "reports" / "report"
+REPORT = ROOT / "report"
 PDF = REPORT / "build" / "main.pdf"
+TEX_DIRS = ("front", "chapters", "back")
 
 
 def copy_tree(src, dst, suffixes=None):
@@ -22,16 +23,19 @@ def copy_tree(src, dst, suffixes=None):
 
 
 def main() -> None:
+    sys.stdout.reconfigure(encoding="utf-8")
     if not PDF.exists():
         sys.exit(f"Chưa có {PDF}; chạy scripts/04_build_report.py (hoặc biên dịch trên Overleaf rồi đặt PDF vào đó) trước.")
     if OUT.exists():
         shutil.rmtree(OUT)
     OUT.mkdir()
-    # 1. .tex: main.tex + chapters/ (đường dẫn hình/bảng đổi về cùng thư mục) + assets/ (logo, nền bìa)
-    for f in list(REPORT.glob("main.tex")) + list((REPORT / "chapters").glob("*.tex")):
+    # 1. .tex: main.tex + front/ chapters/ back/ (đường dẫn hình/bảng đổi về cùng thư mục) + assets/ (logo, nền bìa)
+    files = [REPORT / "main.tex"] + [f for d in TEX_DIRS for f in sorted((REPORT / d).glob("*.tex"))]
+    for f in files:
         dst = OUT / f.relative_to(REPORT)
         dst.parent.mkdir(parents=True, exist_ok=True)
-        dst.write_text(f.read_text(encoding="utf-8").replace("{../figures}", "{figures}").replace("{../tables}", "{tables}"), encoding="utf-8")
+        text = f.read_text(encoding="utf-8").replace("{../outputs/figures}", "{figures}").replace("{../outputs/tables}", "{tables}")
+        dst.write_text(text, encoding="utf-8")
     copy_tree(REPORT / "assets", OUT / "assets")
     (OUT / "tables").mkdir()
     for f in TABLE_DIR.glob("tab_*.tex"):
