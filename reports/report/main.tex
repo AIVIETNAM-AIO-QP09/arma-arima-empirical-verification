@@ -9,7 +9,7 @@
 \usepackage{xcolor,fancyhdr,indentfirst,array,graphicx,setspace,titlesec,tikz,float,booktabs,longtable,tabularx,adjustbox,caption,enumitem,needspace,placeins,xurl}
 \usepackage[framemethod=default]{mdframed}
 \usepackage{etoolbox}
-\usepackage{fvextra}  % khối mã Python (thuần LaTeX, không cần shell-escape)
+\usepackage{listings}  % khối mã Python có tô màu cú pháp (thuần LaTeX, không cần shell-escape)
 \usepackage[hidelinks]{hyperref}
 
 % --- đường dẫn hình/bảng (script 06 đổi ../figures, ../tables thành figures, tables cho Overleaf) ---
@@ -56,7 +56,24 @@
 \setstretch{1.08}
 \setlength{\parindent}{1cm}
 \renewcommand*{\contentsname}{\LARGE\textbf{Mục lục}}
-\DefineVerbatimEnvironment{codeblock}{Verbatim}{fontsize=\footnotesize,frame=single,framesep=2mm,breaklines=true,breakanywhere=true}
+% màu cú pháp cho khối mã (đủ tương phản khi in đen trắng)
+\definecolor{mkw}{HTML}{1F4E9C}   % từ khóa
+\definecolor{mbi}{HTML}{0B7A75}   % hàm dựng sẵn
+\definecolor{mst}{HTML}{B4461B}   % chuỗi
+\definecolor{mcm}{HTML}{5C7A3A}   % chú thích
+\definecolor{mbg}{HTML}{F6F7F9}   % nền
+\definecolor{mfr}{HTML}{C9CED6}   % viền
+\lstdefinestyle{py}{language=Python,basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{mkw}\bfseries,
+  keywordstyle=[2]\color{mbi},
+  stringstyle=\color{mst},commentstyle=\color{mcm}\itshape,
+  morekeywords=[2]{len,range,abs,int,float,sum,min,max,print,enumerate,zip,dict,list,bool,str,sorted},
+  showstringspaces=false,columns=fullflexible,keepspaces=true,
+  backgroundcolor=\color{mbg},frame=single,rulecolor=\color{mfr},framesep=3mm,
+  xleftmargin=3mm,xrightmargin=1mm,aboveskip=6pt,belowskip=4pt,
+  breaklines=true,breakatwhitespace=false,postbreak=\mbox{\textcolor{mcm}{$\hookrightarrow$}\space},
+  upquote=true}
+\lstnewenvironment{codeblock}{\lstset{style=py}}{}
 
 \begin{document}
 
