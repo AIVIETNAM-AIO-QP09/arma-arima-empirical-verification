@@ -130,6 +130,19 @@ def to_markdown(df: pd.DataFrame, caption: str | None = None, fmt: dict | None =
     return head + "\n".join(rows) + "\n" + tail
 
 
+def _to_latex_tall(d: pd.DataFrame, cells: list, n_idx: int, name: str, caption: str, note: str | None) -> str:
+    """Bảng rộng mà ít dòng (nhiều đại lượng, vài bộ dữ liệu) được xoay: mỗi hàng một đại lượng, mỗi cột một bộ/mô hình."""
+    labels = [", ".join(str(x) for x in row[:n_idx]) for row in cells]
+    names = list(d.columns[n_idx:])
+    header = " & ".join(tex(c) for c in ["Đại lượng"] + labels) + r" \\"
+    body = "\n".join(" & ".join(tex(x) for x in [names[k]] + [row[n_idx + k] for row in cells]) + r" \\" for k in range(len(names)))
+    spec = "l" + "r" * len(cells)
+    notes = rf"\par\vspace{{2pt}}{{\footnotesize\textit{{Ghi chú:}} {tex(note)}}}" if note else ""
+    return (f"\\begin{{table}}[H]\n\\centering\\small\n\\caption{{{tex(caption)}}}\\label{{tab:{name}}}\n"
+            f"\\begin{{adjustbox}}{{max width=\\linewidth}}\n\\begin{{tabular}}{{{spec}}}\n\\toprule\n{header}\n\\midrule\n{body}\n\\bottomrule\n"
+            f"\\end{{tabular}}\n\\end{{adjustbox}}{notes}\n\\end{{table}}\n")
+
+
 def to_latex(df: pd.DataFrame, name: str, caption: str, fmt: dict | None = None, index_label: str | None = None,
              note: str | None = None) -> str:
     """Bảng booktabs, tự co về vừa bề rộng trang; cột chữ dài dùng p{}; có caption, nhãn `tab:<name>` và ghi chú."""
@@ -137,6 +150,9 @@ def to_latex(df: pd.DataFrame, name: str, caption: str, fmt: dict | None = None,
     fmt = fmt or {}
     cells = [[fmt_value(v, c, fmt.get(c), latex=True) for v, c in zip(r, d.columns)] for r in d.itertuples(index=False)]
     ncol = len(d.columns)
+    n_idx = df.index.nlevels if (isinstance(df.index, pd.MultiIndex) or not isinstance(df.index, pd.RangeIndex)) else 0
+    if ncol >= 9 and len(cells) <= 4 and n_idx >= 1:
+        return _to_latex_tall(d, cells, n_idx, name, caption, note)
     plain = lambda s: re.sub(r"\$.*?\$", "x", str(s))  # noqa: E731  (độ dài hiển thị, bỏ phần toán)
     maxlen = [max(len(plain(c)), *(len(plain(row[j])) for row in cells)) for j, c in enumerate(d.columns)]
     numeric = [pd.api.types.is_numeric_dtype(d.iloc[:, j]) and not pd.api.types.is_bool_dtype(d.iloc[:, j]) for j in range(ncol)]

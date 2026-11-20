@@ -1,14 +1,25 @@
 \begin{table}[H]
-\centering\scriptsize
+\centering\small
 \caption{ARMA(1,1) khớp bằng ML: nghiệm AR/MA, công thức đóng và cài đặt tổng quát}\label{tab:tab_b11_10_arma11}
 \begin{adjustbox}{max width=\linewidth}
-\begin{tabular}{lrrrccrrrrrrrrr}
+\begin{tabular}{lrrr}
 \toprule
-Bộ dữ liệu & $\hat{\phi}$ & $\hat{\theta}$ & $\hat{\sigma}^{2}$ & Nhân quả & Khả nghịch & Min\textbar{}z\textbar{} AR & Min\textbar{}z\textbar{} MA & Khoảng cách nghiệm AR–MA & Max\textbar{}$\psi$ tổng quát – công thức đóng\textbar{} & $\gamma$(0) công thức đóng & $\gamma$(0) = $\sigma^{2}\Sigma\psi^{2}$ & $\rho$(1) công thức đóng & $\rho$(1) = $\gamma$(1)/$\gamma$(0) & AIC \\
+Đại lượng & HU & LY & DR \\
 \midrule
-HU & 0.6526 & 0.3566 & 0.4566 & Có & Có & 1.532 & 2.804 & 4.336 & $5.551\times10^{-17}$ & 1.267 & 1.267 & 0.7812 & 0.7812 & 212.4 \\
-LY & 0.6695 & 0.7153 & 0.0687 & Có & Có & 1.494 & 1.398 & 2.892 & $5.551\times10^{-17}$ & 0.3074 & 0.3074 & 0.8293 & 0.8293 & 28.29 \\
-DR & 0.7373 & -0.7534 & 1.06 & Có & Có & 1.356 & 1.327 & 0.029 & $1.735\times10^{-18}$ & 1.06 & 1.06 & -0.0157 & -0.0157 & 5391.8 \\
+$\hat{\phi}$ & 0.6526 & 0.6695 & 0.7373 \\
+$\hat{\theta}$ & 0.3566 & 0.7153 & -0.7534 \\
+$\hat{\sigma}^{2}$ & 0.4566 & 0.0687 & 1.06 \\
+Nhân quả & Có & Có & Có \\
+Khả nghịch & Có & Có & Có \\
+Min\textbar{}z\textbar{} AR & 1.532 & 1.494 & 1.356 \\
+Min\textbar{}z\textbar{} MA & 2.804 & 1.398 & 1.327 \\
+Khoảng cách nghiệm AR–MA & 4.336 & 2.892 & 0.029 \\
+Max\textbar{}$\psi$ tổng quát – công thức đóng\textbar{} & $5.551\times10^{-17}$ & $5.551\times10^{-17}$ & $1.735\times10^{-18}$ \\
+$\gamma$(0) công thức đóng & 1.267 & 0.3074 & 1.06 \\
+$\gamma$(0) = $\sigma^{2}\Sigma\psi^{2}$ & 1.267 & 0.3074 & 1.06 \\
+$\rho$(1) công thức đóng & 0.7812 & 0.8293 & -0.0157 \\
+$\rho$(1) = $\gamma$(1)/$\gamma$(0) & 0.7812 & 0.8293 & -0.0157 \\
+AIC & 212.4 & 28.29 & 5391.8 \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}

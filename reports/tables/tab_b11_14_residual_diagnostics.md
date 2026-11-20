@@ -1,4 +1,4 @@
-**Chẩn đoán phần dư của các mô hình được chọn (checklist Bài 11)**
+**Chẩn đoán phần dư của các mô hình được chọn**
 
 | bộ | mô hình | k | AIC | BIC | σ̂² | Min\|z\| AR | Nhân quả | H | df | Q_LB phần dư | p | \|tay − thư viện\| | Q_LB phần dư² | p (phần dư²) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|

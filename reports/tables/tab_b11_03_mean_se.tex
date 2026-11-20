@@ -1,14 +1,19 @@
 \begin{table}[H]
-\centering\scriptsize
+\centering\small
 \caption{Sai số chuẩn của trung bình mẫu: giả định iid và có xét phụ thuộc (Định lý 1)}\label{tab:tab_b11_03_mean_se}
 \begin{adjustbox}{max width=\linewidth}
-\begin{tabular}{lrrrrrrrr}
+\begin{tabular}{lrrr}
 \toprule
-Bộ dữ liệu & n & K & SE iid & $\hat{\tau}$ (Bartlett) & SE hiệu chỉnh & $\hat{\tau}$ (AR(1)) & SE theo Định lý 1(a), h $\le$ n/4 & $n_{\mathrm{eff}}$ = n/$\hat{\tau}$ (Bartlett) \\
+Đại lượng & HU & LY & DR \\
 \midrule
-HU & 98 & 3 & 0.1332 & 3.087 & 0.2328 & 10.9 & 0.4064 & 31.75 \\
-LY & 114 & 4 & 0.0523 & 2.361 & 0.08 & 8.308 & – & 48.28 \\
-DR & 1859 & 7 & 0.0239 & 0.9163 & 0.0229 & 0.9991 & 0.0247 & 2028.8 \\
+n & 98 & 114 & 1859 \\
+K & 3 & 4 & 7 \\
+SE iid & 0.1332 & 0.0523 & 0.0239 \\
+$\hat{\tau}$ (Bartlett) & 3.087 & 2.361 & 0.9163 \\
+SE hiệu chỉnh & 0.2328 & 0.08 & 0.0229 \\
+$\hat{\tau}$ (AR(1)) & 10.9 & 8.308 & 0.9991 \\
+SE theo Định lý 1(a), h $\le$ n/4 & 0.4064 & – & 0.0247 \\
+$n_{\mathrm{eff}}$ = n/$\hat{\tau}$ (Bartlett) & 31.75 & 48.28 & 2028.8 \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}\par\vspace{2pt}{\footnotesize\textit{Ghi chú:} $\hat\tau$ Bartlett cắt cụt ở $K=\lfloor4(n/100)^{2/9}\rfloor$; công thức Định lý 1(a) thay $\hat\gamma$ chỉ dùng độ trễ $h\le n/4$; dấu – nghĩa là công thức plug-in cho phương sai âm (ACF dao động, LY), không dùng được.}

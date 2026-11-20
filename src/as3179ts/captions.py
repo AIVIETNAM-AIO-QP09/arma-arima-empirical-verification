@@ -47,7 +47,7 @@ ARTIFACTS = {
                                "$k$ gồm các hệ số ARMA, hằng số, hệ số dốc và $\\sigma^2$; $Q_{LB}(10)$ với $10-p-q$ bậc tự do."),
     "tab_b11_13_dr_grid": _t("DR: AIC và BIC của ARMA($p,q$), $p,q\\le2$", "(p, q)"),
     "tab_b11_13_ly_rolling": _t("LY: sai số dự báo 1 bước trên gốc cuốn chiếu, 1915--1934 (khớp lại mỗi năm)", "Mô hình"),
-    "tab_b11_14_residual_diagnostics": _t("Chẩn đoán phần dư của các mô hình được chọn (checklist Bài 11)", None,
+    "tab_b11_14_residual_diagnostics": _t("Chẩn đoán phần dư của các mô hình được chọn", None,
                                           "$Q_{LB}$ của phần dư dùng $H-p-q$ bậc tự do; của phần dư bình phương dùng $H$ bậc tự do."),
     # ---------------- Bài 12 ----------------
     "tab_b12_01_levels_vs_differences": _t("Chuỗi gốc, khử xu thế tuyến tính và sai phân bậc một: độ lệch chuẩn và $\\hat\\rho(h)$", DS),
@@ -77,7 +77,7 @@ ARTIFACTS = {
     "tab_b12_10_sd": _t("AP (log, huấn luyện): độ lệch chuẩn sau các phép sai phân", "Chuỗi"),
     "tab_b12_10_airline_acf": _t("AP: ACF của $\\nabla\\nabla_{12}$ log tại các độ trễ đặc trưng so với giá trị lý thuyết của mô hình airline", "Độ trễ h"),
     "tab_b12_10_seasonality_models": _t("AP: ba cách mô hình hóa mùa vụ, AIC và RMSE trên tập kiểm định 1959--1960", "Mô hình",
-                                        "AIC không so sánh trực tiếp được với bài giảng (cách sai phân khác nhau)."),
+                                        "AIC chỉ so sánh trực tiếp được giữa các mô hình cùng cách sai phân."),
     "tab_b12_11_ap_benchmarks": _t("AP: độ chính xác trên tập kiểm định 24 tháng (thang gốc)", "Phương pháp", "MASE chia cho MAE của naive mùa vụ ($s=12$) trong mẫu huấn luyện."),
     "tab_b12_11_ni_benchmarks": _t("NI: độ chính xác dự báo 20 năm cuối (huấn luyện 1871--1950, gốc cố định)", "Phương pháp"),
     "tab_b12_11_dp_one_step": _t("DP: độ chính xác dự báo 1 bước trên 360 ngày kiểm định (log, đơn vị \\%)", "Phương pháp"),

@@ -8,4 +8,4 @@
 | Fourier K = 3 | 8 | 120 | -330 | 77.93 |
 | Fourier K = 4 | 10 | 120 | -384.6 | 82 |
 
-*Ghi chú:* AIC không so sánh trực tiếp được với bài giảng (cách sai phân khác nhau).
+*Ghi chú:* AIC chỉ so sánh trực tiếp được giữa các mô hình cùng cách sai phân.
