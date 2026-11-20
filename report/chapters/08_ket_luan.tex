@@ -1,0 +1,20 @@
+% CHƯƠNG 8. KẾT LUẬN: trả lời lần lượt các câu hỏi kiểm chứng ở mục 1.2; không lặp lại Chương 7.
+\clearpage
+\section[Kết luận]{KẾT LUẬN}
+
+Báo cáo đã kiểm chứng bằng Python $28$ kết quả lý thuyết về chuỗi dừng, mô hình ARMA, chuỗi không dừng, mô hình ARIMA và dự báo trên sáu bộ dữ liệu thực, kết hợp mô phỏng ở những chỗ cần thiết. Các công thức tự cài đặt trùng với thư viện \texttt{statsmodels} ở độ chính xác máy, và kết quả được xếp loại theo thang ba mức như trong Bảng~\ref{tab:xeploai}. Phần dưới đây trả lời lần lượt ba câu hỏi đặt ra ở \muc{1.2}.
+
+\paragraph{CH1: Các kết quả lý thuyết về cấu trúc phụ thuộc và mô hình ARMA có được thỏa mãn trên dữ liệu thực hay không?}
+Có, về cơ bản. Trong $14$ nội dung của \chg{4}, $12$ nội dung phù hợp và $2$ phù hợp một phần, không có nội dung nào không phù hợp. Các tính chất của hàm tự hiệp phương sai, công thức của AR, MA, ARMA, phân phối của thống kê Ljung--Box, và chẩn đoán phần dư đều khớp trên HU, LY và DR. Hai chỗ phù hợp một phần là mô hình AR(1), vì ACF mẫu của HU giảm nhanh hơn mô hình dự đoán, và ước lượng tham số, vì ở cỡ mẫu $114$ Yule--Walker chệch rõ so với giá trị tiệm cận. Cả hai đều do hạn chế của dữ liệu hoặc cỡ mẫu chứ không phải do lý thuyết sai.
+
+\paragraph{CH2: Các kết quả lý thuyết về chuỗi không dừng, mô hình ARIMA và dự báo có được thỏa mãn trên dữ liệu thực hay không?}
+Có, với một vài điều kiện. Trong $14$ nội dung của \chg{5} và \chn{6}, $12$ nội dung phù hợp và $2$ phù hợp một phần. DP minh họa rất rõ xu thế ngẫu nhiên, hồi quy giả mạo và việc cần sai phân; mô hình airline mô tả đúng cấu trúc bốn độ trễ của ACF và dự báo vượt xa mọi mốc chuẩn trên AP; công thức phương sai sai số dự báo, trọng số $\Psi_k$ và quan hệ với làm trơn mũ đều khớp. Hai chỗ phù hợp một phần là việc phân loại xu thế, vì ACF chưa đủ để phân biệt khi chuỗi có đổi mức hay mùa vụ, và sai phân thừa, vì ước lượng phương sai dài hạn không về $0$ như lý thuyết. Về dự báo, khoảng $95\%$ phủ thấp hơn $95\%$ một chút, từ $93.4\%$ đến $94.7\%$, vì tham số phải ước lượng.
+
+\paragraph{CH3: Mức độ phù hợp phụ thuộc thế nào vào đặc điểm của từng bộ dữ liệu, và giả thiết nào bị vi phạm?}
+Mức độ phù hợp của lý thuyết hầu như không phụ thuộc vào bộ dữ liệu ($55$ trong $61$ cặp phù hợp), nhưng việc mô hình \emph{hữu ích} thì phụ thuộc rất nhiều. Bốn đặc điểm tác động rõ nhất là xu thế, làm sai số chuẩn giả định iid quá lạc quan; đổi mức ở NI quanh năm 1899, khiến ADF và KPSS cùng bác bỏ và trung bình mở rộng thắng ARIMA ở chân trời từ $2$ năm; mùa vụ ở AP, buộc phải dùng sai phân mùa vụ; và cụm biến động ở DR và DP, nơi phần dư bình phương còn tự tương quan nên khoảng dự báo kém tin cậy. Giả thiết bị vi phạm nhiều nhất là tính dừng và nhiễu iid; giả thiết nhân quả và khả nghịch được thỏa mãn ở mọi mô hình, dù hai mô hình sát biên.
+
+\paragraph{Kết luận chung.}
+Lý thuyết của chuỗi thời gian cổ điển đứng vững khi kiểm chứng: không nội dung nào bị bác bỏ. Điều thay đổi giữa các bộ dữ liệu là mức độ mà các giả thiết được thỏa mãn và, kéo theo đó, mô hình đơn giản hay phức tạp mới là mô hình đáng dùng. Với chuỗi có cấu trúc rõ như AP và LY, mô hình ARMA và ARIMA mùa vụ đem lại giá trị rõ; với chuỗi gần bước ngẫu nhiên như DP, mô hình đơn giản cũng tốt bằng mô hình phức tạp.
+
+\paragraph{Hướng phát triển.}
+Từ những hạn chế ở \muc{7.5}, có thể mở rộng theo bốn hướng. Thứ nhất là dùng mô hình cho phương sai thay đổi như GARCH để xử lý cụm biến động của DR và DP. Thứ hai là xử lý đổi mức của NI bằng mô hình có biến can thiệp hoặc kiểm định điểm gãy. Thứ ba là kiểm định nghiệm đơn vị mùa vụ cho AP. Thứ tư là kiểm tra tính chuẩn của sai số và dùng khoảng dự báo bootstrap, đồng thời thử trên nhiều bộ dữ liệu và cỡ mẫu lớn hơn.
