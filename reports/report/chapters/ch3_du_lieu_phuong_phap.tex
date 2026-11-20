@@ -2,30 +2,28 @@
 \clearpage
 \section[Dữ liệu và phương pháp]{DỮ LIỆU VÀ PHƯƠNG PHÁP}
 
-Chương này giới thiệu dữ liệu và cách nhóm kiểm chứng lý thuyết ở Chương 2. Trước hết là sáu bộ dữ liệu, gồm nguồn gốc và lý do chọn (mục 3.1). Tiếp đến là cách xử lý và khám phá dữ liệu trước khi đưa vào mô hình (mục 3.2). Sau đó là các phương pháp kiểm chứng được dùng chung cho mọi nội dung (mục 3.3), và cuối cùng là thang xếp loại kết quả (mục 3.4). Các chương 4, 5 và 6 chỉ nhắc lại những điểm riêng của từng nội dung, thay vì lặp lại phần chung này.
+Chương này giới thiệu sáu bộ dữ liệu (mục 3.1), cách xử lý và khám phá dữ liệu (mục 3.2), các phương pháp kiểm chứng dùng chung cho mọi nội dung (mục 3.3) và thang xếp loại kết quả (mục 3.4). Các chương 4, 5, 6 chỉ nhắc lại những điểm riêng của từng nội dung.
 
 \subsection{Mô tả dữ liệu}
 
-Cả sáu bộ dữ liệu đều lấy từ kho Rdatasets, bản sao của các bộ dữ liệu trong gói \texttt{datasets} của R [DL1], và được tải ngày 20/11/2026. Chúng được chia làm hai nhóm theo mục đích sử dụng: Hồ Huron, Linh miêu và DAX (suất sinh lợi) cho các mô hình dừng ARMA ở Chương 4; Nile, AirPassengers và DAX (log giá) cho chuỗi không dừng và dự báo ở Chương 5 và 6. Bảng~\ref{tab:dulieu} tóm tắt từng bộ.
+Cả sáu bộ dữ liệu lấy từ kho Rdatasets, bản sao các bộ dữ liệu của gói \texttt{datasets} trong R [DL1], tải ngày 20/11/2026. Chúng chia làm hai nhóm: Hồ Huron, Linh miêu và DAX (suất sinh lợi) cho các mô hình dừng ở Chương 4; Nile, AirPassengers và DAX (log giá) cho chuỗi không dừng và dự báo ở Chương 5 và 6 (Bảng~\ref{tab:dulieu}).
 
-Chỉ số DAX được dùng ở cả hai nhóm, dưới hai dạng khác nhau. Log giá đóng cửa là dạng tự nhiên của một chuỗi giá: nó trôi theo thời gian và không dừng. Suất sinh lợi log, tức sai phân của log giá nhân với 100, là dạng dừng của chính chuỗi đó. Dùng cùng một chuỗi gốc cho cả hai phía giúp ta thấy rõ sai phân biến một chuỗi không dừng thành chuỗi dừng như thế nào. Lưu ý dữ liệu DAX trong gói R chỉ có chỉ số của ngày giao dịch chứ không có ngày lịch, nên trục thời gian của hai bộ này là số thứ tự ngày giao dịch.
-
-\TODO{đối chiếu mô tả từng bộ với tài liệu R (\texttt{?LakeHuron}, \texttt{?lynx}, \texttt{?Nile}, \texttt{?AirPassengers}, \texttt{?EuStockMarkets}) và chép trích dẫn nguyên văn vào mục Tài liệu tham khảo.}
+Chỉ số DAX được dùng ở cả hai nhóm dưới hai dạng. Log giá đóng cửa trôi theo thời gian và không dừng; suất sinh lợi log, tức sai phân của log giá nhân với 100, là dạng dừng của chính chuỗi đó. Dùng cùng một chuỗi gốc cho hai phía giúp thấy rõ sai phân biến chuỗi không dừng thành dừng. Dữ liệu DAX trong gói R lấy theo ``thời gian kinh doanh'' (bỏ cuối tuần và ngày lễ) và không có ngày lịch, nên trục thời gian là số thứ tự ngày giao dịch.
 
 \begin{table}[H]
-\centering\small
+\centering\footnotesize
 \caption{Sáu bộ dữ liệu được sử dụng}\label{tab:dulieu}
 \begin{adjustbox}{max width=\linewidth}
 \begin{tabular}{@{}p{2.6cm}p{2.8cm}p{2.0cm}p{4.0cm}rp{2.6cm}p{3.2cm}@{}}
 \toprule
 Bộ dữ liệu & Nguồn (R) & Quan sát & Biến được mô hình hóa & $n$ & Thời gian & Phép biến đổi \\
 \midrule
-Hồ Huron & \texttt{LakeHuron} & hằng năm & mực nước hồ (ft so với mực nước biển) & 98 & 1875--1972 & không; biến xu thế $x=\text{năm}-1920$ \\
-Linh miêu & \texttt{lynx} & hằng năm & số linh miêu bị bẫy, vùng sông Mackenzie & 114 & 1821--1934 & $\log_{10}$ \\
-DAX (suất sinh lợi) & \texttt{EuStockMarkets}, cột DAX & ngày giao dịch & suất sinh lợi log (\%) & 1859 & $t=2,\dots,1860$ & $100\,\Delta\log P_t$ \\
-Nile & \texttt{Nile} & hằng năm & lưu lượng sông Nile tại Aswan ($10^8\,\mathrm{m}^3$) & 100 & 1871--1970 & không \\
-AirPassengers & \texttt{AirPassengers} & hằng tháng & hành khách hàng không quốc tế (nghìn người) & 144 & 01/1949--12/1960 & $\log$; huấn luyện 120, kiểm định 24 \\
-DAX (log giá) & \texttt{EuStockMarkets}, cột DAX & ngày giao dịch & log giá đóng cửa & 1860 & $t=1,\dots,1860$ & $\log P_t$; huấn luyện 1500, kiểm định 360 \\
+Hồ Huron & \texttt{LakeHuron} [DL2] & hằng năm & mực nước hồ (ft) & 98 & 1875--1972 & không; biến xu thế $x=\text{năm}-1920$ \\
+Linh miêu & \texttt{lynx} [DL3] & hằng năm & số linh miêu bị bẫy ở Canada & 114 & 1821--1934 & $\log_{10}$ \\
+DAX (suất sinh lợi) & \texttt{EuStockMarkets}, cột DAX [DL4] & ngày giao dịch & suất sinh lợi log (\%) & 1859 & $t=2,\dots,1860$ & $100\,\Delta\log P_t$ \\
+Nile & \texttt{Nile} [DL5] & hằng năm & lưu lượng sông Nile tại Aswan ($10^8\,\mathrm{m}^3$) & 100 & 1871--1970 & không \\
+AirPassengers & \texttt{AirPassengers} [DL6] & hằng tháng & hành khách hàng không quốc tế (nghìn người) & 144 & 01/1949--12/1960 & $\log$; huấn luyện 120, kiểm định 24 \\
+DAX (log giá) & \texttt{EuStockMarkets}, cột DAX [DL4] & ngày giao dịch & log giá đóng cửa & 1860 & $t=1,\dots,1860$ & $\log P_t$; huấn luyện 1500, kiểm định 360 \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
@@ -34,21 +32,19 @@ DAX (log giá) & \texttt{EuStockMarkets}, cột DAX & ngày giao dịch & log gi
 \subsection{Xử lý dữ liệu}
 
 \noidung{Tiền xử lý}
-Dữ liệu thô được đưa qua một bước kiểm tra tự động trước khi biến đổi. Mỗi bộ phải có đúng số quan sát như Bảng~\ref{tab:dulieu}, không có giá trị thiếu, không có dòng trùng lặp, và thời gian phải tăng dần, không lặp. Với ba bộ sẽ lấy logarit (Linh miêu, AirPassengers, DAX), ta kiểm tra thêm rằng mọi giá trị đều dương.
-
-Sau đó các phép biến đổi ở cột cuối của Bảng~\ref{tab:dulieu} được áp dụng. Với Hồ Huron, biến xu thế $x=\text{năm}-1920$ đặt gốc ở giữa giai đoạn quan sát để hệ số chặn của mô hình hồi quy có thể hiểu là mực nước ở khoảng giữa kỳ. Với Nile, ta thêm một biến chỉ báo cho các năm từ 1899 trở đi để phục vụ việc thảo luận về sự đổi mức ở các chương sau. Hai bộ dùng để dự báo được chia theo thời gian: AirPassengers lấy 120 tháng đầu (01/1949--12/1958) để huấn luyện và 24 tháng cuối (01/1959--12/1960) để kiểm định; DAX (log giá) lấy 1500 ngày giao dịch đầu để huấn luyện và 360 ngày cuối để kiểm định. Việc chia luôn theo thứ tự thời gian, không chia ngẫu nhiên (xem mục 2.3.3).
+Dữ liệu thô được kiểm tra tự động trước khi biến đổi: đúng số quan sát như Bảng~\ref{tab:dulieu}, không thiếu giá trị, không trùng dòng, thời gian tăng dần, và mọi giá trị dương với ba bộ sẽ lấy logarit. Sau đó áp dụng các phép biến đổi ở cột cuối của bảng. Với Hồ Huron, biến xu thế $x=\text{năm}-1920$ đặt gốc ở giữa giai đoạn để hệ số chặn là mực nước ở khoảng giữa kỳ. Với Nile, ta thêm biến chỉ báo cho các năm từ 1899 trở đi để thảo luận về đổi mức. Hai bộ dùng để dự báo được chia theo thời gian (không chia ngẫu nhiên, mục 2.3.3): AirPassengers lấy 120 tháng đầu (01/1949--12/1958) huấn luyện, 24 tháng cuối (01/1959--12/1960) kiểm định; DAX (log giá) lấy 1500 ngày đầu huấn luyện, 360 ngày cuối kiểm định.
 
 \noidung{Khám phá dữ liệu}
-Trước khi mô hình hóa, ta nhìn nhanh từng chuỗi qua bảng thống kê mô tả (Bảng~\ref{tab:tab_eda_descriptive}) và đồ thị tổng quan gồm chuỗi, ACF và PACF mẫu (Hình~\ref{fig:fig_eda_HU_overview}--\ref{fig:fig_eda_DP_overview}). Một vài nhận xét ngắn, chỉ nhằm định hướng cho các chương sau:
+Ta nhìn nhanh từng chuỗi qua bảng thống kê mô tả (Bảng~\ref{tab:tab_eda_descriptive}) và đồ thị tổng quan (Hình~\ref{fig:fig_eda_HU_overview}--\ref{fig:fig_eda_DP_overview}). Các nhận xét sau chỉ nhằm định hướng cho các chương sau:
 \begin{itemize}[leftmargin=*,itemsep=1pt]
-\item \emph{Hồ Huron:} mực nước dao động quanh $579$ ft (độ lệch chuẩn $1.32$ ft) và có xu thế giảm nhìn thấy được; ACF giảm dần.
-\item \emph{Linh miêu:} chuỗi dao động theo chu kỳ rõ rệt, và ACF đổi dấu xen kẽ theo chu kỳ đó.
-\item \emph{DAX (suất sinh lợi):} trung bình gần $0$ ($0.065\%$), độ lệch chuẩn $1.03\%$, đuôi nặng (kurtosis dư $6.28$) và lệch về phía âm (độ lệch $-0.55$). Biến động tụ thành từng cụm; ACF của chuỗi hầu như nằm trong dải 95\%.
-\item \emph{Nile:} lưu lượng trung bình giảm từ $1098$ trước năm 1899 xuống $850$ từ năm 1899, tức có một lần đổi mức; ACF giảm dần.
-\item \emph{AirPassengers (log):} có xu thế tăng và mùa vụ rõ; ACF giảm rất chậm.
-\item \emph{DAX (log giá):} tăng dài hạn; ACF gần $1$ ở mọi độ trễ được vẽ, và PACF chỉ đáng kể ở độ trễ $1$.
+\item \emph{Hồ Huron:} mực nước quanh $579$ ft (độ lệch chuẩn $1.32$ ft), có xu thế giảm; ACF giảm dần.
+\item \emph{Linh miêu:} dao động theo chu kỳ rõ; ACF đổi dấu xen kẽ theo chu kỳ đó.
+\item \emph{DAX (suất sinh lợi):} trung bình gần $0$ ($0.065\%$), độ lệch chuẩn $1.03\%$, đuôi nặng (kurtosis dư $6.28$), lệch âm ($-0.55$); biến động tụ thành cụm, ACF hầu như nằm trong dải $95\%$.
+\item \emph{Nile:} lưu lượng trung bình giảm từ $1098$ (trước 1899) xuống $850$ (từ 1899), tức một lần đổi mức.
+\item \emph{AirPassengers (log):} xu thế tăng và mùa vụ rõ; ACF giảm rất chậm.
+\item \emph{DAX (log giá):} tăng dài hạn; ACF gần $1$ ở mọi độ trễ vẽ, PACF chỉ đáng kể ở độ trễ $1$.
 \end{itemize}
-Đây mới là những quan sát bằng mắt. Việc chuỗi nào dừng, chuỗi nào không, được kiểm chứng bằng lý thuyết và kiểm định ở Chương 4 và 5.
+Đây mới là quan sát bằng mắt; chuỗi nào dừng, chuỗi nào không, được kiểm chứng ở Chương 4 và 5.
 
 \input{\tabdir/tab_eda_descriptive.tex}
 \figx{fig_eda_HU_overview}{HU: mực nước hồ Huron với xu thế tuyến tính OLS, ACF và PACF mẫu}
@@ -60,51 +56,43 @@ Trước khi mô hình hóa, ta nhìn nhanh từng chuỗi qua bảng thống k�
 
 \subsection{Phương pháp kiểm chứng}
 
-Mỗi nội dung ở Chương 2 được kiểm chứng bằng dữ liệu thực, bằng mô phỏng, hoặc bằng cả hai, tùy tính chất của kết quả (xem cột cuối của Bảng~\ref{tab:danhmuc}). Bốn nguyên tắc dưới đây áp dụng chung cho mọi nội dung.
+Mỗi nội dung ở Chương 2 được kiểm chứng bằng dữ liệu thực, bằng mô phỏng, hoặc cả hai (cột cuối Bảng~\ref{tab:danhmuc}). Bốn nguyên tắc sau dùng chung.
 
 \noidung{Đối chiếu với phần mềm}
-Các đại lượng có công thức rõ ràng, như tự tương quan mẫu, tự tương quan riêng phần (đệ quy Durbin--Levinson), thống kê Ljung--Box, ước lượng Yule--Walker, các trọng số $\psi_j$ và ACF lý thuyết của mô hình ARMA, đều được nhóm tự cài đặt theo đúng công thức ở Chương 2, rồi so với kết quả của thư viện \texttt{statsmodels}. Cách làm này có hai lợi ích: ta hiểu rõ từng công thức, và ta kiểm tra được cả phần mềm lẫn phần cài đặt của mình. Các phép so sánh được viết thành bộ kiểm thử tự động, với sai khác cho phép không quá $10^{-8}$.
-
-Một điểm cần lưu ý là cùng một đại lượng có thể cho số khác nhau tùy cách tính. Sai số chuẩn của hệ số mô hình ARIMA là ví dụ: ước lượng từ tích ngoài của gradient và ước lượng từ nghịch đảo ma trận thông tin quan sát cho hai giá trị khác nhau. Vì vậy khi báo cáo, nhóm luôn nêu rõ đã dùng cách nào.
+Các đại lượng có công thức rõ ràng (tự tương quan mẫu, PACF bằng đệ quy Durbin--Levinson, thống kê Ljung--Box, ước lượng Yule--Walker, trọng số $\psi_j$, ACF lý thuyết của ARMA) được nhóm tự cài đặt theo công thức ở Chương 2 rồi so với thư viện \texttt{statsmodels} [13]. Cách làm này giúp hiểu rõ công thức và kiểm tra cả phần mềm lẫn phần cài đặt; các phép so sánh được viết thành kiểm thử tự động với sai khác cho phép không quá $10^{-8}$. Cùng một đại lượng có thể cho số khác nhau tùy cách tính (chẳng hạn sai số chuẩn của hệ số ARIMA tính từ tích ngoài của gradient hay từ nghịch đảo ma trận thông tin quan sát), nên khi báo cáo nhóm luôn nêu cách đã dùng.
 
 \noidung{Mô phỏng}
-Có những tính chất lý thuyết không thể nhìn thấy từ một chuỗi dữ liệu duy nhất, chẳng hạn phân phối lấy mẫu của một ước lượng, độ phủ của một khoảng tin cậy hay phân phối của một thống kê kiểm định. Khi đó ta dùng \emph{mô phỏng Monte Carlo}: lấy một mô hình đã khớp trên dữ liệu thực (hoặc một mô hình đặt trước) làm ``sự thật'', sinh ra $B$ chuỗi có cùng độ dài, tính đại lượng quan tâm trên từng chuỗi, rồi tổng hợp kết quả qua các lần lặp.
-
-Bản thân kết quả mô phỏng cũng có sai số. Nếu $\hat p$ là một tần suất (độ phủ, tỷ lệ bác bỏ, \dots) ước lượng từ $B$ lần lặp độc lập thì \emph{sai số Monte Carlo} (MCSE) của nó là
+Có những tính chất không thấy được từ một chuỗi duy nhất, như phân phối lấy mẫu của ước lượng, độ phủ của khoảng tin cậy hay phân phối của thống kê kiểm định. Khi đó ta dùng \emph{mô phỏng Monte Carlo}: lấy một mô hình (đặt trước hoặc đã khớp trên dữ liệu thực) làm ``sự thật'', sinh $B$ chuỗi cùng độ dài, tính đại lượng quan tâm trên từng chuỗi rồi tổng hợp. Kết quả mô phỏng cũng có sai số: với một tần suất $\hat p$ ước lượng từ $B$ lần lặp độc lập, \emph{sai số Monte Carlo} (MCSE) là
 \[
-\mathrm{MCSE}(\hat p)\approx\sqrt{\frac{\hat p(1-\hat p)}{B}},
+\mathrm{MCSE}(\hat p)\approx\sqrt{\frac{\hat p(1-\hat p)}{B}}\quad(\approx0.005\text{ khi }B=2000,\ \hat p\approx0.95),
 \]
-chẳng hạn khoảng $0.005$ khi $B=2000$ và $\hat p\approx0.95$; với một trung bình mô phỏng, MCSE là độ lệch chuẩn mẫu chia cho $\sqrt B$. Vì vậy khi so một giá trị mô phỏng với giá trị lý thuyết, ta tính độ chênh lệch theo đơn vị MCSE: lệch trong vài MCSE vẫn phù hợp với lý thuyết. Số lần lặp thường là $B=2000$; một vài mô phỏng tốn thời gian hơn dùng $B=1000$. Với mô hình dừng, đoạn đầu của chuỗi mô phỏng được bỏ đi để chuỗi gần với phân phối dừng.
+còn với một trung bình mô phỏng, MCSE là độ lệch chuẩn mẫu chia cho $\sqrt B$. Khi so giá trị mô phỏng với lý thuyết, ta tính chênh lệch theo đơn vị MCSE: lệch trong vài MCSE vẫn phù hợp. Số lần lặp thường là $B=2000$ (một vài mô phỏng nặng hơn dùng $B=1000$); mọi chuỗi ARMA mô phỏng bỏ $200$ giá trị đầu (đoạn khởi động) để gần phân phối dừng.
 
-\TODO{mô hình nào được dùng làm ``sự thật'' mô phỏng cho từng nội dung; độ dài đoạn khởi động đã chọn cho từng mô phỏng.}
+Các mô phỏng và mô hình ``sự thật'' tương ứng gồm: AR(1) với $\phi=0.6$, $n=100$ (4.1(c)); AR(1) với $(\hat\phi,\hat\sigma)$ của Hồ Huron, $n=98$ (4.2(a)); MA(2) với $\hat\theta$ của Hồ Huron, $n=98$ (4.2(d)); nhiễu iid $N(0,1)$, $n=200$ (4.3(a)); AR(2) với $\hat\phi$ của Linh miêu, $n=114$ (4.3(c)); bước ngẫu nhiên có trôi với $(\hat\delta,\hat\sigma)$ của DAX và các bước ngẫu nhiên độc lập (5.1(b)); nhiễu trắng và bước ngẫu nhiên cho sai phân (5.3(a)); bước ngẫu nhiên $n=200$ và AR(1) với $\phi=0.95,\,0.9,\,0.8$ cho kiểm định nghiệm đơn vị (5.3(b)); ARIMA$(0,1,1)$ với $\theta=-0.5$ và với tham số Nile cho khoảng dự báo (6.2(a)).
 
 \noidung{Đánh giá dự báo}
-Với hai bộ dự báo, dữ liệu được chia theo thời gian như ở mục 3.2. Mô hình chỉ được khớp trên phần huấn luyện, rồi dự báo và so với phần kiểm định. Để kết quả không phụ thuộc vào đúng một điểm chia, nhóm còn đánh giá theo gốc cuốn chiếu: mô hình được khớp lại tại mỗi gốc, dự báo cho nhiều chân trời, và sai số được tính trung bình riêng cho từng chân trời (mục 2.3.3). Các mốc chuẩn so sánh là dự báo trung bình, naive, naive mùa vụ và dự báo có trôi; độ chính xác đo bằng MAE, RMSE, MAPE và MASE; sự khác biệt giữa hai phương pháp được kiểm tra bằng kiểm định Diebold--Mariano.
-
-Cụ thể, với Nile, gốc đầu tiên khớp mô hình trên 80 năm đầu và chân trời dự báo tối đa là 5 năm; với AirPassengers, gốc đầu tiên khớp trên 108 tháng đầu và chân trời tối đa là 12 tháng. Ngoài ra, dự báo một bước trên phần kiểm định (AirPassengers từ tháng thứ 121, Nile từ năm thứ 81) cũng được thực hiện bằng cách khớp lại mô hình tại từng gốc.
+Với hai bộ dự báo, mô hình chỉ được khớp trên phần huấn luyện rồi dự báo và so với phần kiểm định. Để kết quả không phụ thuộc vào đúng một điểm chia, nhóm còn đánh giá cuốn chiếu: khớp lại mô hình tại mỗi gốc, dự báo nhiều chân trời, tính sai số riêng cho từng chân trời (mục 2.3.3). Với Nile, gốc đầu tiên khớp trên 80 năm, chân trời tối đa 5 năm; với AirPassengers, trên 108 tháng, chân trời tối đa 12 tháng; dự báo một bước trên phần kiểm định (AirPassengers từ tháng 121, Nile từ năm 81) cũng khớp lại tại từng gốc. Các mốc chuẩn là trung bình, naive, naive mùa vụ và trôi; độ chính xác đo bằng MAE, RMSE, MAPE, MASE; khác biệt giữa hai phương pháp được kiểm tra bằng Diebold--Mariano.
 
 \noidung{Tái lập}
-Mọi kết quả đều tái lập được. Các mô phỏng dùng bộ sinh số giả ngẫu nhiên của \texttt{numpy} với hạt giống cố định \texttt{3179}, và mỗi mô phỏng nhận một dòng số ngẫu nhiên riêng sinh ra từ hạt giống đó, nên việc thêm hay bớt một mô phỏng không làm đổi kết quả của các mô phỏng khác. Phần mềm gồm Python 3.12.14 cùng các gói \texttt{statsmodels} 0.15.0, \texttt{numpy} 2.5.5, \texttt{pandas} 3.1.1, \texttt{scipy} 1.18.1 và \texttt{matplotlib} 3.11.2, được cài trong một môi trường ảo riêng. Toàn bộ quy trình, từ tải dữ liệu đến sinh bảng và hình của báo cáo, chạy được bằng một lệnh; cấu trúc mã nguồn và cách chạy được ghi ở Phụ lục B.
+Các mô phỏng dùng bộ sinh số giả ngẫu nhiên của \texttt{numpy} với hạt giống cố định \texttt{3179}; mỗi mô phỏng nhận một dòng số riêng sinh ra từ hạt giống đó, nên thêm hay bớt một mô phỏng không đổi kết quả của các mô phỏng khác. Phần mềm gồm Python 3.12.14 với \texttt{statsmodels} 0.15.0, \texttt{numpy} 2.5.5, \texttt{pandas} 3.1.1, \texttt{scipy} 1.18.1, \texttt{matplotlib} 3.11.2 trong một môi trường ảo riêng. Toàn bộ quy trình, từ tải dữ liệu đến sinh bảng và hình, chạy được bằng một lệnh (Phụ lục B).
 
 \subsection{Tiêu chí đánh giá}
 
-Mỗi nội dung kiểm chứng kết thúc bằng một nhận xét xếp loại theo ba mức, được dùng thống nhất ở mọi chương. Thang này đặt ra trước khi xem kết quả để việc xếp loại không bị chi phối bởi kết quả (Bảng~\ref{tab:xeploai}).
+Mỗi nội dung kiểm chứng kết thúc bằng một nhận xét xếp loại theo ba mức, dùng thống nhất ở mọi chương và đặt ra trước khi xem kết quả (Bảng~\ref{tab:thangdo}).
 
 \begin{table}[H]
-\centering\small
+\centering\footnotesize
 \caption{Thang xếp loại mức độ phù hợp}\label{tab:thangdo}
 \renewcommand{\arraystretch}{1.25}
 \begin{tabularx}{\linewidth}{@{}lXX@{}}
 \toprule
 Mức & Đại lượng tính toán hoặc mô phỏng & Kết quả trên dữ liệu thực \\
 \midrule
-Phù hợp & Sai khác với công thức hoặc thư viện không quá $10^{-8}$; giá trị mô phỏng lệch giá trị lý thuyết không quá $3$ MCSE. & Kết luận khớp với lý thuyết ở mức ý nghĩa 5\% (hoặc trong dải $\pm1.96/\sqrt n$). \\
-Phù hợp một phần & Đúng về dạng hoặc chiều hướng nhưng sai khác lớn hơn dung sai trên. & Đúng với một số bộ dữ liệu hoặc một số độ trễ, chân trời, nhưng không với tất cả. \\
+Phù hợp & Sai khác với công thức hoặc thư viện không quá $10^{-8}$; giá trị mô phỏng lệch giá trị lý thuyết không quá $3$ MCSE. & Kết luận khớp lý thuyết ở mức ý nghĩa 5\% (hoặc trong dải $\pm1.96/\sqrt n$). \\
+Phù hợp một phần & Đúng về dạng hoặc chiều hướng nhưng sai khác lớn hơn dung sai trên. & Đúng với một số bộ dữ liệu, độ trễ hoặc chân trời nhưng không với tất cả. \\
 Không phù hợp & Trái với dạng hoặc chiều hướng mà lý thuyết nêu. & Trái với kết luận của lý thuyết ở hầu hết các bộ áp dụng. \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-Một số sai khác nhỏ đến từ cách tính hoặc từ sai số số học (ví dụ hai thư viện làm tròn hay tối ưu hóa hơi khác nhau) chứ không do lý thuyết sai. Những sai khác này được nêu rõ trong phần nhận xét của từng nội dung và không bị tính là không phù hợp. Khi kết quả phù hợp một phần hoặc không phù hợp, nhóm phải giải thích nguyên nhân dựa trên đặc điểm của dữ liệu hoặc điều kiện áp dụng của lý thuyết.
-
-Với các ước lượng tính bằng tối ưu hóa số (như cực đại hợp lý), hai cách cài đặt chỉ khớp nhau đến sai số của thuật toán tối ưu, nên ta so ở mức làm tròn của giá trị được báo cáo thay vì mức $10^{-8}$.
+Sai khác nhỏ do cách tính hoặc sai số số học (hai thư viện làm tròn hay tối ưu hơi khác nhau) được nêu trong nhận xét và không bị tính là không phù hợp; với ước lượng bằng tối ưu hóa số (như cực đại hợp lý), ta so ở mức làm tròn của giá trị báo cáo thay vì $10^{-8}$. Khi kết quả phù hợp một phần hoặc không phù hợp, nhóm giải thích nguyên nhân dựa trên đặc điểm dữ liệu hoặc điều kiện áp dụng của lý thuyết.

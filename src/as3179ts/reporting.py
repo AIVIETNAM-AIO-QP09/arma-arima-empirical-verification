@@ -138,7 +138,7 @@ def _to_latex_tall(d: pd.DataFrame, cells: list, n_idx: int, name: str, caption:
     body = "\n".join(" & ".join(tex(x) for x in [names[k]] + [row[n_idx + k] for row in cells]) + r" \\" for k in range(len(names)))
     spec = "l" + "r" * len(cells)
     notes = rf"\par\vspace{{2pt}}{{\footnotesize\textit{{Ghi chú:}} {tex(note)}}}" if note else ""
-    return (f"\\begin{{table}}[H]\n\\centering\\small\n\\caption{{{tex(caption)}}}\\label{{tab:{name}}}\n"
+    return (f"\\begin{{table}}[H]\n\\centering\\footnotesize\n\\caption{{{tex(caption)}}}\\label{{tab:{name}}}\n"
             f"\\begin{{adjustbox}}{{max width=\\linewidth}}\n\\begin{{tabular}}{{{spec}}}\n\\toprule\n{header}\n\\midrule\n{body}\n\\bottomrule\n"
             f"\\end{{tabular}}\n\\end{{adjustbox}}{notes}\n\\end{{table}}\n")
 
@@ -169,7 +169,7 @@ def to_latex(df: pd.DataFrame, name: str, caption: str, fmt: dict | None = None,
     header = " & ".join(tex(c) for c in d.columns) + r" \\"
     end = r" \\[12pt]" if long_text else r" \\"   # bảng có cột chữ dài: thêm khoảng cách giữa các hàng
     body = "\n".join(" & ".join(tex(x) for x in row) + end for row in cells)
-    size = r"\scriptsize" if ncol >= 9 else r"\small"
+    size = r"\scriptsize" if ncol >= 9 else r"\footnotesize"
     notes = rf"\par\vspace{{2pt}}{{\footnotesize\textit{{Ghi chú:}} {tex(note)}}}" if note else ""
     return (f"\\begin{{table}}[H]\n\\centering{size}\n\\caption{{{tex(caption)}}}\\label{{tab:{name}}}\n"
             f"\\begin{{adjustbox}}{{max width=\\linewidth}}\n\\begin{{tabular}}{{{spec}}}\n\\toprule\n{header}\n\\midrule\n{body}\n\\bottomrule\n"

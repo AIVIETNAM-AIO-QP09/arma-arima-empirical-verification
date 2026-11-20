@@ -2,15 +2,15 @@
 \clearpage
 \section[Giới thiệu]{GIỚI THIỆU}
 
-Chuỗi thời gian xuất hiện ở khắp nơi, từ mực nước của một hồ lớn, lưu lượng của một dòng sông, đến số hành khách của các hãng hàng không hay chỉ số của thị trường chứng khoán. Chương này nêu bối cảnh của đề tài (mục 1.1), mục tiêu và các câu hỏi cần trả lời (mục 1.2), phạm vi thực hiện (mục 1.3) và bố cục của báo cáo (mục 1.4). Sau đó, Chương 2 sẽ trình bày cơ sở lý thuyết.
+Chuỗi thời gian xuất hiện ở khắp nơi: mực nước của một hồ lớn, lưu lượng của một dòng sông, số hành khách hàng không, chỉ số chứng khoán. Chương này nêu bối cảnh (mục 1.1), mục tiêu (mục 1.2), phạm vi (mục 1.3) và bố cục của báo cáo (mục 1.4).
 
 \subsection{Bối cảnh}
-Chuỗi thời gian là một dãy quan sát được ghi lại theo thứ tự thời gian. Điểm khác với dữ liệu thông thường là các quan sát liền nhau thường không độc lập: mực nước năm nay phụ thuộc vào mực nước năm trước, và giá cổ phiếu hôm nay liên quan đến giá hôm qua. Chính sự phụ thuộc này vừa là thứ ta cần mô tả, vừa là lý do các phương pháp thống kê dành cho dữ liệu độc lập không dùng được nguyên vẹn.
+Chuỗi thời gian là một dãy quan sát ghi theo thứ tự thời gian. Khác với dữ liệu thông thường, các quan sát liền nhau thường không độc lập: mực nước năm nay phụ thuộc mực nước năm trước, giá hôm nay liên quan đến giá hôm qua. Chính sự phụ thuộc này vừa là thứ cần mô tả, vừa là lý do các phương pháp cho dữ liệu độc lập không dùng được nguyên vẹn.
 
-Các mô hình ARMA và ARIMA là công cụ nền tảng để mô tả sự phụ thuộc đó và để dự báo. Lý thuyết của chúng được phát biểu dưới những giả thiết khá gọn: chuỗi dừng, nhiễu có tính chất cho trước, mô hình được chọn đúng bậc. Dữ liệu thực thì hiếm khi thỏa mãn các giả thiết ấy một cách hoàn hảo: chuỗi có thể trôi, đổi mức, có mùa vụ hoặc có biến động thay đổi theo thời gian. Vì vậy một câu hỏi tự nhiên là các kết quả lý thuyết còn đúng đến đâu khi đặt vào dữ liệu thực, và khi chúng lệch đi thì lệch vì lý do gì. Đó là câu hỏi mà báo cáo này đi tìm lời đáp.
+ARMA và ARIMA là công cụ nền tảng để mô tả sự phụ thuộc đó và để dự báo. Lý thuyết của chúng dựa trên những giả thiết gọn (chuỗi dừng, nhiễu có tính chất cho trước, mô hình đúng bậc), trong khi dữ liệu thực hiếm khi thỏa mãn hoàn hảo: chuỗi có thể trôi, đổi mức, có mùa vụ hoặc biến động thay đổi. Vì vậy câu hỏi tự nhiên là lý thuyết còn đúng đến đâu trên dữ liệu thực, và khi lệch thì lệch vì lý do gì; đó là điều báo cáo này đi tìm.
 
 \subsection{Mục tiêu}
-Mục tiêu chung của báo cáo là kiểm chứng, bằng Python, các kết quả lý thuyết về chuỗi dừng, mô hình ARMA, chuỗi không dừng, mô hình ARIMA và dự báo trên sáu bộ dữ liệu thực, kết hợp mô phỏng ở những chỗ dữ liệu thực không đủ để kiểm tra, rồi đánh giá mức độ phù hợp giữa lý thuyết và thực nghiệm. Cụ thể, báo cáo tìm lời đáp cho ba câu hỏi sau, và Chương 8 sẽ trả lời lần lượt từng câu:
+Mục tiêu chung là kiểm chứng, bằng Python, các kết quả lý thuyết về chuỗi dừng, ARMA, chuỗi không dừng, ARIMA và dự báo trên sáu bộ dữ liệu thực (kết hợp mô phỏng khi cần), rồi đánh giá mức độ phù hợp giữa lý thuyết và thực nghiệm. Cụ thể, báo cáo trả lời ba câu hỏi sau (Chương 8 đáp lần lượt):
 \begin{enumerate}[label=\textbf{CH\arabic*.}]
 	\item Các kết quả lý thuyết về cấu trúc phụ thuộc và mô hình ARMA có được thỏa mãn trên dữ liệu thực hay không?
 	\item Các kết quả lý thuyết về chuỗi không dừng, mô hình ARIMA và dự báo có được thỏa mãn trên dữ liệu thực hay không?
@@ -18,10 +18,11 @@ Mục tiêu chung của báo cáo là kiểm chứng, bằng Python, các kết 
 \end{enumerate}
 
 \subsection{Phạm vi}
-Báo cáo dùng sáu bộ dữ liệu có sẵn trong R (Bảng~\ref{tab:dulieu}): mực nước hồ Huron, số linh miêu bị bẫy, lưu lượng sông Nile, số hành khách hàng không, và chỉ số DAX ở hai dạng (suất sinh lợi và log giá). Về phương pháp, báo cáo dùng các mô hình ARMA, ARIMA và ARIMA mùa vụ cùng các công cụ đi kèm như tự tương quan, kiểm định Ljung--Box, kiểm định nghiệm đơn vị và kiểm định Diebold--Mariano. Báo cáo không đi sâu vào các mô hình khác, như GARCH, Prophet hay học máy, dù một số chuỗi (chẳng hạn suất sinh lợi của DAX) rõ ràng có đặc điểm mà các mô hình đó xử lý tốt hơn.
+Báo cáo dùng sáu bộ dữ liệu của R (Bảng~\ref{tab:dulieu}): mực nước hồ Huron, số linh miêu bị bẫy, lưu lượng sông Nile, số hành khách hàng không và chỉ số DAX ở hai dạng. Các mô hình là ARMA, ARIMA và ARIMA mùa vụ cùng các công cụ đi kèm (tự tương quan, Ljung--Box, kiểm định nghiệm đơn vị, Diebold--Mariano); báo cáo không đi sâu vào GARCH, Prophet hay học máy, dù một số chuỗi (như suất sinh lợi DAX) có đặc điểm mà các mô hình đó xử lý tốt hơn.
 
-Nội dung kiểm chứng được chia thành 28 kết quả lý thuyết, liệt kê trong Bảng~\ref{tab:danhmuc} cùng bộ dữ liệu áp dụng. Trong đó 20 nội dung được kiểm chứng bằng dữ liệu thực, 7 nội dung bằng cả dữ liệu thực lẫn mô phỏng, và 1 nội dung chỉ bằng mô phỏng.
+Nội dung kiểm chứng gồm 28 kết quả lý thuyết (Bảng~\ref{tab:danhmuc}): 20 kiểm chứng bằng dữ liệu thực, 7 bằng cả dữ liệu thực lẫn mô phỏng và 1 chỉ bằng mô phỏng.
 
+{\footnotesize
 \begin{longtable}{@{}p{2.2cm}p{6.6cm}p{5.2cm}p{2.2cm}@{}}
 \caption{Danh mục các nội dung kiểm chứng}\label{tab:danhmuc}\\
 \toprule
@@ -62,23 +63,10 @@ Nội dung kiểm chứng được chia thành 28 kết quả lý thuyết, li�
 6.3(b) & Gốc cuốn chiếu & Nile, AirPassengers, DAX (log giá) & Dữ liệu thực \\
 6.3(c) & Hàm mất mát và kiểm định Diebold–Mariano & AirPassengers, Nile & Dữ liệu thực \\
 6.3(d) & Quy trình báo cáo dự báo & Nile, AirPassengers, DAX (log giá) & Dữ liệu thực \\
-\end{longtable}
+\end{longtable}}
 
 \subsection{Bố cục}
-Báo cáo gồm tám chương. Chương 1 là phần giới thiệu này. Chương 2 trình bày cơ sở lý thuyết, chia làm ba mục: chuỗi dừng và mô hình ARMA, chuỗi không dừng và mô hình ARIMA, dự báo và đánh giá dự báo. Chương 3 giới thiệu dữ liệu và phương pháp kiểm chứng. Ba chương tiếp theo kiểm chứng lần lượt ba mục của Chương 2: Chương 4 cho chuỗi dừng và mô hình ARMA, Chương 5 cho chuỗi không dừng và mô hình ARIMA, Chương 6 cho dự báo và đánh giá dự báo. Chương 7 thảo luận chung về mức độ phù hợp qua cả ba chương kiểm chứng, và Chương 8 kết luận.
+Báo cáo gồm tám chương: giới thiệu (Chương 1); cơ sở lý thuyết (Chương 2) với ba mục là chuỗi dừng và ARMA, chuỗi không dừng và ARIMA, dự báo và đánh giá dự báo; dữ liệu và phương pháp (Chương 3); ba chương kiểm chứng tương ứng ba mục của Chương 2 (Chương 4, 5, 6); thảo luận chung (Chương 7); kết luận (Chương 8).
 
-Để dễ theo dõi, mỗi kết quả lý thuyết ở Chương 2 có một địa chỉ dạng \texttt{2.m.n(z)}, và được kiểm chứng ở mục có địa chỉ \texttt{(m+3).n(z)} của các chương 4 đến 6; chẳng hạn kết quả \texttt{2.1.2(c)} được kiểm chứng tại \texttt{4.2(c)} (Bảng~\ref{tab:doiung}). Mỗi nội dung kiểm chứng đều gồm sáu phần cố định: kết quả lý thuyết cần kiểm chứng, cách triển khai, mã Python, kết quả tính toán, phân tích và diễn giải, và nhận xét. Phần nhận xét xếp loại kết quả thành \emph{phù hợp}, \emph{phù hợp một phần} hoặc \emph{không phù hợp} theo thang ở Bảng~\ref{tab:thangdo}.
+Mỗi kết quả ở Chương 2 có địa chỉ \texttt{2.m.n(z)} và được kiểm chứng tại mục \texttt{(m+3).n(z)} (ví dụ \texttt{2.1.2(c)} tại \texttt{4.2(c)}). Mỗi nội dung kiểm chứng gồm sáu phần: kết quả cần kiểm chứng, cách triển khai, mã Python, kết quả tính toán, phân tích và diễn giải, nhận xét; phần nhận xét xếp loại \emph{phù hợp}, \emph{phù hợp một phần} hoặc \emph{không phù hợp} theo Bảng~\ref{tab:thangdo}.
 
-\begin{table}[H]
-\centering\small
-\caption{Đối ứng giữa cơ sở lý thuyết và kiểm chứng}\label{tab:doiung}
-\begin{tabular}{@{}lll@{}}
-\toprule
-Cơ sở lý thuyết (Chương 2) & Kiểm chứng & Nội dung \\
-\midrule
-2.1 Chuỗi dừng và mô hình ARMA & Chương 4 (4.1--4.3) & 14 nội dung \\
-2.2 Chuỗi không dừng và mô hình ARIMA & Chương 5 (5.1--5.3) & 6 nội dung \\
-2.3 Dự báo và đánh giá dự báo & Chương 6 (6.1--6.3) & 8 nội dung \\
-\bottomrule
-\end{tabular}
-\end{table}

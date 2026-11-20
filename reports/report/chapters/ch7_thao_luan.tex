@@ -2,7 +2,7 @@
 \clearpage
 \section[Thảo luận]{THẢO LUẬN}
 
-Ba chương kiểm chứng trước đã cho kết quả riêng cho từng nội dung. Chương này đứng ở một bước xa hơn để nhìn chung: lý thuyết đúng đến đâu trên cả sáu bộ dữ liệu (mục 7.1), kết quả khác nhau giữa các bộ ra sao và vì sao (mục 7.2), đặc điểm nào của dữ liệu ảnh hưởng nhiều nhất (mục 7.3), các giả thiết của lý thuyết được thỏa mãn đến mức nào (mục 7.4), và những hạn chế của nghiên cứu (mục 7.5).
+Chương này nhìn chung lại ba chương kiểm chứng: lý thuyết đúng đến đâu (mục 7.1), kết quả khác nhau giữa các bộ dữ liệu ra sao (mục 7.2), đặc điểm dữ liệu nào ảnh hưởng nhiều nhất (mục 7.3), các giả thiết được thỏa mãn đến mức nào (mục 7.4) và những hạn chế (mục 7.5).
 
 \subsection{Mức độ phù hợp}
 
@@ -52,50 +52,48 @@ Bảng~\ref{tab:xeploai} xếp loại từng cặp (nội dung, bộ dữ liệu
 
 {\footnotesize\textit{Chú thích:} P: phù hợp; M: phù hợp một phần; K: không phù hợp; --: không áp dụng. DAX (sl): suất sinh lợi; DAX (log): log giá.}
 
-Trong $61$ cặp được kiểm chứng, $55$ cặp ($90\%$) phù hợp, $6$ cặp phù hợp một phần và không có cặp nào không phù hợp. Nhìn theo nội dung, $24$ trong $28$ nội dung phù hợp, và $4$ nội dung phù hợp một phần: mô hình AR(1) và ước lượng tham số ở Chương 4, xu thế tất định và ngẫu nhiên, sai phân và sai phân quá mức ở Chương 5. Ngoài ra, ở nội dung kiểm định nghiệm đơn vị (5.3(b)), kết quả chung phù hợp nhưng riêng AirPassengers chưa dứt khoát.
+Trong $61$ cặp (nội dung, bộ dữ liệu), $55$ cặp ($90\%$) phù hợp, $6$ cặp phù hợp một phần và không có cặp nào không phù hợp. Theo nội dung, $24$ trong $28$ nội dung phù hợp; $4$ nội dung phù hợp một phần là mô hình AR(1) và ước lượng tham số (Chương 4), xu thế tất định và ngẫu nhiên, sai phân và sai phân quá mức (Chương 5). Ở kiểm định nghiệm đơn vị (5.3(b)), kết quả chung phù hợp nhưng riêng AirPassengers chưa dứt khoát.
 
-Có thể rút ra hai mẫu hình chung. Thứ nhất, các kết quả mang tính công thức (đẳng thức giữa các đại lượng, tính chất của hàm tự hiệp phương sai, phương sai sai số dự báo, trọng số $\Psi_k$, quan hệ giữa ARIMA$(0,1,1)$ và làm trơn mũ) đều khớp đến độ chính xác máy, nên lý thuyết ở dạng này gần như không có chỗ cho sai lệch. Thứ hai, những chỗ chưa khớp đều nằm ở các kết quả phụ thuộc vào dữ liệu hoặc cỡ mẫu: ước lượng ở mẫu nhỏ (tham số AR, độ chệch của $\hat\gamma$), việc một mô hình đơn giản có mô tả được chuỗi hay không (AR(1) với Hồ Huron), và việc phân biệt các loại xu thế (Nile và AirPassengers). Nói cách khác, lý thuyết đúng, còn dữ liệu thực mới là chỗ gây ra sự khác biệt.
+Có hai mẫu hình chung. Thứ nhất, các kết quả mang tính công thức (đẳng thức giữa các đại lượng, tính chất tự hiệp phương sai, phương sai sai số dự báo, trọng số $\Psi_k$, quan hệ ARIMA$(0,1,1)$ với làm trơn mũ) đều khớp đến độ chính xác máy. Thứ hai, những chỗ chưa khớp đều nằm ở kết quả phụ thuộc dữ liệu hoặc cỡ mẫu: ước lượng ở mẫu nhỏ, việc một mô hình đơn giản có mô tả được chuỗi hay không (AR(1) với Hồ Huron), và việc phân biệt các loại xu thế (Nile, AirPassengers). Nói cách khác, lý thuyết đúng, còn dữ liệu thực mới là chỗ gây ra khác biệt.
 
 \subsection{Khác biệt giữa các bộ dữ liệu}
 
-Hầu hết các nội dung cho cùng một kết luận trên mọi bộ dữ liệu áp dụng, nhưng có vài nội dung cho bức tranh rất khác nhau tùy chuỗi, và chính sự khác nhau đó cho thấy lý thuyết hoạt động ra sao:
+Hầu hết nội dung cho cùng kết luận trên mọi bộ áp dụng, nhưng vài nội dung cho bức tranh khác nhau tùy chuỗi:
 \begin{itemize}[leftmargin=*,itemsep=2pt]
-\item \emph{Tính dừng và nhiễu trắng (4.1(a)).} Cùng một khái niệm nhưng ba chuỗi nằm ở ba vị trí khác nhau: Hồ Huron không dừng quanh một mức hằng số, Linh miêu dừng nhưng phụ thuộc mạnh, còn suất sinh lợi DAX là nhiễu trắng nhưng không iid.
-\item \emph{Xây dựng mô hình ARMA (4.3).} Phần dư của AR(2) là nhiễu trắng với Hồ Huron nhưng bị bác bỏ với Linh miêu (AR(11) mới đủ); với DAX, phần dư là nhiễu trắng nhưng bình phương của nó còn cấu trúc.
-\item \emph{Phân loại xu thế (5.1(a)) và kiểm định nghiệm đơn vị (5.3(b)).} DAX là ví dụ sạch của xu thế ngẫu nhiên (ADF không bác bỏ, KPSS bác bỏ). Nile cho kết quả ``cùng bác bỏ'' vì có đổi mức, còn AirPassengers chưa dứt khoát vì mùa vụ và xu thế đan xen.
-\item \emph{Giá trị của mô hình dự báo (6.3).} Với AirPassengers, mô hình airline vượt xa mọi mốc chuẩn ở mọi chân trời. Với Nile và DAX, ARIMA không hơn naive hay trôi một cách có ý nghĩa; với Nile, thứ hạng còn đảo chiều theo chân trời khi đánh giá cuốn chiếu.
+\item \emph{Tính dừng và nhiễu trắng (4.1(a)).} Hồ Huron không dừng quanh một mức hằng số, Linh miêu dừng nhưng phụ thuộc mạnh, suất sinh lợi DAX là nhiễu trắng nhưng không iid.
+\item \emph{Xây dựng mô hình ARMA (4.3).} Phần dư của AR(2) là nhiễu trắng với Hồ Huron, bị bác bỏ với Linh miêu (AR(11) mới đủ); với DAX, phần dư là nhiễu trắng nhưng bình phương của nó còn cấu trúc.
+\item \emph{Phân loại xu thế (5.1(a)) và nghiệm đơn vị (5.3(b)).} DAX là ví dụ sạch của xu thế ngẫu nhiên; Nile cho ``cùng bác bỏ'' vì đổi mức; AirPassengers chưa dứt khoát vì mùa vụ và xu thế đan xen.
+\item \emph{Giá trị của mô hình dự báo (6.3).} Airline vượt xa mọi mốc chuẩn ở AirPassengers; với Nile và DAX, ARIMA không hơn naive hay trôi một cách có ý nghĩa, và với Nile thứ hạng còn đảo theo chân trời khi đánh giá cuốn chiếu.
 \end{itemize}
-Lý do chung của những khác biệt này là cấu trúc của từng chuỗi: chuỗi có cấu trúc rõ (mùa vụ của AirPassengers, chu kỳ của Linh miêu) thì mô hình có cái để học; chuỗi gần bước ngẫu nhiên (DAX) thì mô hình phức tạp không hơn được mô hình đơn giản.
+Lý do chung là cấu trúc của từng chuỗi: chuỗi có cấu trúc rõ (mùa vụ của AirPassengers, chu kỳ của Linh miêu) thì mô hình có cái để học; chuỗi gần bước ngẫu nhiên (DAX) thì mô hình phức tạp không hơn được mô hình đơn giản.
 
 \subsection{Ảnh hưởng của đặc điểm dữ liệu}
 
-Năm đặc điểm của dữ liệu tác động nhiều nhất đến kết quả:
+Năm đặc điểm tác động nhiều nhất:
 \begin{itemize}[leftmargin=*,itemsep=2pt]
-\item \emph{Xu thế.} Xu thế làm sai số chuẩn giả định iid quá lạc quan: với Hồ Huron, thống kê $t$ của hệ số dốc giảm từ $-6.0$ xuống $-2.65$ khi tính đến tự tương quan (4.1(c)). Với DAX, xu thế ngẫu nhiên khiến việc trừ xu thế bằng hồi quy vô ích còn sai phân thì hiệu quả (5.1(a)), và dẫn đến hồi quy giả mạo khi ghép hai chuỗi như vậy (5.1(b)).
-\item \emph{Đổi mức.} Lần đổi mức của Nile quanh năm 1899 làm ADF và KPSS cùng bác bỏ (5.3(b)), đưa $\hat\rho(1)$ của sai phân xuống $-0.40$, gần dấu hiệu sai phân thừa, và khiến trung bình mở rộng dự báo tốt hơn ARIMA từ chân trời $h=2$ trở đi (6.3(b)). Nghĩa là một mô hình có $d=1$ không nhất thiết phù hợp với một chuỗi chỉ đổi mức một lần.
-\item \emph{Mùa vụ.} AirPassengers có ACF của sai phân bậc một vẫn lớn ở độ trễ 12 và 24, và ADF vẫn không bác bỏ sau sai phân thường (5.1(a), 5.3(b)). Chỉ khi dùng sai phân mùa vụ và mô hình airline, ACF mới khớp lý thuyết ở các độ trễ 1, 11, 12, 13 (5.2(b)).
-\item \emph{Cụm biến động.} Suất sinh lợi DAX có phần dư bình phương còn tự tương quan rất mạnh ($p<0.0001$ ở 4.3(e), $p=5.6\times10^{-8}$ ở 6.3(d)). Điều này không làm sai các kết quả về trung bình, nhưng làm các kết quả dựa trên phương sai không đổi (dải $\pm1.96/\sqrt n$, khoảng dự báo) kém tin cậy.
-\item \emph{Dữ liệu ngắn.} Với $n$ từ $98$ đến $114$, các ước lượng chệch rõ so với giá trị tiệm cận (Yule--Walker có độ chệch $-0.05$ ở 4.3(c); thống kê mẫu của AR(1) bị chệch ở 4.2(a)), và đánh giá cuốn chiếu chỉ có $20$ gốc ở Nile nên kết luận ở đó không chắc chắn.
+\item \emph{Xu thế.} Làm sai số chuẩn giả định iid quá lạc quan: với Hồ Huron, $t$ của hệ số dốc giảm từ $-6.0$ xuống $-2.65$ khi tính đến tự tương quan (4.1(c)). Với DAX, xu thế ngẫu nhiên khiến trừ xu thế vô ích còn sai phân hiệu quả (5.1(a)), và dẫn đến hồi quy giả mạo khi ghép hai chuỗi như vậy (5.1(b)).
+\item \emph{Đổi mức.} Lần đổi mức của Nile quanh 1899 làm ADF và KPSS cùng bác bỏ (5.3(b)), đưa $\hat\rho(1)$ của sai phân xuống $-0.40$ (gần dấu hiệu sai phân thừa) và khiến trung bình mở rộng thắng ARIMA từ chân trời $h=2$ (6.3(b)): mô hình $d=1$ không nhất thiết hợp với chuỗi chỉ đổi mức một lần.
+\item \emph{Mùa vụ.} ACF của sai phân bậc một của AirPassengers vẫn lớn ở độ trễ 12 và 24, và ADF vẫn không bác bỏ sau sai phân thường (5.1(a), 5.3(b)); chỉ với sai phân mùa vụ và mô hình airline, ACF mới khớp lý thuyết ở các độ trễ 1, 11, 12, 13 (5.2(b)).
+\item \emph{Cụm biến động.} Phần dư bình phương của DAX còn tự tương quan rất mạnh ($p<0.0001$ ở 4.3(e), $p=5.6\times10^{-8}$ ở 6.3(d)): không làm sai các kết quả về trung bình, nhưng làm kém tin cậy các kết quả dựa trên phương sai không đổi (dải $\pm1.96/\sqrt n$, khoảng dự báo).
+\item \emph{Dữ liệu ngắn.} Với $n$ từ $98$ đến $114$, ước lượng chệch rõ so với giá trị tiệm cận (Yule--Walker chệch $-0.05$ ở 4.3(c); thống kê mẫu của AR(1) ở 4.2(a)), và đánh giá cuốn chiếu ở Nile chỉ có $20$ gốc nên kết luận không chắc chắn.
 \end{itemize}
 
 \subsection{Mức độ thỏa mãn giả thiết}
 
-Lý thuyết ở Chương 2 dựa trên các giả thiết sau, và dữ liệu thực thỏa mãn chúng ở những mức khác nhau:
 \begin{itemize}[leftmargin=*,itemsep=2pt]
-\item \emph{Tính dừng.} Không thỏa với Hồ Huron (xu thế giảm), Nile (đổi mức), AirPassengers và DAX (log giá). Hệ quả là các công cụ dành cho chuỗi dừng (ACF, ARMA) phải áp dụng sau khi khử xu thế hoặc lấy sai phân.
-\item \emph{Nhiễu iid.} Thỏa ở mức xấp xỉ với phần dư của AR(2) Hồ Huron và của mô hình Nile, nhưng không thỏa với suất sinh lợi DAX (cụm biến động) và với phần dư của AR(2) Linh miêu (còn tự tương quan). Hệ quả là các dải tin cậy và khoảng dự báo dựa trên nhiễu iid chỉ đáng tin có điều kiện.
-\item \emph{Nhân quả và khả nghịch.} Thỏa ở mọi mô hình đã khớp; tuy nhiên có hai mô hình sát biên: AR(11) của Linh miêu (môđun nghiệm nhỏ nhất $1.016$) và mô hình airline (nghiệm MA có môđun $1.05$). Đây là dấu hiệu mô hình bậc cao hoặc sai phân nhiều có thể suýt chạm biên.
-\item \emph{Mô hình đúng bậc.} Chỉ đúng một cách gần đúng: AIC và BIC chọn bậc khác nhau ở Linh miêu ($11$ và $2$), và AR(2) chưa đủ cho chu kỳ của nó.
-\item \emph{Phân phối chuẩn của sai số.} Các mô phỏng của nhóm dùng nhiễu chuẩn; trên dữ liệu thực nhóm chưa kiểm tra riêng tính chuẩn, nên các khoảng dự báo dựa trên phân phối chuẩn (6.2(a)) chưa được xác nhận về giả thiết này. Độ phủ mô phỏng thấp hơn $95\%$ một chút ($93.4$--$94.7\%$) là kết quả của việc tham số phải ước lượng, không phải của giả thiết chuẩn.
+\item \emph{Tính dừng.} Không thỏa với Hồ Huron (xu thế giảm), Nile (đổi mức), AirPassengers và DAX (log giá); nên các công cụ cho chuỗi dừng (ACF, ARMA) chỉ áp dụng sau khi khử xu thế hoặc sai phân.
+\item \emph{Nhiễu iid.} Xấp xỉ thỏa với phần dư của AR(2) Hồ Huron và của mô hình Nile; không thỏa với suất sinh lợi DAX (cụm biến động) và phần dư AR(2) Linh miêu (còn tự tương quan). Vì vậy các dải tin cậy và khoảng dự báo dựa trên nhiễu iid chỉ đáng tin có điều kiện.
+\item \emph{Nhân quả và khả nghịch.} Thỏa ở mọi mô hình đã khớp, nhưng hai mô hình sát biên: AR(11) của Linh miêu (môđun nghiệm nhỏ nhất $1.016$) và airline (nghiệm MA môđun $1.05$).
+\item \emph{Mô hình đúng bậc.} Chỉ gần đúng: AIC và BIC chọn bậc khác nhau ở Linh miêu ($11$ và $2$), và AR(2) chưa đủ cho chu kỳ của nó.
+\item \emph{Sai số chuẩn.} Các mô phỏng dùng nhiễu chuẩn; trên dữ liệu thực nhóm chưa kiểm tra riêng tính chuẩn nên khoảng dự báo dựa trên phân phối chuẩn (6.2(a)) chưa được xác nhận về giả thiết này. Độ phủ mô phỏng thấp hơn $95\%$ một chút ($93.4$--$94.7\%$) là do tham số phải ước lượng, không phải do giả thiết chuẩn.
 \end{itemize}
 
 \subsection{Hạn chế}
 
-Nghiên cứu này có những hạn chế sau, và người đọc nên lưu ý khi diễn giải kết quả:
 \begin{itemize}[leftmargin=*,itemsep=2pt]
-\item \emph{Cỡ mẫu và số gốc.} Ba trong sáu bộ dữ liệu chỉ có từ $98$ đến $114$ quan sát, và đánh giá cuốn chiếu ở Nile chỉ có $20$ gốc, nên các so sánh giữa phương pháp ở đó có độ bất định lớn.
-\item \emph{Thiết kế mô phỏng.} Số lần lặp $B=1000$--$2000$ cho sai số Monte Carlo cỡ $0.005$--$0.007$; các mô phỏng dùng mô hình đã khớp làm ``sự thật'' nên kết quả phụ thuộc vào mô hình đó. Ngưỡng xếp loại ($3$ MCSE, mức ý nghĩa $5\%$) do nhóm đặt ra, và việc xếp loại giữa ``phù hợp'' và ``phù hợp một phần'' ở ranh giới còn mang tính chủ quan.
-\item \emph{Phần mềm và tối ưu số.} Cùng một đại lượng có thể khác nhau tùy cách tính (sai số chuẩn của hệ số ARIMA phụ thuộc cách ước lượng ma trận thông tin; AIC không so sánh trực tiếp được giữa các mô hình có cách sai phân khác nhau), và các ước lượng cực đại hợp lý phụ thuộc thuật toán tối ưu. Nhóm đã nêu rõ cách tính khi báo cáo, nhưng sai khác nhỏ giữa các thư viện vẫn có thể xảy ra.
-\item \emph{Phạm vi.} Chỉ có sáu bộ dữ liệu, trong đó DAX được dùng hai dạng và chỉ là một chỉ số thị trường; mô hình cho phương sai thay đổi (GARCH), kiểm định nghiệm đơn vị mùa vụ và kiểm tra tính chuẩn không nằm trong phạm vi. Phần đồng tích hợp chỉ được xét ngắn như một mở rộng.
-\item \emph{Phương sai dài hạn.} Ở nội dung sai phân thừa (5.3(a)), ước lượng phương sai dài hạn không giảm về $0$ như lý thuyết (còn tăng ở Nile); nhóm cho rằng nguyên nhân là số độ trễ cắt cụt nhỏ nhưng chưa kiểm tra bằng các giá trị $K$ khác.
+\item \emph{Cỡ mẫu và số gốc.} Ba trong sáu bộ chỉ có $98$--$114$ quan sát, và đánh giá cuốn chiếu ở Nile chỉ có $20$ gốc, nên các so sánh ở đó có độ bất định lớn.
+\item \emph{Thiết kế mô phỏng.} $B=1000$--$2000$ cho sai số Monte Carlo cỡ $0.005$--$0.007$; mô phỏng dùng mô hình đã khớp làm ``sự thật'' nên phụ thuộc vào mô hình đó. Ngưỡng xếp loại ($3$ MCSE, mức $5\%$) do nhóm đặt, và việc phân biệt ``phù hợp'' với ``phù hợp một phần'' ở ranh giới còn chủ quan.
+\item \emph{Phần mềm và tối ưu số.} Cùng một đại lượng có thể khác nhau tùy cách tính (sai số chuẩn của hệ số ARIMA phụ thuộc cách ước lượng ma trận thông tin; AIC không so được giữa các cách sai phân khác nhau), và ước lượng cực đại hợp lý phụ thuộc thuật toán tối ưu. Nhóm đã nêu cách tính khi báo cáo, nhưng sai khác nhỏ giữa các thư viện vẫn có thể xảy ra.
+\item \emph{Phạm vi.} Chỉ sáu bộ dữ liệu, DAX dùng hai dạng và chỉ là một chỉ số; GARCH, kiểm định nghiệm đơn vị mùa vụ và kiểm tra tính chuẩn nằm ngoài phạm vi; đồng tích hợp chỉ xét ngắn như mở rộng.
+\item \emph{Phương sai dài hạn.} Ở sai phân thừa (5.3(a)), ước lượng phương sai dài hạn không giảm về $0$ như lý thuyết (còn tăng ở Nile); nhóm cho rằng do số độ trễ cắt cụt nhỏ nhưng chưa kiểm tra bằng các $K$ khác.
 \end{itemize}

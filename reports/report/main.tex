@@ -11,6 +11,8 @@
 \usepackage{etoolbox}
 \usepackage{listings}  % khối mã Python có tô màu cú pháp (thuần LaTeX, không cần shell-escape)
 \usepackage[hidelinks]{hyperref}
+\usepackage{tocloft}
+\setlength{\cftbeforesecskip}{4pt}\setlength{\cftbeforesubsecskip}{0pt}
 
 % --- đường dẫn hình/bảng (script 06 đổi ../figures, ../tables thành figures, tables cho Overleaf) ---
 \newcommand{\figdir}{../figures}
@@ -18,7 +20,7 @@
 
 % --- ký hiệu và macro dùng chung ---
 \newcommand{\TODO}[1]{{\color{red}\textbf{[TODO(nhóm): #1]}}}
-\newcommand{\figx}[2]{\begin{figure}[H]\centering\includegraphics[width=\linewidth]{\figdir/#1.png}\caption{#2}\label{fig:#1}\end{figure}}
+\newcommand{\figx}[2]{\begin{figure}[H]\centering\includegraphics[width=0.84\linewidth]{\figdir/#1.png}\caption{#2}\label{fig:#1}\end{figure}}
 
 % --- ký hiệu toán và khung kết quả lý thuyết (Chương 2) ---
 \newcommand{\E}{\mathrm{E}}
@@ -35,7 +37,7 @@
 \renewcommand{\thenoidung}{\alph{noidung}}
 \newcommand{\noidung}[1]{\refstepcounter{noidung}\Needspace{6\baselineskip}\par\medskip\noindent\textbf{\thenoidung) #1}\par\nopagebreak\smallskip}
 % sáu thành phần của mỗi nội dung kiểm chứng và nhãn cấp 5: (i), (ii), (iii)
-\newcommand{\tp}[1]{\par\smallskip\noindent\textbf{\textit{#1.}}\ }
+\newcommand{\tp}[1]{\par\Needspace{4\baselineskip}\smallskip\noindent\textbf{\textit{#1.}}\ }
 \newcommand{\bodl}[1]{\par\noindent\textit{#1}\ }
 
 % --- định dạng các cấp tiêu đề ---
@@ -49,11 +51,11 @@
 \pretocmd{\subsection}{\Needspace{9\baselineskip}}{}{}
 \pretocmd{\subsubsection}{\Needspace{8\baselineskip}}{}{}
 \setcounter{secnumdepth}{3}
-\setcounter{tocdepth}{3}
+\setcounter{tocdepth}{2}
 \counterwithin{figure}{section}
 \counterwithin{table}{section}
 \captionsetup{font=small,labelfont=bf}
-\setstretch{1.08}
+\setstretch{1.04}
 \setlength{\parindent}{1cm}
 \renewcommand*{\contentsname}{\LARGE\textbf{Mục lục}}
 % màu cú pháp cho khối mã (đủ tương phản khi in đen trắng)
@@ -74,6 +76,8 @@
   breaklines=true,breakatwhitespace=false,postbreak=\mbox{\textcolor{mcm}{$\hookrightarrow$}\space},
   upquote=true}
 \lstnewenvironment{codeblock}{\lstset{style=py}}{}
+\BeforeBeginEnvironment{codeblock}{\par\noindent\begin{minipage}{\linewidth}}  % không ngắt khối mã giữa hai trang
+\AfterEndEnvironment{codeblock}{\end{minipage}\par}
 
 \begin{document}
 
@@ -150,7 +154,7 @@
 \cfoot{Trang \thepage}
 \setcounter{page}{1}
 
-\tableofcontents
+{\setstretch{0.84}\tableofcontents\thispagestyle{fancy}}
 \newpage
 
 % ================= NỘI DUNG =================
