@@ -1,0 +1,15 @@
+\begin{table}[H]
+\centering\small
+\caption{Độ trôi và tiêu chuẩn thông tin của các mô hình ARIMA đã khớp}\label{tab:tab_b12_05_fit_stats}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lrrrr}
+\toprule
+Mô hình & $\hat{\mu}$\_W = ĉ/$\hat{\phi}$(1) & AIC & BIC & số quan sát \\
+\midrule
+NI: ARIMA(0,1,1), không trôi & 0 & 1269.1 & 1274.3 & 100 \\
+DP: ARIMA(0,1,0) + trôi & $6.471\times10^{-4}$ & -11733 & -11722 & 1860 \\
+DP: ARIMA(1,1,0) + trôi & $6.517\times10^{-4}$ & -11731 & -11715 & 1860 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}\par\vspace{2pt}{\footnotesize\textit{Ghi chú:} AIC/BIC chỉ so sánh được giữa các mô hình có cùng $d$ và cùng dữ liệu.}
+\end{table}

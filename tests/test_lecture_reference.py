@@ -266,11 +266,13 @@ def test_zz_write_table():
     for g, k, exp, tol, desc in C:
         got = float(GROUPS[g]()[k])
         ok = abs(got - exp) <= tol
-        status = "khớp" if ok else ("lệch (xfail)" if f"{g}.{k}" in XFAIL else "LỆCH")
-        rows.append({"nội dung": desc, "bài giảng": exp, "tái lập": got, "dung sai": tol, "khớp?": status})
+        status = "Khớp" if ok else ("Lệch nhẹ (xfail)" if f"{g}.{k}" in XFAIL else "LỆCH")
+        rows.append({"nội dung": desc, "giá trị bài giảng": exp, "giá trị tái lập": got, "dung sai": tol, "kết quả": status,
+                     "lý do (nếu lệch)": XFAIL.get(f"{g}.{k}", "")})
     df = pd.DataFrame(rows)
     TABLE_DIR.mkdir(parents=True, exist_ok=True)
-    (TABLE_DIR / "lecture_reference_check.md").write_text(
-        f"# Đối chiếu giá trị bài giảng và giá trị tái lập\n\nTổng {len(df)} giá trị; khớp {(df['khớp?'] == 'khớp').sum()}.\n\n"
-        + to_markdown(df, "{:.6g}"), encoding="utf-8")
-    df.to_csv(TABLE_DIR / "lecture_reference_check.csv", index=False, encoding="utf-8")
+    n_ok = int((df["kết quả"] == "Khớp").sum())
+    fmt = {"Giá trị bài giảng": "{:.6g}", "Giá trị tái lập": "{:.6g}", "Dung sai": "{:.3g}"}
+    caption = f"Đối chiếu giá trị in trong bài giảng với giá trị tái lập bằng code ({n_ok}/{len(df)} khớp trong dung sai làm tròn)"
+    (TABLE_DIR / "lecture_reference_check.md").write_text(to_markdown(df, caption, fmt), encoding="utf-8")
+    df.to_csv(TABLE_DIR / "lecture_reference_check.csv", index=False, encoding="utf-8-sig")

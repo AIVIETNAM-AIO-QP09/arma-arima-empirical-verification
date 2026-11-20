@@ -1,3 +1,0 @@
-| index | tần suất bác bỏ β₁ = 0 (mức 5%) | MCSE | danh nghĩa |
-|---|---|---|---|
-| hai bước ngẫu nhiên độc lập, n = 100 | 0.769 | 0.009424 | 0.05 |

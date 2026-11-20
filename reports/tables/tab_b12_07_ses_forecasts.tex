@@ -1,0 +1,16 @@
+\begin{table}[H]
+\centering\small
+\caption{NI: dự báo 1971 bằng bốn cách (ARIMA(0,1,1), đệ quy làm trơn tay, `SimpleExpSmoothing`)}\label{tab:tab_b12_07_ses_forecasts}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{>{\raggedright\arraybackslash}p{\dimexpr 0.720\linewidth-2\tabcolsep\relax}r}
+\toprule
+Cách tính & dự báo 1971 \\
+\midrule
+ARIMA(0,1,1) & 798.5 \\
+đệ quy tay, $\alpha$ = 1+$\hat{\theta}$ = 0.2666 & 798.5 \\
+SimpleExpSmoothing ($\alpha$ cố định, $\ell_{1}$ = y$_{1}$) & 798.5 \\
+SimpleExpSmoothing ($\hat{\alpha}$ = 0.2457 tối ưu) & 805.3 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

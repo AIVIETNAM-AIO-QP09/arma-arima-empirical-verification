@@ -1,0 +1,128 @@
+"""Chú thích (caption), nhãn cột chỉ số và ghi chú của mọi hình và bảng. Tên: fig_b<bài>_<mục>_<nội dung>, tab_b<bài>_<mục>_<nội dung>.
+
+Chú thích mô tả *cái gì được vẽ/tính* (không diễn giải kết luận). Toán dùng $...$ (LaTeX).
+"""
+
+
+def _t(caption, index=None, note=None, fmt=None):
+    return {k: v for k, v in dict(caption=caption, index=index, note=note, fmt=fmt).items() if v is not None}
+
+
+DS = "Bộ dữ liệu"
+ARTIFACTS = {
+    # ---------------- Khám phá dữ liệu ----------------
+    "tab_eda_descriptive": _t("Thống kê mô tả của biến được mô hình hóa trong sáu bộ dữ liệu", DS,
+                              "n: số quan sát; SD: độ lệch chuẩn (mẫu số $n-1$); độ lệch: skewness; kurtosis dư: kurtosis trừ 3. HU, NI: thang gốc; LY: $\\log_{10}$; DR: \\%; AP, DP: log."),
+    # ---------------- Bài 11 ----------------
+    "tab_b11_01_stationarity": _t("Kiểm tra trực quan tính dừng: trung bình và phương sai trượt, $\\hat\\rho(1)$ và $Q_{LB}(10)$ của chuỗi và của bình phương độ lệch", DS,
+                                  "Cửa sổ trượt 20 năm (HU, LY) và 250 ngày giao dịch (DR). $Q_{LB}$ tính trên mức nước gốc của HU (có xu thế)."),
+    "tab_b11_02_gamma_properties": _t("Tính chất của hàm tự hiệp phương sai mẫu với mẫu số $n$ và $n-h$", DS,
+                                      "Ma trận $\\hat\\Gamma$ cỡ $n\\times n$; trị riêng nhỏ nhất âm nghĩa là không xác định không âm."),
+    "tab_b11_03_mean_se": _t("Sai số chuẩn của trung bình mẫu: giả định iid và có xét phụ thuộc (Định lý 1)", DS,
+                             "$\\hat\\tau$ Bartlett cắt cụt ở $K=\\lfloor4(n/100)^{2/9}\\rfloor$; công thức Định lý 1(a) thay $\\hat\\gamma$ chỉ dùng độ trễ $h\\le n/4$; dấu – nghĩa là công thức plug-in cho phương sai âm (ACF dao động, LY), không dùng được."),
+    "tab_b11_03_slope_se": _t("Hệ số dốc xu thế của hồ Huron: OLS (sai số iid) so với ML có sai số AR(2)", "Phương pháp"),
+    "tab_b11_03_coverage": _t("Độ phủ của khoảng tin cậy 95% cho trung bình, AR(1) với $\\phi=0.6$, $n=100$, $B=2000$", "Khoảng tin cậy",
+                              "MCSE: sai số Monte Carlo $\\sqrt{p(1-p)/B}$. Trung bình thật $\\mu=0$."),
+    "tab_b11_04_acf_ljungbox": _t("ACF mẫu: dải tin cậy, số độ trễ vượt dải ($h\\le20$) và kiểm định Ljung–Box với $H=10$", "Chuỗi",
+                                  "Hai cột $Q_{LB}$ (tự cài đặt và thư viện) trùng nhau; dải Bartlett giả định MA(1) với $\\hat\\rho(1)$ của chính chuỗi (không áp dụng cho $r_t^2$)."),
+    "tab_b11_04_simulation": _t("Nhiễu iid $N(0,1)$, $n=200$, $B=2000$: tần suất vượt dải và phân phối của $Q_{LB}(10)$", "Đại lượng"),
+    "tab_b11_05_psi_acf": _t("AR(2) khớp bằng ML: trọng số $\\psi_j$ và ACF lý thuyết, cài đặt tay so với statsmodels", DS),
+    "tab_b11_06_ar1_acf": _t("HU: ACF mẫu của phần dư khử xu thế so với $\\hat\\phi^h$ của mô hình AR(1)", "Độ trễ h"),
+    "tab_b11_06_ar1_forecast_mse": _t("HU, AR(1): MSE dự báo $h$ bước, công thức $\\sigma^2(1-\\phi^{2h})/(1-\\phi^2)$ và statsmodels", "Chân trời h"),
+    "tab_b11_06_ar1_simulation": _t("AR(1) với $(\\hat\\phi,\\hat\\sigma)$ của HU, $n=98$, $B=2000$: kiểm tra $\\gamma(0)$ và $\\rho(1)$", "Đại lượng"),
+    "tab_b11_07_yule_walker": _t("Ước lượng Yule–Walker giải bằng tay: so với thư viện, môđun nghiệm và tính nhân quả", None),
+    "tab_b11_08_ar2_triangle": _t("AR(2): vị trí trong tam giác nhân quả, loại nghiệm và chu kỳ", "Mô hình"),
+    "tab_b11_09_ma1": _t("MA(1): $\\rho(1)=\\theta/(1+\\theta^2)$, khả nghịch và cặp mô hình $(\\theta,\\sigma^2)$, $(1/\\theta,\\theta^2\\sigma^2)$", "Mô hình"),
+    "tab_b11_09_ma2_simulation": _t("MA(2) với $\\hat\\theta$ của HU, $n=98$, $B=2000$: ACF mẫu cắt cụt sau độ trễ 2", "Độ trễ h",
+                                    "Dải Bartlett chỉ tính cho $h>q=2$."),
+    "tab_b11_10_arma11": _t("ARMA(1,1) khớp bằng ML: nghiệm AR/MA, công thức đóng và cài đặt tổng quát", DS),
+    "tab_b11_10_overparameterized": _t("ARMA(1,1) khớp cho nhiễu trắng $n=200$: ước lượng và sai số chuẩn", "Tham số"),
+    "tab_b11_10_cancellation": _t("ARMA(1,1) khớp cho nhiễu trắng: dấu hiệu triệt tiêu nghiệm chung", "Đại lượng"),
+    "tab_b11_11_pacf": _t("PACF mẫu: Durbin–Levinson tự cài đặt so với statsmodels, độ trễ vượt dải và bậc AR gợi ý", DS),
+    "tab_b11_12_estimators": _t("Ước lượng AR(2) bằng Yule–Walker, OLS và cực đại hợp lý", None,
+                                "SE của Yule–Walker là SE tiệm cận $\\sqrt{\\operatorname{diag}(\\hat\\sigma^2\\hat\\Gamma_2^{-1}/n)}$."),
+    "tab_b11_12_simulation": _t("AR(2) với $\\hat\\phi$ của LY, $n=114$, $B=2000$: phân phối mẫu của $\\hat\\phi$", None),
+    "tab_b11_13_ly_ic": _t("LY: AIC và BIC của AR($p$), $p=1,\\dots,14$ (ML)", "Bậc p"),
+    "tab_b11_13_hu_models": _t("HU: so sánh các mô hình sai số ARMA cho hồi quy xu thế", "Sai số u_t",
+                               "$k$ gồm các hệ số ARMA, hằng số, hệ số dốc và $\\sigma^2$; $Q_{LB}(10)$ với $10-p-q$ bậc tự do."),
+    "tab_b11_13_dr_grid": _t("DR: AIC và BIC của ARMA($p,q$), $p,q\\le2$", "(p, q)"),
+    "tab_b11_13_ly_rolling": _t("LY: sai số dự báo 1 bước trên gốc cuốn chiếu, 1915--1934 (khớp lại mỗi năm)", "Mô hình"),
+    "tab_b11_14_residual_diagnostics": _t("Chẩn đoán phần dư của các mô hình được chọn (checklist Bài 11)", None,
+                                          "$Q_{LB}$ của phần dư dùng $H-p-q$ bậc tự do; của phần dư bình phương dùng $H$ bậc tự do."),
+    # ---------------- Bài 12 ----------------
+    "tab_b12_01_levels_vs_differences": _t("Chuỗi gốc, khử xu thế tuyến tính và sai phân bậc một: độ lệch chuẩn và $\\hat\\rho(h)$", DS),
+    "tab_b12_02_rw_variance": _t("Bước ngẫu nhiên mô phỏng với $(\\hat\\delta,\\hat\\sigma)$ của DP: $\\operatorname{Var}Y_t$ và $EY_t$", "t",
+                                 "$B=2000$ đường, $Y_0=0$."),
+    "tab_b12_02_rw_correlation": _t("Bước ngẫu nhiên mô phỏng: $\\operatorname{Corr}(Y_t,Y_{t+h})$ so với $\\sqrt{t/(t+h)}$", "(t, h)"),
+    "tab_b12_02_rw_sample_acf": _t("Trung bình ACF mẫu của bước ngẫu nhiên ($n=200$, $B=2000$)", "Độ trễ h"),
+    "tab_b12_02_spurious_regression": _t("Hồi quy giả mạo: tần suất bác bỏ $\\beta_1=0$ ở mức 5% cho hai bước ngẫu nhiên độc lập ($n=100$)", "Kịch bản"),
+    "tab_b12_03_overdifferencing": _t("Sai phân thừa: $\\hat\\rho(1)$, phương sai dài hạn và $\\hat\\theta$ MA(1)", None,
+                                      "Phương sai dài hạn: ước lượng Bartlett cắt cụt ở $K=\\lfloor4(n/100)^{2/9}\\rfloor$."),
+    "tab_b12_03_cost_simulation": _t("Chi phí của sai phân thừa và thiếu: mô phỏng so với lý thuyết", "Đại lượng"),
+    "tab_b12_04_unit_root_tests": _t("Kiểm định nghiệm đơn vị ADF (H$_0$: có nghiệm đơn vị) và KPSS (H$_0$: dừng)", None,
+                                     "p-value của KPSS được nội suy từ bảng nên bị chặn trong $[0.01,0.10]$; \"$\\le0.01$\" và \"$\\ge0.10$\" nghĩa là ngoài khoảng bảng. Cột độ trễ: số hạng $\\nabla Y_{t-i}$ của ADF (chọn theo AIC) hoặc độ trễ Newey--West của KPSS (`nlags='auto'`)."),
+    "tab_b12_04_null_distribution": _t("Phân phối của thống kê $\\tau$ (có hệ số chặn) dưới H$_0$: bước ngẫu nhiên $n=200$, $B=2000$", "Đại lượng"),
+    "tab_b12_04_adf_power": _t("Tỷ lệ bác bỏ nghiệm đơn vị của ADF (5%, có hệ số chặn, không độ trễ), $B=1000$", None),
+    "tab_b12_05_arima_params": _t("Tham số ARIMA đã khớp: ước lượng, sai số chuẩn và thống kê $z$", None),
+    "tab_b12_05_fit_stats": _t("Độ trôi và tiêu chuẩn thông tin của các mô hình ARIMA đã khớp", "Mô hình",
+                               "AIC/BIC chỉ so sánh được giữa các mô hình có cùng $d$ và cùng dữ liệu."),
+    "tab_b12_05_rw_manual_vs_arima": _t("DP: $\\hat\\delta$, $\\hat\\sigma^2$ tính tay từ $\\nabla y$ so với ARIMA(0,1,0) có độ trôi", "Tham số"),
+    "tab_b12_06_psi_weights": _t("Trọng số $\\Psi_k$ (ảnh hưởng của một cú sốc đơn vị lên $Y_{t+k}$) và giới hạn $\\theta(1)/\\phi(1)$", "Mô hình"),
+    "tab_b12_07_ses_forecasts": _t("NI: dự báo 1971 bằng bốn cách (ARIMA(0,1,1), đệ quy làm trơn tay, `SimpleExpSmoothing`)", "Cách tính"),
+    "tab_b12_07_local_level": _t("NI: phương sai của mô hình mức cục bộ, từ ARIMA(0,1,1) và từ `UnobservedComponents`", "Nguồn ước lượng"),
+    "tab_b12_08_forecast_variance": _t("Phương sai sai số dự báo: công thức tay (Ψ và công thức đóng) so với statsmodels", DS),
+    "tab_b12_08_coverage": _t("Độ phủ mô phỏng của khoảng dự báo 95% ARIMA(0,1,1) (khớp lại mô hình đúng mỗi lần)", "Thiết kế mô phỏng"),
+    "tab_b12_09_ap_backtransform": _t("AP: dự báo airline trên thang gốc, trung vị và trung bình, so với giá trị thực", "Tháng"),
+    "tab_b12_09_dp_forecast": _t("DP: dự báo giá DAX từ bước ngẫu nhiên có trôi (giá cuối 5473.72)", "Chân trời h (ngày giao dịch)"),
+    "tab_b12_10_sd": _t("AP (log, huấn luyện): độ lệch chuẩn sau các phép sai phân", "Chuỗi"),
+    "tab_b12_10_airline_acf": _t("AP: ACF của $\\nabla\\nabla_{12}$ log tại các độ trễ đặc trưng so với giá trị lý thuyết của mô hình airline", "Độ trễ h"),
+    "tab_b12_10_seasonality_models": _t("AP: ba cách mô hình hóa mùa vụ, AIC và RMSE trên tập kiểm định 1959--1960", "Mô hình",
+                                        "AIC không so sánh trực tiếp được với bài giảng (cách sai phân khác nhau)."),
+    "tab_b12_11_ap_benchmarks": _t("AP: độ chính xác trên tập kiểm định 24 tháng (thang gốc)", "Phương pháp", "MASE chia cho MAE của naive mùa vụ ($s=12$) trong mẫu huấn luyện."),
+    "tab_b12_11_ni_benchmarks": _t("NI: độ chính xác dự báo 20 năm cuối (huấn luyện 1871--1950, gốc cố định)", "Phương pháp"),
+    "tab_b12_11_dp_one_step": _t("DP: độ chính xác dự báo 1 bước trên 360 ngày kiểm định (log, đơn vị \\%)", "Phương pháp"),
+    "tab_b12_11_dp_multistep": _t("DP: độ chính xác dự báo đa bước từ gốc cố định $t=1500$ (thang giá)", "Phương pháp"),
+    "tab_b12_12_ni_rolling": _t("NI: RMSE gốc cuốn chiếu theo chân trời, gồm cả bước chọn mô hình lồng trong mỗi gốc", "Phương pháp"),
+    "tab_b12_12_ap_rolling_by_horizon": _t("AP: RMSE gốc cuốn chiếu theo chân trời $h=1,\\dots,12$", "Chân trời h (tháng)"),
+    "tab_b12_12_ap_one_step": _t("AP: RMSE 1 bước, gốc $t=120,\\dots,143$", "Phương pháp"),
+    "tab_b12_12_dp_rolling": _t("DP: dự báo 1 bước trên 360 ngày với tham số cố định và khớp lại định kỳ", "Phương pháp"),
+    "tab_b12_13_diebold_mariano": _t("Kiểm định Diebold–Mariano trên sai số 1 bước của gốc cuốn chiếu", None),
+    "tab_b12_13_ranking": _t("AP: thứ hạng bốn phương pháp theo RMSE và theo MAE trên tập kiểm định", "Phương pháp"),
+    "tab_b12_13_loss_functional": _t("Hàm mất mát và phiếm hàm: cực tiểu trên lưới của tổng bình phương/tuyệt đối (AP, huấn luyện)", "Hàm mất mát"),
+    "tab_b12_14_checklist": _t("Checklist báo cáo dự báo ARIMA cho ba bộ dữ liệu", "Mục"),
+    "tab_b12_ext_cointegration": _t("Mở rộng: hồi quy $\\log\\mathrm{DAX}$ theo $\\log\\mathrm{SMI}$ và kiểm định Engle--Granger", "Đại lượng"),
+    # ---------------- Hình ----------------
+    **{f"fig_eda_{c}_overview": _t(t) for c, t in {
+        "HU": "HU: mực nước hồ Huron với xu thế tuyến tính OLS, ACF và PACF mẫu",
+        "LY": "LY: $\\log_{10}$ số linh miêu bị bẫy, ACF và PACF mẫu",
+        "DR": "DR: suất sinh lợi log ngày của DAX, ACF và PACF mẫu",
+        "NI": "NI: lưu lượng sông Nile (trung bình trước và sau 1899), ACF và PACF mẫu",
+        "AP": "AP: log số hành khách (huấn luyện | kiểm định), ACF và PACF mẫu",
+        "DP": "DP: log giá DAX (huấn luyện | kiểm định), ACF và PACF mẫu"}.items()},
+    "fig_b11_01_series_rolling": _t("Chuỗi, trung bình trượt (trái) và phương sai trượt (phải) của HU, LY, DR"),
+    "fig_b11_02_acf_denominators": _t("$\\hat\\rho(h)$ với mẫu số $n$ và $n-h$ ở mọi độ trễ $h=1,\\dots,n-1$"),
+    "fig_b11_04_acf_bands": _t("ACF mẫu và dải 95% (đứt nét: iid $\\pm1.96/\\sqrt n$; chấm: Bartlett MA(1)); độ trễ vượt dải tô cam đỏ"),
+    "fig_b11_05_acf_theory": _t("ACF mẫu (que) và ACF lý thuyết của AR(2) khớp bằng ML (đường)"),
+    "fig_b11_08_ar2_triangle": _t("Tam giác nhân quả AR(2) với điểm HU, LY (trái) và ACF mẫu của LY so với AR(2)-YW (phải)"),
+    "fig_b11_09_ma2_acf": _t("MA(2) mô phỏng: trung bình ACF mẫu so với ACF lý thuyết cắt cụt sau độ trễ 2"),
+    "fig_b11_11_pacf": _t("PACF mẫu (Durbin--Levinson) của HU đã khử xu thế, LY và DR"),
+    "fig_b11_13_ic_ly": _t("LY: AIC và BIC (trừ giá trị nhỏ nhất) theo bậc AR; dấu sao là bậc được chọn"),
+    "fig_b11_14_residual_acf": _t("ACF của phần dư (trái) và của phần dư bình phương (phải) cho các mô hình được chọn"),
+    "fig_b12_01_levels_vs_differences": _t("Chuỗi, ACF của chuỗi gốc và ACF của sai phân bậc một cho NI, AP (log, huấn luyện), DP (log)"),
+    "fig_b12_02_rw_variance": _t("Bước ngẫu nhiên mô phỏng: $\\operatorname{Var}Y_t$ so với $t\\hat\\sigma^2$ (trái), 50 đường mẫu (phải)"),
+    "fig_b12_04_dickey_fuller_null": _t("Phân phối mô phỏng của $\\tau$ dưới H$_0$ so với $N(0,1)$ và giá trị tới hạn 5%"),
+    "fig_b12_05_drift_forecast": _t("DP: dự báo 100 ngày giao dịch của log DAX có và không có độ trôi"),
+    "fig_b12_06_psi_weights": _t("Ảnh hưởng của một cú sốc đơn vị lên $Y_{t+k}$ ($\\Psi_k$)"),
+    "fig_b12_08_se_growth": _t("Sai số chuẩn của dự báo $h$ bước ($\\sigma=1$): $d=0$ so với $d=1$"),
+    "fig_b12_08_ni_forecast": _t("NI: dự báo ARIMA(0,1,1) và khoảng dự báo 95% cho 20 năm tiếp theo"),
+    "fig_b12_09_ap_forecast": _t("AP: dự báo airline 1959--1960 trên thang gốc (trung vị, khoảng 95%) và giá trị thực"),
+    "fig_b12_10_airline_acf": _t("ACF của $\\nabla\\nabla_{12}$ log AP (que) và ACF lý thuyết của mô hình airline (chấm)"),
+    "fig_b12_12_ap_rmse_by_horizon": _t("AP: RMSE gốc cuốn chiếu theo chân trời, airline so với naive mùa vụ"),
+    "fig_b12_14_residual_acf": _t("ACF của phần dư (trái) và của phần dư bình phương (phải) cho NI, AP, DP"),
+}
+
+
+def caption_of(name: str) -> str:
+    if name not in ARTIFACTS:
+        raise KeyError(f"'{name}' chưa có caption trong as3179ts/captions.py")
+    return ARTIFACTS[name]["caption"]

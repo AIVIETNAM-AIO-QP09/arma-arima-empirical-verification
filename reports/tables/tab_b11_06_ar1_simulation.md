@@ -1,0 +1,6 @@
+**AR(1) với $(\hat\phi,\hat\sigma)$ của HU, $n=98$, $B=2000$: kiểm tra $\gamma(0)$ và $\rho(1)$**
+
+| Đại lượng | lý thuyết | Trung bình mô phỏng | MCSE |
+|---|---|---|---|
+| γ̂(0) (mẫu số n) | 1.286 | 1.176 | 0.0076 |
+| ρ̂(1) | 0.7835 | 0.7375 | 0.0016 |

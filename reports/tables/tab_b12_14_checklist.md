@@ -1,0 +1,12 @@
+**Checklist báo cáo dự báo ARIMA cho ba bộ dữ liệu**
+
+| Mục | NI | AP | DP |
+|---|---|---|---|
+| 1. Biến đổi | không | log (sd trong năm của mức tăng: 13.7–77.7; của log: 0.108–0.160) | log giá |
+| 2. d, D và bằng chứng | d = 1, D = 0; ADF p-value: 0.00118 (y), <0.0001 (∇y); KPSS η: 0.87 (y), 0.12 (∇y), tới hạn 5% = 0.463 | d = 1, D = 1; ADF p-value: 0.405 (y), 0.00139 (∇y); KPSS η: 0.33 (y), 0.14 (∇y), tới hạn 5% = 0.463 (AP: kiểm định trên ∇₁₂) | d = 1, D = 0; ADF p-value: 0.991 (y), <0.0001 (∇y); KPSS η: 5.05 (y), 0.25 (∇y), tới hạn 5% = 0.463 |
+| 3. Kiểm tra sai phân quá mức | ρ̂(1) của chuỗi đã sai phân (tối đa) = -0.402; ρ̂(1) sau khi sai phân thêm một lần = -0.626 | ρ̂(1) của chuỗi đã sai phân (tối đa) = -0.328; ρ̂(1) sau khi sai phân thêm một lần = -0.660 | ρ̂(1) của chuỗi đã sai phân (tối đa) = -0.004; ρ̂(1) sau khi sai phân thêm một lần = -0.490 |
+| 4. Mô hình khớp (ML) | θ = -0.7334 (SE 0.074); σ² = 2.06e+04 (SE 2.9e+03) | θ = -0.3425 (SE 0.087); Θ (mùa vụ) = -0.5406 (SE 0.1); σ² = 0.001402 (SE 0.00018) | c (độ trôi) = 0.0004875 (SE 0.00024); σ² = 8.208e-05 (SE 1.2e-06) |
+| 5. Nhân quả / khả nghịch | min\|nghiệm AR\| = nan; min\|nghiệm MA\| = 1.36 | min\|nghiệm AR\| = nan; min\|nghiệm MA\| = 1.05 | min\|nghiệm AR\| = nan; min\|nghiệm MA\| = nan |
+| 6. Phần dư | Q_LB(12) = 13.57, df = 11, p = 0.258; phần dư²: Q = 7.27, p = 0.839 | Q_LB(24) = 19.76, df = 22, p = 0.598; phần dư²: Q = 35.15, p = 0.0662 | Q_LB(10) = 10.43, df = 10, p = 0.404; phần dư²: Q = 53.68, p = 5.57e-08 |
+| 7. Dự báo + khoảng (thang gốc, đã là trung bình=trung vị) | h=1: 799 [517, 1080]; h=10: 799 [438, 1159] | trung vị/trung bình (1/1959): 348.6/348.8 [324, 375]; (12/1960): 388.2/392.8 [286, 526] | h=1: trung vị 3409, trung bình 3410; h=20: trung vị 3441, trung bình 3444 [3179, 3726] |
+| 8. So với mốc chuẩn | RMSE 20 năm cuối: ARIMA 122.8 vs naive 123.1 | RMSE 24 tháng: airline 43.2 vs naive mùa vụ 77.0; MASE 1.38 | RMSE 1 bước (%): trôi 1.435 vs naive 1.439 |

@@ -4,13 +4,15 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T5]{fontenc}
 \usepackage[vietnamese]{babel}
-\usepackage{amsmath,amssymb,graphicx,booktabs,longtable,listings,xcolor,hyperref,geometry,float}
+\usepackage{amsmath,amssymb,graphicx,booktabs,longtable,listings,xcolor,hyperref,geometry,float,adjustbox,caption}
 \geometry{margin=2.5cm}
 \renewcommand{\thesection}{4.\arabic{section}}
 \setcounter{secnumdepth}{3}
 \newcommand{\TODO}[1]{{\color{red}\textbf{TODO(nhóm):} #1}}
-\graphicspath{{../figures/}}
-\newcommand{\fig}[2]{\begin{figure}[H]\centering\IfFileExists{../figures/#1.png}{\includegraphics[width=\linewidth]{#1}}{\TODO{thiếu hình #1}}\caption{#2}\end{figure}}
+\newcommand{\figdir}{../figures}
+\newcommand{\tabdir}{../tables}
+\newcommand{\figx}[2]{\begin{figure}[H]\centering\includegraphics[width=\linewidth]{\figdir/#1.png}\caption{#2}\label{fig:#1}\end{figure}}
+\captionsetup{font=small,labelfont=bf}
 \lstset{basicstyle=\ttfamily\small,breaklines=true,frame=single,language=Python}
 \hypersetup{colorlinks=true,linkcolor=black,urlcolor=blue}
 
@@ -50,13 +52,14 @@ Danh sách 28 nội dung (14 của Bài 11, 14 của Bài 12) và một phần m
 \TODO{thêm cột ``kiểu'' [D]/[M] và số hiệu Định nghĩa/Định lý nếu muốn; không sao chép lại lý thuyết.}
 
 \section{Mô tả và xử lý dữ liệu}
+\input{\tabdir/tab_eda_descriptive.tex}
 Nguồn, đơn vị và các bước làm sạch: xem \texttt{data/DATA\_SOURCES.md}. Dữ liệu DAX \textbf{không có ngày lịch}: chỉ dùng chỉ số ngày giao dịch $t=1,\dots,1860$.
-\subsection*{HU -- \texttt{LakeHuron}}\TODO{nguồn (chép trích dẫn từ \texttt{?LakeHuron}), đơn vị quan sát, biến đáp ứng, tiền xử lý, nhận xét EDA.}\fig{eda_HU_overview}{HU: chuỗi, ACF, PACF.}
-\subsection*{LY -- \texttt{lynx}}\TODO{như trên.}\fig{eda_LY_overview}{LY: $\log_{10}$(số lượng), ACF, PACF.}
-\subsection*{DR -- DAX, suất sinh lợi}\TODO{như trên.}\fig{eda_DR_overview}{DR: suất sinh lợi log (\%), ACF, PACF.}
-\subsection*{NI -- \texttt{Nile}}\TODO{như trên; nêu đổi mức quanh 1899.}\fig{eda_NI_overview}{NI: lưu lượng, ACF, PACF.}
-\subsection*{AP -- \texttt{AirPassengers}}\TODO{như trên; log, chia huấn luyện 120 / kiểm định 24.}\fig{eda_AP_overview}{AP: log hành khách, ACF, PACF.}
-\subsection*{DP -- DAX, log giá}\TODO{như trên; chia 1500 / 360 ngày giao dịch.}\fig{eda_DP_overview}{DP: log giá, ACF, PACF.}
+\subsection*{HU -- \texttt{LakeHuron}}\TODO{nguồn (chép trích dẫn từ \texttt{?LakeHuron}), đơn vị quan sát, biến đáp ứng, tiền xử lý, nhận xét EDA.}\figx{fig_eda_HU_overview}{HU: mực nước hồ Huron với xu thế tuyến tính OLS, ACF và PACF mẫu}
+\subsection*{LY -- \texttt{lynx}}\TODO{như trên.}\figx{fig_eda_LY_overview}{LY: $\log_{10}$ số linh miêu bị bẫy, ACF và PACF mẫu}
+\subsection*{DR -- DAX, suất sinh lợi}\TODO{như trên.}\figx{fig_eda_DR_overview}{DR: suất sinh lợi log ngày của DAX, ACF và PACF mẫu}
+\subsection*{NI -- \texttt{Nile}}\TODO{như trên; nêu đổi mức quanh 1899.}\figx{fig_eda_NI_overview}{NI: lưu lượng sông Nile (trung bình trước và sau 1899), ACF và PACF mẫu}
+\subsection*{AP -- \texttt{AirPassengers}}\TODO{như trên; log, chia huấn luyện 120 / kiểm định 24.}\figx{fig_eda_AP_overview}{AP: log số hành khách (huấn luyện \textbar{} kiểm định), ACF và PACF mẫu}
+\subsection*{DP -- DAX, log giá}\TODO{như trên; chia 1500 / 360 ngày giao dịch.}\figx{fig_eda_DP_overview}{DP: log giá DAX (huấn luyện \textbar{} kiểm định), ACF và PACF mẫu}
 
 \section{Kiểm chứng cặp bài giảng thứ nhất (Bài 11)}
 Mỗi mục có đủ sáu phần theo đặc tả. Mã nguồn đầy đủ: \texttt{notebooks/bai11\_arma.ipynb}.

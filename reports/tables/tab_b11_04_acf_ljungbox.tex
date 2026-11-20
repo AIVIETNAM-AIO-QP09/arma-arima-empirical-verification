@@ -1,0 +1,16 @@
+\begin{table}[H]
+\centering\scriptsize
+\caption{ACF mẫu: dải tin cậy, số độ trễ vượt dải ($h\le20$) và kiểm định Ljung–Box với $H=10$}\label{tab:tab_b11_04_acf_ljungbox}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lrrrrrrrr}
+\toprule
+Chuỗi & n & Dải iid $\pm$ & Dải Bartlett MA(1) $\pm$ & số độ trễ vượt dải iid (h $\le$ 20) & Max\textbar{}$\hat{\rho}$ tay – $\hat{\rho}$ thư viện\textbar{} & Q\_LB(10), tự cài đặt & Q\_LB(10), thư viện & p-value \\
+\midrule
+HU: mức nước gốc & 98 & 0.198 & 0.3057 & 9 & 0 & 189.9 & 189.9 & $<10^{-4}$ \\
+LY: log$_{10}$ số linh miêu & 114 & 0.1836 & 0.2743 & 16 & 0 & 286 & 286 & $<10^{-4}$ \\
+DR: suất sinh lợi r & 1859 & 0.0455 & 0.0455 & 2 & 0 & 6.366 & 6.366 & 0.7837 \\
+DR: bình phương r$^{2}$ & 1859 & 0.0455 & – & 9 & 0 & 110.7 & 110.7 & $<10^{-4}$ \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}\par\vspace{2pt}{\footnotesize\textit{Ghi chú:} Hai cột $Q_{LB}$ (tự cài đặt và thư viện) trùng nhau; dải Bartlett giả định MA(1) với $\hat\rho(1)$ của chính chuỗi (không áp dụng cho $r_t^2$).}
+\end{table}

@@ -1,0 +1,16 @@
+\begin{table}[H]
+\centering\scriptsize
+\caption{Chẩn đoán phần dư của các mô hình được chọn (checklist Bài 11)}\label{tab:tab_b11_14_residual_diagnostics}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{llrrrrrcrrrrrrr}
+\toprule
+bộ & mô hình & k & AIC & BIC & $\hat{\sigma}^{2}$ & Min\textbar{}z\textbar{} AR & Nhân quả & H & df & Q\_LB phần dư & p & \textbar{}tay – thư viện\textbar{} & Q\_LB phần dư$^{2}$ & p (phần dư$^{2}$) \\
+\midrule
+HU & AR(2) + xu thế & 5 & 212.4 & 225.3 & 0.4566 & 1.853 & Có & 10 & 8 & 3.945 & 0.8621 & 0 & 13.97 & 0.1745 \\
+LY & AR(2) & 4 & -5.009 & 5.935 & 0.0511 & 1.163 & Có & 20 & 18 & 35.18 & 0.0090 & 0 & 16.74 & 0.6699 \\
+LY & AR(11) & 13 & -24.03 & 11.54 & 0.0361 & 1.015 & Có & 20 & 9 & 7.179 & 0.6185 & 0 & 24.05 & 0.2402 \\
+DR & chỉ trung bình & 2 & 5388.8 & 5399.9 & 1.06 & – & Có & 10 & 10 & 6.366 & 0.7837 & $8.882\times10^{-16}$ & 108.7 & $<10^{-4}$ \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}\par\vspace{2pt}{\footnotesize\textit{Ghi chú:} $Q_{LB}$ của phần dư dùng $H-p-q$ bậc tự do; của phần dư bình phương dùng $H$ bậc tự do.}
+\end{table}

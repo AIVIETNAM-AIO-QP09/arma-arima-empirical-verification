@@ -1,0 +1,16 @@
+\begin{table}[H]
+\centering\scriptsize
+\caption{Trọng số $\Psi_k$ (ảnh hưởng của một cú sốc đơn vị lên $Y_{t+k}$) và giới hạn $\theta(1)/\phi(1)$}\label{tab:tab_b12_06_psi_weights}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lrrrrrrrr}
+\toprule
+Mô hình & $\Psi$\_0 & $\Psi$\_1 & $\Psi$\_2 & $\Psi$\_5 & $\Psi$\_10 & $\Psi$\_50 & $\Psi$\_100 & Giới hạn $\theta$(1)/$\phi$(1) (d = 1) hoặc 0 \\
+\midrule
+NI ARIMA(0,1,1) & 1 & 0.2666 & 0.2666 & 0.2666 & 0.2666 & 0.2666 & 0.2666 & 0.2666 \\
+DP bước ngẫu nhiên & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+DP ARIMA(1,1,0) & 1 & 0.9996 & 0.9996 & 0.9996 & 0.9996 & 0.9996 & 0.9996 & 0.9996 \\
+đối chứng AR(1) $\phi$=0.6, d=0 & 1 & 0.6 & 0.36 & 0.0778 & 0.006 & $8.083\times10^{-12}$ & $6.533\times10^{-23}$ & 0 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

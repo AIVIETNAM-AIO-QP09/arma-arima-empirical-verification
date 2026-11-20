@@ -32,10 +32,10 @@ Chỉ `scripts/01_download_data.py` dùng mạng (bỏ qua nếu `data/raw/` đ�
 | `data/raw/` | 5 CSV gốc từ Rdatasets (không sửa tay; checksum ở `checksums.txt`) |
 | `data/processed/` | 6 file đã làm sạch (mỗi bộ một file); `data/DATA_SOURCES.md`: nguồn, codebook, các bước làm sạch |
 | `src/as3179ts/` | hàm dùng chung: `acf_tools`, `arma_tools`, `forecast_tools`, `evaluation`, `simulation`, `plotting`, `reporting`, `data`, `config` (`SEED = 3179`) |
-| `scripts/` | `01` tải dữ liệu, `02` làm sạch, `03` trích text bài giảng, `04` biên dịch báo cáo, `05` đóng gói nộp bài |
+| `scripts/` | `01` tải dữ liệu, `02` làm sạch, `03` trích text bài giảng, `04` biên dịch báo cáo, `05` đóng gói nộp bài, `06` zip khung báo cáo để upload Overleaf |
 | `notebooks/` | `00_kham_pha_du_lieu`, `bai11_arma` (11.1–11.14), `bai12_arima_du_bao` (12.1–12.14 + ⋆) |
 | `tests/` | `test_data`, `test_manual_vs_library` (hàm tay khớp statsmodels), `test_lecture_reference` (tái lập số liệu bài giảng) |
-| `reports/figures`, `reports/tables` | hình PNG 300 dpi và bảng CSV/Markdown do notebook sinh ra (tên ổn định) |
+| `reports/figures`, `reports/tables` | 26 hình PNG 300 dpi (`fig_b<bài>_<mục>_<nội dung>`) và 63 bảng (`tab_b<bài>_<mục>_<nội dung>` ở 3 dạng: `.csv` đủ chữ số, `.md`, `.tex` booktabs sẵn caption/nhãn). Chú thích của từng hình/bảng nằm ở `src/as3179ts/captions.py` |
 | `reports/report/` | khung báo cáo LaTeX (`report.tex` + `sec_bai11.tex`, `sec_bai12.tex`, `theory_table.tex`) |
 | `docs/` | đặc tả, 2 PDF bài giảng, text trích từ PDF, `theory_checklist.md`, `reference_values.md` |
 
