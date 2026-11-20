@@ -1,0 +1,117 @@
+% CHƯƠNG 3. DỮ LIỆU VÀ PHƯƠNG PHÁP
+\clearpage
+\section[Dữ liệu và phương pháp]{DỮ LIỆU VÀ PHƯƠNG PHÁP}
+
+\subsection{Mô tả dữ liệu}
+
+Cả sáu bộ dữ liệu lấy từ kho Rdatasets, bản sao các bộ dữ liệu của gói \texttt{datasets} trong R \dlk{1}. Chúng chia làm hai nhóm: HU, LY và DR phục vụ các mô hình dừng ở \chg{4}, còn NI, AP và DP phục vụ chuỗi không dừng và dự báo ở \chg{5} và \chn{6}, như tóm tắt trong Bảng~\ref{tab:dulieu}.
+
+DR và DP cùng là chỉ số DAX nhưng ở hai dạng. Log giá đóng cửa trôi theo thời gian và không dừng, còn suất sinh lợi log, tức sai phân của log giá nhân với 100, là dạng dừng của chính chuỗi đó. Dùng chung một chuỗi gốc giúp thấy rõ sai phân biến chuỗi không dừng thành dừng. Dữ liệu DAX trong gói R được lấy theo thời gian kinh doanh, bỏ qua cuối tuần và ngày lễ, và không có ngày lịch, nên trục thời gian của DR và DP là số thứ tự ngày giao dịch.
+
+\begin{table}[H]
+\centering\footnotesize
+\caption{Sáu bộ dữ liệu được sử dụng}\label{tab:dulieu}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{|p{1.4cm}|p{3.4cm}|p{2.0cm}|p{4.4cm}|r|p{2.6cm}|p{3.4cm}|}
+\toprule
+Ký hiệu & Nguồn & Quan sát & Biến được mô hình hóa & $n$ & Thời gian & Phép biến đổi \\
+\midrule
+HU & \dlk{2} & hằng năm & mực nước hồ, tính bằng ft & 98 & 1875--1972 & không; thêm biến xu thế $x=\text{năm}-1920$ \\
+LY & \dlk{3} & hằng năm & số linh miêu bị bẫy ở Canada & 114 & 1821--1934 & $\log_{10}$ \\
+DR & \dlk{4} & ngày giao dịch & suất sinh lợi log, tính bằng \% & 1859 & $t=2,\dots,1860$ & $100\,\Delta\log P_t$ \\
+NI & \dlk{5} & hằng năm & lưu lượng sông Nile tại Aswan, đơn vị $10^8\,\mathrm{m}^3$ & 100 & 1871--1970 & không \\
+AP & \dlk{6} & hằng tháng & hành khách hàng không quốc tế, đơn vị nghìn người & 144 & 01/1949--12/1960 & $\log$; huấn luyện 120, kiểm định 24 \\
+DP & \dlk{4} & ngày giao dịch & log giá đóng cửa & 1860 & $t=1,\dots,1860$ & $\log P_t$; huấn luyện 1500, kiểm định 360 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\subsection{Xử lý dữ liệu}
+
+\noidung{Tiền xử lý}
+Dữ liệu thô được kiểm tra tự động trước khi biến đổi. Mỗi bộ phải có đúng số quan sát như Bảng~\ref{tab:dulieu}, không thiếu giá trị, không trùng dòng, thời gian tăng dần, và các giá trị phải dương ở những bộ cần lấy logarit. Sau đó các phép biến đổi ở cột cuối của bảng được áp dụng. Với HU, biến xu thế $x=\text{năm}-1920$ đặt gốc ở giữa giai đoạn quan sát, nên hệ số chặn của mô hình hồi quy chính là mực nước ở khoảng giữa kỳ. Với NI, ta thêm biến chỉ báo cho các năm từ 1899 trở đi để phục vụ việc thảo luận về đổi mức.
+
+Hai bộ dùng để dự báo được chia theo thứ tự thời gian chứ không chia ngẫu nhiên, như đã nêu ở \muc{2.3.3}. AP lấy 120 tháng đầu, từ 01/1949 đến 12/1958, để huấn luyện và 24 tháng cuối, từ 01/1959 đến 12/1960, để kiểm định. DP lấy 1500 ngày giao dịch đầu để huấn luyện và 360 ngày cuối để kiểm định.
+
+\noidung{Khám phá dữ liệu}
+Ta nhìn nhanh từng chuỗi qua bảng thống kê mô tả ở Bảng~\ref{tab:tab_eda_descriptive} và các đồ thị tổng quan từ Hình~\ref{fig:fig_eda_HU_overview} đến Hình~\ref{fig:fig_eda_DP_overview}, với những nhận xét sau, vốn chỉ nhằm định hướng cho các chương sau:
+\begin{itemize}[leftmargin=*,itemsep=1pt]
+\item \emph{HU:} mực nước quanh $579$ ft, độ lệch chuẩn $1.32$ ft, có xu thế giảm; ACF giảm dần.
+\item \emph{LY:} dao động theo chu kỳ rõ; ACF đổi dấu xen kẽ theo chu kỳ đó.
+\item \emph{DR:} trung bình gần $0$, chỉ $0.065\%$, độ lệch chuẩn $1.03\%$, đuôi nặng với kurtosis dư $6.28$ và hơi lệch âm với độ lệch $-0.55$; biến động tụ thành cụm, còn ACF hầu như nằm trong dải $95\%$.
+\item \emph{NI:} lưu lượng trung bình giảm từ $1098$ trước năm 1899 xuống $850$ từ năm 1899, tức một lần đổi mức.
+\item \emph{AP:} xu thế tăng và mùa vụ rõ; ACF giảm rất chậm.
+\item \emph{DP:} tăng dài hạn; ACF gần $1$ ở mọi độ trễ được vẽ và PACF chỉ đáng kể ở độ trễ $1$.
+\end{itemize}
+Đây mới là quan sát bằng mắt, còn việc chuỗi nào dừng, chuỗi nào không, được kiểm chứng ở \chg{4} và \chn{5}.
+
+\input{\tabdir/tab_eda_descriptive.tex}
+\figx{fig_eda_HU_overview}{HU: mực nước hồ Huron với xu thế tuyến tính OLS, ACF và PACF mẫu}
+\figx{fig_eda_LY_overview}{LY: $\log_{10}$ số linh miêu bị bẫy, ACF và PACF mẫu}
+\figx{fig_eda_DR_overview}{DR: suất sinh lợi log ngày của DAX, ACF và PACF mẫu}
+\figx{fig_eda_NI_overview}{NI: lưu lượng sông Nile, trung bình trước và sau 1899, ACF và PACF mẫu}
+\figx{fig_eda_AP_overview}{AP: log số hành khách, phần huấn luyện và kiểm định, ACF và PACF mẫu}
+\figx{fig_eda_DP_overview}{DP: log giá DAX, phần huấn luyện và kiểm định, ACF và PACF mẫu}
+
+\subsection{Phương pháp kiểm chứng}
+
+Mỗi nội dung ở \chg{2} được kiểm chứng bằng dữ liệu thực, bằng mô phỏng hoặc bằng cả hai, như ghi ở cột cuối của Bảng~\ref{tab:danhmuc}. Bốn nguyên tắc sau dùng chung cho mọi nội dung, nên các \chg{4}, \chn{5}, \chn{6} chỉ nhắc lại những điểm riêng của từng nội dung.
+
+\noidung{Đối chiếu với phần mềm}
+Các đại lượng có công thức rõ ràng, gồm tự tương quan mẫu, PACF bằng đệ quy Durbin--Levinson, thống kê Ljung--Box, ước lượng Yule--Walker, trọng số $\psi_j$ và ACF lý thuyết của ARMA, được nhóm tự cài đặt theo công thức ở \chg{2} rồi so với thư viện \texttt{statsmodels} \tlk{13}. Cách làm này giúp hiểu rõ công thức và kiểm tra được cả phần mềm lẫn phần cài đặt; các phép so sánh được viết thành kiểm thử tự động với sai khác cho phép không quá $10^{-8}$. Cùng một đại lượng có thể cho số khác nhau tùy cách tính, chẳng hạn sai số chuẩn của hệ số ARIMA có thể tính từ tích ngoài của gradient hoặc từ nghịch đảo ma trận thông tin quan sát, nên khi báo cáo nhóm luôn nêu cách đã dùng.
+
+\noidung{Mô phỏng}
+Có những tính chất không thấy được từ một chuỗi duy nhất, như phân phối lấy mẫu của ước lượng, độ phủ của khoảng tin cậy hay phân phối của thống kê kiểm định. Khi đó ta dùng \emph{mô phỏng Monte Carlo}: lấy một mô hình, đặt trước hoặc khớp trên dữ liệu thực, làm ``sự thật'', sinh $B$ chuỗi cùng độ dài, tính đại lượng quan tâm trên từng chuỗi rồi tổng hợp kết quả. Kết quả mô phỏng cũng có sai số: với một tần suất $\hat p$ ước lượng từ $B$ lần lặp độc lập, \emph{sai số Monte Carlo} MCSE là
+\[
+\mathrm{MCSE}(\hat p)\approx\sqrt{\frac{\hat p(1-\hat p)}{B}},
+\]
+chẳng hạn khoảng $0.005$ khi $B=2000$ và $\hat p\approx0.95$, còn với một trung bình mô phỏng thì MCSE là độ lệch chuẩn mẫu chia cho $\sqrt B$. Khi so giá trị mô phỏng với lý thuyết, ta tính chênh lệch theo đơn vị MCSE, và lệch trong vài MCSE vẫn là phù hợp. Số lần lặp thường là $B=2000$, riêng một vài mô phỏng nặng hơn dùng $B=1000$. Mọi chuỗi ARMA mô phỏng bỏ $200$ giá trị đầu, gọi là đoạn khởi động, để gần với phân phối dừng. Bảng~\ref{tab:mophong} cho biết mô hình ``sự thật'' của từng mô phỏng.
+
+\begin{table}[H]
+\centering\footnotesize
+\caption{Các mô phỏng và mô hình ``sự thật'' tương ứng}\label{tab:mophong}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|l|p{12.5cm}|}
+\toprule
+Nội dung & Mô hình dùng làm ``sự thật'' \\
+\midrule
+\ndlk{4.1(c)} & AR(1) với $\phi=0.6$, $n=100$ \\
+\ndlk{4.2(a)} & AR(1) với $\hat\phi$ và $\hat\sigma$ của HU, $n=98$ \\
+\ndlk{4.2(d)} & MA(2) với $\hat\theta$ của HU, $n=98$ \\
+\ndlk{4.3(a)} & nhiễu iid $N(0,1)$, $n=200$ \\
+\ndlk{4.3(c)} & AR(2) với $\hat\phi$ của LY, $n=114$ \\
+\ndlk{5.1(b)} & bước ngẫu nhiên có trôi với $\hat\delta$ và $\hat\sigma$ của DP, và các bước ngẫu nhiên độc lập \\
+\ndlk{5.3(a)} & nhiễu trắng và bước ngẫu nhiên \\
+\ndlk{5.3(b)} & bước ngẫu nhiên $n=200$; AR(1) với $\phi=0.95$, $0.9$ và $0.8$ \\
+\ndlk{6.2(a)} & ARIMA$(0,1,1)$ với $\theta=-0.5$, và với tham số của NI \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noidung{Đánh giá dự báo}
+Với hai bộ dùng để dự báo, mô hình chỉ được khớp trên phần huấn luyện rồi dự báo và so với phần kiểm định. Để kết quả không phụ thuộc vào đúng một điểm chia, nhóm còn đánh giá cuốn chiếu: khớp lại mô hình tại mỗi gốc, dự báo nhiều chân trời và tính sai số riêng cho từng chân trời, theo \muc{2.3.3}. Với NI, gốc đầu tiên khớp trên 80 năm và chân trời tối đa là 5 năm; với AP, gốc đầu tiên khớp trên 108 tháng và chân trời tối đa là 12 tháng. Dự báo một bước trên phần kiểm định, bắt đầu từ tháng 121 với AP và từ năm 81 với NI, cũng khớp lại tại từng gốc. Các mốc chuẩn là trung bình, naive, naive mùa vụ và trôi; độ chính xác đo bằng MAE, RMSE, MAPE và MASE; khác biệt giữa hai phương pháp được kiểm tra bằng kiểm định Diebold--Mariano.
+
+\noidung{Tái lập}
+Các mô phỏng dùng bộ sinh số giả ngẫu nhiên của \texttt{numpy} với hạt giống cố định \texttt{3179}, và mỗi mô phỏng nhận một dòng số riêng sinh ra từ hạt giống đó, nên thêm hay bớt một mô phỏng không làm đổi kết quả của các mô phỏng khác. Phần mềm gồm Python 3.12.14 cùng \texttt{statsmodels} 0.15.0, \texttt{numpy} 2.5.5, \texttt{pandas} 3.1.1, \texttt{scipy} 1.18.1 và \texttt{matplotlib} 3.11.2, cài trong một môi trường ảo riêng. Toàn bộ quy trình, từ tải dữ liệu đến sinh bảng và hình, chạy được bằng một lệnh, như mô tả ở \phuluc{B}.
+
+\subsection{Tiêu chí đánh giá}
+
+Mỗi nội dung kiểm chứng kết thúc bằng một nhận xét xếp loại theo ba mức, dùng thống nhất ở mọi chương và đặt ra trước khi xem kết quả, như trong Bảng~\ref{tab:thangdo}.
+
+\begin{table}[H]
+\centering\footnotesize
+\caption{Thang xếp loại mức độ phù hợp}\label{tab:thangdo}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\linewidth}{|l|X|X|}
+\toprule
+Mức & Đại lượng tính toán hoặc mô phỏng & Kết quả trên dữ liệu thực \\
+\midrule
+Phù hợp & Sai khác với công thức hoặc thư viện không quá $10^{-8}$; giá trị mô phỏng lệch giá trị lý thuyết không quá $3$ MCSE. & Kết luận khớp lý thuyết ở mức ý nghĩa 5\%, hoặc nằm trong dải $\pm1.96/\sqrt n$. \\
+Phù hợp một phần & Đúng về dạng hoặc chiều hướng nhưng sai khác lớn hơn dung sai trên. & Đúng với một số bộ dữ liệu, độ trễ hoặc chân trời nhưng không với tất cả. \\
+Không phù hợp & Trái với dạng hoặc chiều hướng mà lý thuyết nêu. & Trái với kết luận của lý thuyết ở hầu hết các bộ áp dụng. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Sai khác nhỏ do cách tính hoặc sai số số học, chẳng hạn hai thư viện làm tròn hay tối ưu hơi khác nhau, được nêu trong nhận xét và không bị tính là không phù hợp. Với ước lượng bằng tối ưu hóa số như cực đại hợp lý, ta so ở mức làm tròn của giá trị báo cáo thay vì $10^{-8}$. Khi kết quả phù hợp một phần hoặc không phù hợp, nhóm giải thích nguyên nhân dựa trên đặc điểm của dữ liệu hoặc điều kiện áp dụng của lý thuyết.
