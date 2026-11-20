@@ -1,0 +1,186 @@
+% CHƯƠNG 6: sáu thành phần cố định cho mỗi nội dung; hình/bảng chèn tự động.
+\clearpage
+\section[Kiểm chứng dự báo và đánh giá dự báo]{KIỂM CHỨNG DỰ BÁO VÀ ĐÁNH GIÁ DỰ BÁO}
+
+Chương này kiểm chứng \muc{2.3} trên NI, AP và DP, dùng các mô hình ARIMA đã khớp ở \chg{5}. Chương đi theo mạch của lý thuyết, gồm hàm dự báo ở \muc{6.1}, khoảng dự báo ở \muc{6.2} và đánh giá dự báo ở \muc{6.3}. Với AP và DP, dữ liệu chia huấn luyện và kiểm định như ở \chg{3}, còn với NI thì 80 năm đầu để huấn luyện và 20 năm cuối để kiểm định. Cách đọc giống các chương trước, và kết quả tổng hợp được thảo luận ở \chg{7}.
+
+\subsection{Hàm dự báo}
+
+\noidung{Ảnh hưởng vĩnh viễn của cú sốc}
+\tp{Nội dung lý thuyết cần kiểm chứng} Kết quả \ndlk{2.3.1(a)} nói rằng với ARIMA có $d=1$, ảnh hưởng của một cú sốc đơn vị lên $Y_{t+k}$ là $\Psi_k$, hội tụ về hệ số nhân dài hạn $\theta(1)/\phi(1)\ne0$; với mô hình dừng thì $\Psi_k\to0$.
+\tp{Cách triển khai} Nội dung này dùng dữ liệu thực của NI và DP. AP không áp dụng vì airline có sai phân mùa vụ nên ảnh hưởng của cú sốc có cấu trúc mùa vụ, không thuộc dạng $d=1$ đơn giản. Ta tính $\Psi_k$ cho ARIMA$(0,1,1)$ của NI, bước ngẫu nhiên và ARIMA$(1,1,0)$ của DP, cùng một AR(1) dừng với $\phi=0.6$ để đối chứng, và so với $\theta(1)/\phi(1)$.
+\tp{Mã lệnh Python}
+\begin{codeblock}
+th, ph = ni.maparams[0], dp_ar.arparams[0]
+mo_hinh = {"NI ARIMA(0,1,1)": ([], [th], 1), "DP buoc ngau nhien": ([], [], 1),
+           "DP ARIMA(1,1,0)": ([ph], [], 1), "doi chung AR(1), d=0": ([0.6], [], 0)}
+for ten, (phi, theta, d) in mo_hinh.items():
+    Psi = F.Psi_weights_arima(phi, theta, d, 101)             # Psi_0, ..., Psi_100
+    gioi_han = (1 + sum(theta)) / (1 - sum(phi)) if d == 1 else 0.0   # theta(1)/phi(1)
+\end{codeblock}
+\tp{Kết quả tính toán} Bảng~\ref{tab:tab_b12_06_psi_weights} cho $\Psi_k$ ở một số độ trễ cùng hệ số nhân dài hạn của từng mô hình.
+\input{\tabdir/tab_b12_06_psi_weights.tex}
+\tp{Phân tích và diễn giải} Với NI, $\Psi_k=0.2666=1+\hat\theta$ từ $k=1$ đến $k=100$, trùng giới hạn $\theta(1)/\phi(1)$: nếu lưu lượng năm nay cao hơn dự báo $100$ đơn vị thì dự báo mọi năm sau được nâng khoảng $27$ đơn vị và giữ mãi, tức cú sốc không tắt nhưng chỉ được ``nhớ'' một phần. Với DP, bước ngẫu nhiên có $\Psi_k=1$, tức cú sốc được giữ trọn vẹn, ARIMA$(1,1,0)$ có $\Psi_k=0.9996=1/(1-\hat\phi)$ vì $\hat\phi\approx0$. Mô hình dừng đối chứng cho $\Psi_k=0.6^k$ giảm nhanh về $0$, với $0.078$ ở $k=5$ và $0.006$ ở $k=10$.
+
+\tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: các trọng số hội tụ đúng về hệ số nhân dài hạn, là $0.267$, $1$ và $0.9996$, ở các mô hình $d=1$ và về $0$ ở mô hình dừng. Mức ``nhớ cú sốc'' phụ thuộc tham số, chẳng hạn $27\%$ ở NI và $100\%$ ở DP, chứ không chỉ việc có $d=1$.
+
+\noidung{Làm trơn mũ và mô hình mức cục bộ}
+\tp{Nội dung lý thuyết cần kiểm chứng} Kết quả \ndlk{2.3.1(b)} nói rằng ARIMA$(0,1,1)$ với $\alpha=1+\theta$ cho cùng dự báo như làm trơn mũ đơn, và tương đương mô hình mức cục bộ với $\rho(1)=-1/(q+2)$, $q=\sigma_\eta^2/\sigma_\varepsilon^2$.
+\tp{Cách triển khai} Nội dung này dùng dữ liệu thực của NI. AP không áp dụng vì có mùa vụ mà làm trơn mũ đơn không xử lý được; DP vì mô hình khớp là bước ngẫu nhiên, trường hợp biên $\alpha=1$ mà dự báo chỉ còn là naive. Với NI, ta tính dự báo năm 1971 bằng bốn cách là ARIMA, đệ quy tự cài đặt, và \texttt{SimpleExpSmoothing} với $\alpha$ cố định và với $\alpha$ tối ưu và so phương sai của mô hình mức cục bộ suy từ ARIMA với \texttt{UnobservedComponents}.
+\tp{Mã lệnh Python}
+\begin{codeblock}
+th, s2 = ni.maparams[0], sig2(ni); alpha = 1 + th                # alpha = 1 + theta
+muc = F.ses_recursion(NI, alpha)                                 # de quy lam tron mu
+du_bao_arima = ni.get_forecast(1).predicted_mean[0]
+ses = SimpleExpSmoothing(NI, initialization_method="known",
+                         initial_level=NI[0]).fit(smoothing_level=alpha, optimized=False)
+uc = UnobservedComponents(NI, "llevel").fit(disp=False)          # mo hinh muc cuc bo
+var_eps, var_eta = F.local_level_variances(th, s2)               # tu (theta, sigma^2) cua ARIMA
+rho1 = th / (1 + th ** 2)                                        # so voi -1 / (q + 2)
+\end{codeblock}
+\tp{Kết quả tính toán} Bảng~\ref{tab:tab_b12_07_ses_forecasts} so các cách tính dự báo năm 1971, còn Bảng~\ref{tab:tab_b12_07_local_level} so phương sai của mô hình mức cục bộ.
+\input{\tabdir/tab_b12_07_ses_forecasts.tex}
+\input{\tabdir/tab_b12_07_local_level.tex}
+\tp{Phân tích và diễn giải} Ba cách tính với cùng $\alpha=0.2666$ cho cùng dự báo $798.5$, nên ARIMA$(0,1,1)$ và làm trơn mũ đơn thật sự là một; khi \texttt{SimpleExpSmoothing} tự tối ưu, $\hat\alpha=0.2457$ cho $805.3$, khác chút vì tiêu chí và khởi tạo khác nhau. Phương sai mức cục bộ suy từ ARIMA là $15108$ và $1463.5$ với $q=0.0969$, gần ước lượng trực tiếp của \texttt{UnobservedComponents} là $15078$ và $1478.8$ với $q=0.0981$. Hệ số $\hat\theta/(1+\hat\theta^2)=-0.4769$ trùng đến bốn chữ số với $-1/(q+2)$, và tổng trọng số $\alpha(1-\alpha)^j$ bằng $1$.
+
+\tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: dự báo và các đẳng thức khớp ở độ chính xác số học khi dùng cùng $\alpha$; sai khác nhỏ giữa hai ước lượng phương sai, $0.2\%$ và $1\%$, đến từ thuật toán ước lượng, không phải từ lý thuyết.
+
+\subsection{Khoảng dự báo}
+
+\noidung{Dự báo tối ưu và khoảng dự báo}
+\tp{Nội dung lý thuyết cần kiểm chứng} Kết quả \ndlk{2.3.2(a)} nói rằng sai số dự báo $h$ bước có phương sai $\sigma^2\sum_{j<h}\Psi_j^2$; khoảng $95\%$ dựa trên phân phối chuẩn phủ đúng $95\%$ nếu tham số đã biết và chỉ xấp xỉ khi phải ước lượng; độ rộng hội tụ khi $d=0$ và tăng không giới hạn khi $d=1$.
+\tp{Cách triển khai} Nội dung này dùng cả dữ liệu thực lẫn mô phỏng, và áp dụng cho NI, AP và DP. Trên dữ liệu thực, ta so sai số chuẩn tính tay (từ $\Psi_j$ và công thức đóng) với \texttt{statsmodels}. Bằng mô phỏng, ta đo độ phủ của khoảng $95\%$ khi khớp lại mô hình mỗi lần với $n=100$, trong hai trường hợp là $\theta=-0.5$, $\sigma=1$ với $B=2000$ và tham số của NI với $B=1000$.
+\tp{Mã lệnh Python}
+\begin{codeblock}
+Psi = F.Psi_weights_arima([], [th], 1, H)                      # Psi_j cua ARIMA(0,1,1)
+var_tay = F.forecast_variance_manual(Psi, s2, H)               # s2 * tong Psi_j^2
+var_dong = s2 * (1 + (np.arange(1, H + 1) - 1) * alpha ** 2)   # cong thuc dong
+var_tv = ni.get_forecast(H).var_pred_mean                      # statsmodels
+for _ in range(B):                                             # do phu, khop lai moi lan
+    y = np.cumsum(S.simulate_arma([], [theta], n + 10, rng, sigma=sigma))
+    ci = ARIMA(y[:n], order=(0, 1, 1), trend="n").fit().get_forecast(10).conf_int(alpha=0.05)
+    for h in (1, 5, 10): trung[h] += ci[h - 1, 0] <= y[n + h - 1] <= ci[h - 1, 1]
+\end{codeblock}
+\tp{Kết quả tính toán} Bảng~\ref{tab:tab_b12_08_forecast_variance} so sai số chuẩn dự báo, Bảng~\ref{tab:tab_b12_08_coverage} cho độ phủ mô phỏng, và Hình~\ref{fig:fig_b12_08_ni_forecast} vẽ dự báo của NI.
+\input{\tabdir/tab_b12_08_forecast_variance.tex}
+\input{\tabdir/tab_b12_08_coverage.tex}
+\figx{fig_b12_08_ni_forecast}{NI: dự báo ARIMA(0,1,1) và khoảng dự báo 95\% cho 20 năm tiếp theo}
+\tp{Phân tích và diễn giải} Công thức tính tay trùng \texttt{statsmodels} ở mọi bộ với sai khác tương đối không quá $10^{-5}$ và công thức đóng $\sigma^2\{1+(h-1)\alpha^2\}$ trùng tổng theo $\Psi_j$. Vì $d=1$, khoảng dự báo loe dần: ở NI sai số chuẩn tăng từ $143.5$ ở $h=1$ lên $183.8$ ở $h=10$, khoảng dự báo rộng ra từ $[517,1080]$ lên $[438,1159]$ trong khi đường dự báo nằm ngang ở $799$; ở AP, trên thang log, sai số chuẩn tăng từ $0.037$ lên $0.155$ khi $h=24$; ở DP nó bằng $\hat\sigma\sqrt h$, từ $0.0103$ lên $0.163$ ở $h=250$. Mô phỏng cho độ phủ $93.8\%$, $94.4\%$, $94.7\%$ ở $h=1,5,10$ khi $\theta=-0.5$, và $93.4\%$, $94.3\%$, $94.4\%$ với tham số của NI: đều thấp hơn $95\%$ một chút, nhiều nhất ở $h=1$ với độ lệch $2.6$ và $2.3$ lần sai số Monte Carlo, rồi tiến dần về $95\%$.
+
+\tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: phương sai sai số dự báo đúng ở độ chính xác máy và độ rộng khoảng tăng đúng theo bậc $d$. Độ phủ thấp hơn $95\%$ một chút, trong dung sai $3$ MCSE, đúng với cảnh báo của lý thuyết: khi tham số phải ước lượng, khoảng tính bằng công thức hơi hẹp.
+
+\noidung{Dự báo trên thang logarit}
+\tp{Nội dung lý thuyết cần kiểm chứng} Kết quả \ndlk{2.3.2(b)} nói rằng nếu $\log Y_{n+h}$ có phân phối dự báo $N(m,s^2)$ thì $e^m$ là trung vị và $e^{m+s^2/2}$ là trung bình của $Y_{n+h}$, và $(e^L,e^U)$ là khoảng dự báo cùng mức tin cậy cho $Y_{n+h}$.
+\tp{Cách triển khai} Nội dung này dùng dữ liệu thực của AP và DP, còn NI không lấy log nên dự báo trực tiếp trên thang gốc. Với AP, ta đổi dự báo 24 tháng của airline về thang gốc, so trung vị với trung bình và đếm số giá trị thực nằm trong khoảng $95\%$. Với DP, ta đổi dự báo của bước ngẫu nhiên có trôi ở $h=1,20,250$ về thang giá và xét độ bất đối xứng của khoảng.
+\tp{Mã lệnh Python}
+\begin{codeblock}
+g = airline(TR).get_forecast(24); m, s = g.predicted_mean, np.sqrt(g.var_pred_mean)
+bt = F.back_transform_log(m, s)               # trung vi exp(m), trung binh exp(m + s^2/2)
+trong_khoang = int(np.sum((AP[120:] >= bt["lower"]) & (AP[120:] <= bt["upper"])))   # 24/24
+chenh_phan_tram = 100 * (np.exp(s ** 2 / 2) - 1)     # trung binh hon trung vi bao nhieu %
+bt_dp = F.back_transform_log(LD[-1] + delta * hs, sigma * np.sqrt(hs))   # DAX: h = 1, 20, 250
+tren, duoi = bt_dp["upper"] - bt_dp["median"], bt_dp["median"] - bt_dp["lower"]
+\end{codeblock}
+\tp{Kết quả tính toán} Bảng~\ref{tab:tab_b12_09_ap_backtransform} cho dự báo của AP trên thang gốc, còn Bảng~\ref{tab:tab_b12_09_dp_forecast} cho dự báo của DP.
+\input{\tabdir/tab_b12_09_ap_backtransform.tex}
+\input{\tabdir/tab_b12_09_dp_forecast.tex}
+\tp{Phân tích và diễn giải} Với AP, trung bình lớn hơn trung vị đúng hệ số $e^{s^2/2}$: chênh $0.07\%$ ở tháng đầu với $s=0.037$, $0.40\%$ ở 12/1959 và $1.21\%$ ở 12/1960 với $s=0.155$, tăng theo chân trời. Cả $24$ giá trị thực nằm trong khoảng $95\%$, nhưng trung vị thấp hơn giá trị thực ở hầu hết các tháng của năm 1960, chẳng hạn $388$ so với $432$ ở 12/1960, nên mô hình hơi đánh giá thấp mức tăng. Với DP, trung vị và trung bình gần nhau ở $h=1$ với $5477.3$ và $5477.6$ nhưng khác $1.3\%$ ở $h=250$ với $6442.8$ và $6528.9$; khoảng trên thang giá bất đối xứng, với nửa trên $2423$ và nửa dưới $1761$ ở $h=250$, đúng với hệ quả của phép đổi đơn điệu từ khoảng đối xứng trên thang log.
+
+\tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: chênh lệch trung bình--trung vị khớp công thức $e^{s^2/2}$, khoảng chuyển đúng về thang gốc và bất đối xứng như lý thuyết nói. Cần nêu rõ đang báo cáo trung vị hay trung bình, vì ở chân trời dài như $h=250$ của DP chênh lệch đạt $1.3\%$.
+
+\subsection{Đánh giá dự báo}
+
+\noidung{Mốc chuẩn và thước đo sai số}
+\tp{Nội dung lý thuyết cần kiểm chứng} Kết quả \ndlk{2.3.3(a)} nói rằng mô hình dự báo chỉ có giá trị khi tốt hơn các mốc chuẩn đơn giản (trung bình, naive, naive mùa vụ, trôi); MAE, RMSE, MAPE, MASE cho thông tin khác nhau và có hạn chế riêng.
+\tp{Cách triển khai} Nội dung này dùng dữ liệu thực của NI, AP và DP. Với AP, ta so airline với bốn mốc chuẩn trên $24$ tháng kiểm định, với MASE chia cho MAE của naive mùa vụ trên mẫu huấn luyện; với NI, khớp trên 80 năm đầu và dự báo 20 năm cuối từ gốc cố định; với DP, dự báo một bước trên $360$ ngày kiểm định, tính bằng \%, và dự báo đa bước từ gốc cố định $t=1500$ trên thang giá.
+\tp{Mã lệnh Python}
+\begin{codeblock}
+acc = lambda a, f, tr, s=1: {"RMSE": E.rmse(a, f), "MAE": E.mae(a, f),
+                              "MAPE": E.mape(a, f), "MASE": E.mase(a, f, tr, s)}
+tr_ap, te_ap = AP[:120], AP[120:]
+f_air = np.exp(airline(np.log(tr_ap)).get_forecast(24).predicted_mean)
+cac_mo_hinh = {"airline": f_air, "naive mua vu": F.forecast_seasonal_naive(tr_ap, 24, 12),
+               "troi": F.forecast_drift(tr_ap, 24), "naive": F.forecast_naive(tr_ap, 24),
+               "trung binh": F.forecast_mean(tr_ap, 24)}
+bang_ap = {k: acc(te_ap, f, tr_ap, 12) for k, f in cac_mo_hinh.items()}   # MASE theo mua vu s = 12
+\end{codeblock}
+\tp{Kết quả tính toán} Các bảng~\ref{tab:tab_b12_11_ni_benchmarks}, \ref{tab:tab_b12_11_ap_benchmarks}, \ref{tab:tab_b12_11_dp_one_step} và~\ref{tab:tab_b12_11_dp_multistep} cho sai số của các phương pháp trên lần lượt NI, AP và DP.
+\input{\tabdir/tab_b12_11_ni_benchmarks.tex}
+\input{\tabdir/tab_b12_11_ap_benchmarks.tex}
+\input{\tabdir/tab_b12_11_dp_one_step.tex}
+\input{\tabdir/tab_b12_11_dp_multistep.tex}
+\tp{Phân tích và diễn giải}
+\bodl{NI.} Bốn phương pháp gần như ngang nhau, với RMSE $122.3$ cho trôi, $122.8$ cho ARIMA, $123.1$ cho naive và $133.3$ cho trung bình, kém hơn. Thứ hạng đổi theo thước đo: theo RMSE và MAPE thì trôi tốt nhất, còn theo MAE thì naive tốt nhất với $102.0$ so với $104.3$ của ARIMA. Mọi MASE đều dưới $1$, từ $0.76$ đến $0.81$, nhưng chênh lệch giữa các phương pháp nhỏ.
+
+\bodl{AP.} Airline vượt xa mọi mốc chuẩn ở cả bốn thước đo: RMSE $43.2$ so với $77.0$ của naive mùa vụ, tức tốt hơn $1.8$ lần, $115.7$ của trôi, $137.3$ của naive và $219.4$ của trung bình; MAPE $8.5\%$ so với $15.5\%$ của mốc tốt nhất. MASE $1.38>1$ nghĩa là sai số trung bình trên $24$ tháng lớn hơn sai số một bước của naive mùa vụ trong mẫu huấn luyện, điều này không mâu thuẫn vì dự báo xa khó hơn dự báo một bước.
+
+\bodl{DP.} Ở dự báo một bước, ba phương pháp cho RMSE từ $1.435\%$ đến $1.439\%$, hầu như không phân biệt được, vì ARIMA$(1,1,0)$ trùng naive do $\hat\phi\approx0$ và không có trôi. Ở dự báo đa bước từ gốc cố định, trôi tốt nhất với RMSE $1093.8$ và MAPE $17.6\%$, hơn naive với $1332.5$ và $22.0\%$, và hơn nhiều so với trung bình với $2546.4$. Các MASE rất lớn, từ $65$ đến $181$, vì mẫu số là sai số một bước còn dự báo đi tới $360$ ngày, nên MASE không dùng để so với $1$ ở đây.
+
+\tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: với AP mô hình vượt xa mốc chuẩn nên đáng dùng; với NI và DP, ARIMA không hơn naive hay trôi một cách có ý nghĩa nên không có lý do chọn mô hình phức tạp hơn. Các thước đo xếp hạng khác nhau ở NI, và MASE cần thận trọng khi chân trời dự báo lệch xa mẫu số, đúng như lý thuyết cảnh báo.
+
+\noidung{Gốc cuốn chiếu}
+\tp{Nội dung lý thuyết cần kiểm chứng} Kết quả \ndlk{2.3.3(b)} nói rằng đánh giá cuốn chiếu, khớp lại mô hình tại mỗi gốc và tính sai số riêng cho từng chân trời, ít phụ thuộc vào một điểm chia hơn; bước chọn mô hình cũng phải nằm trong mỗi gốc.
+\tp{Cách triển khai} Nội dung này dùng dữ liệu thực của NI, AP và DP. Với AP, khớp lại airline mỗi gốc từ tháng 108, chân trời tối đa 12 tháng, so với naive mùa vụ. Với NI, gốc đầu tiên khớp trên 80 năm, chân trời tối đa 5 năm, có thêm bước chọn mô hình theo AIC trong bốn ứng viên ARIMA$(p,1,q)$ với $p,q\le1$ tại mỗi gốc. Với DP, dự báo một bước trên $360$ ngày với tham số cố định, so với khớp lại mỗi $60$ ngày.
+\tp{Mã lệnh Python}
+\begin{codeblock}
+ff_air = lambda tr, h: np.exp(airline(np.log(tr)).get_forecast(h).predicted_mean)
+ff_sn = lambda tr, h: F.forecast_seasonal_naive(tr, h, 12)
+ro_ap = {"airline": E.rolling_origin_horizons(AP, ff_air, 108, 12),
+         "naive mua vu": E.rolling_origin_horizons(AP, ff_sn, 108, 12)}      # khop lai moi goc
+ung_vien = [(0, 1, 0), (0, 1, 1), (1, 1, 0), (1, 1, 1)]                      # Nile: chon mo hinh
+ff_chon = lambda tr, h: min((ARIMA(tr, order=o, trend="n").fit() for o in ung_vien),
+                            key=lambda f: f.aic).forecast(h)
+ro_ni = E.rolling_origin_horizons(NI, ff_chon, 80, 5)
+\end{codeblock}
+\tp{Kết quả tính toán} Các bảng~\ref{tab:tab_b12_12_ni_rolling}, \ref{tab:tab_b12_12_ap_one_step} và~\ref{tab:tab_b12_12_dp_rolling} cho kết quả cuốn chiếu của NI, AP và DP.
+\input{\tabdir/tab_b12_12_ni_rolling.tex}
+\input{\tabdir/tab_b12_12_ap_one_step.tex}
+\input{\tabdir/tab_b12_12_dp_rolling.tex}
+\tp{Phân tích và diễn giải} Kết quả của NI khác với một điểm chia ở mục trước. Ở $h=1$, ARIMA$(0,1,1)$ với $126.9$ và ARIMA chọn theo AIC với $126.2$ tốt nhất, hơn trung bình mở rộng với $131.9$ và naive với $153.1$; nhưng từ $h=2$ trở đi trung bình mở rộng tốt hơn ARIMA, với $128.8$ so với $133.5$ ở $h=2$ và $127.5$ so với $140.6$ ở $h=5$, có lẽ vì sau lần đổi mức năm 1899 chuỗi dao động quanh một mức cố định nên trung bình ổn định hơn bước ngẫu nhiên. Bước chọn mô hình theo AIC ở mỗi gốc cải thiện không đáng kể, $126.2$ so với $126.9$. Mỗi chân trời chỉ dựa trên $20$ gốc nên kết quả không chắc chắn. Với AP, airline có RMSE một bước $15.3$ khi khớp lại mỗi gốc từ $t=120$ đến $143$, so với $50.0$ của naive mùa vụ; theo chân trời, RMSE của airline chỉ tăng nhẹ từ $15.3$ ở $h=1$ lên $20.9$ ở $h=12$, còn của naive mùa vụ từ $42.0$ lên $49.0$, nên airline thắng ở mọi chân trời, dù số gốc giảm từ $36$ xuống $25$. Với DP, RMSE một bước là $1.439\%$ khi tham số cố định, $1.440\%$ khi khớp lại mỗi $60$ ngày và $1.435\%$ với trôi cố định hoặc cập nhật, nên mọi phương án nằm trong $0.4\%$ của nhau vì mô hình đã là bước ngẫu nhiên.
+
+\tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: gốc cuốn chiếu cho bức tranh đầy đủ hơn một lần chia: ở NI, kết luận ``ARIMA tốt hơn trung bình'' của gốc cố định đảo ngược từ chân trời 2 trở đi; ở AP, lợi thế của airline vững ở mọi chân trời. Hạn chế là số gốc ít, chỉ $20$ ở NI, và giảm dần khi chân trời tăng.
+
+\noidung{Hàm mất mát và kiểm định Diebold--Mariano}
+\tp{Nội dung lý thuyết cần kiểm chứng} Kết quả \ndlk{2.3.3(c)} nói rằng hàm mất mát bình phương hướng đến trung bình còn hàm tuyệt đối hướng đến trung vị; kiểm định Diebold--Mariano cho biết khác biệt giữa hai phương pháp là thật hay do ngẫu nhiên, dựa trên chuỗi hiệu mất mát.
+\tp{Cách triển khai} Nội dung này dùng dữ liệu thực của AP và NI. DP không áp dụng vì mô hình khớp là bước ngẫu nhiên nên dự báo trùng naive và sai số các phương pháp gần như giống hệt, không có khác biệt để kiểm định. Ta kiểm chứng tính chất phiếm hàm bằng cách tìm cực tiểu trên lưới của tổng bình phương và tổng tuyệt đối sai lệch của AP huấn luyện, so với trung bình và trung vị; rồi kiểm định Diebold--Mariano cho airline so với naive mùa vụ ở AP và ARIMA$(0,1,1)$ so với naive ở NI trên sai số một bước cuốn chiếu, với cả hai hàm mất mát.
+\tp{Mã lệnh Python}
+\begin{codeblock}
+a1, f1 = E.rolling_origin_forecast(AP, ff_air, 120, 1)          # airline, 1 buoc, goc 120..143
+e_air = a1 - f1; e_sn = AP[120:144] - AP[108:132]               # sai so naive mua vu
+dm_bp, p_bp = E.diebold_mariano(e_air ** 2 - e_sn ** 2)         # ham mat mat binh phuong
+dm_td, p_td = E.diebold_mariano(np.abs(e_air) - np.abs(e_sn))   # ham mat mat tuyet doi
+luoi = np.linspace(tr_ap.min(), tr_ap.max(), 4001)              # phiem ham: cuc tieu tren luoi
+c_bp = luoi[np.argmin([np.mean((tr_ap - c) ** 2) for c in luoi])]      # ~ trung binh
+c_td = luoi[np.argmin([np.mean(np.abs(tr_ap - c)) for c in luoi])]     # ~ trung vi
+\end{codeblock}
+\tp{Kết quả tính toán} Bảng~\ref{tab:tab_b12_13_loss_functional} cho cực tiểu của hai hàm mất mát, còn Bảng~\ref{tab:tab_b12_13_diebold_mariano} cho kết quả kiểm định Diebold--Mariano.
+\input{\tabdir/tab_b12_13_loss_functional.tex}
+\input{\tabdir/tab_b12_13_diebold_mariano.tex}
+\tp{Phân tích và diễn giải} Với AP, cực tiểu của tổng bình phương nằm ở $246.0$, trùng trung bình $245.9$, và của tổng tuyệt đối ở $233.1$, trùng trung vị $233.5$. Chuỗi lệch phải với độ lệch $0.58$ nên hai đại lượng khác nhau, đúng như lý thuyết. Tuy vậy với năm phương pháp dự báo, thứ hạng theo RMSE và MAE giống hệt nhau, từ tốt đến kém là airline, naive mùa vụ, trôi, naive và trung bình: chênh lệch giữa các phương pháp lớn hơn nhiều tác động của lựa chọn thước đo. Kiểm định Diebold--Mariano bác bỏ rất mạnh việc airline và naive mùa vụ ngang nhau với $DM=-7.49$ cho hàm bình phương và $-8.79$ cho hàm tuyệt đối, $p<0.0001$. Với NI, chênh lệch giữa ARIMA$(0,1,1)$ và naive không có ý nghĩa thống kê: $DM=-1.73$ với $p=0.10$ và $-1.39$ với $p=0.18$ trên $20$ gốc, khớp với việc RMSE của hai phương pháp gần như bằng nhau.
+
+\tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: tính chất phiếm hàm được xác nhận bằng số, và Diebold--Mariano phân biệt đúng giữa khác biệt lớn có ý nghĩa ở AP và khác biệt nhỏ không có ý nghĩa ở NI. Trong dữ liệu này thứ hạng theo RMSE và MAE không đổi; lý thuyết chỉ nói hai thước đo \emph{có thể} xếp hạng khác nhau, không bảo đảm điều đó xảy ra.
+
+\noidung{Quy trình báo cáo dự báo}
+\tp{Nội dung lý thuyết cần kiểm chứng} Kết quả \ndlk{2.3.3(d)} nói rằng một báo cáo dự báo ARIMA đầy đủ gồm tám phần: phép biến đổi, bậc $d$ và $D$ kèm bằng chứng, kiểm tra sai phân quá mức, mô hình khớp, nhân quả và khả nghịch, chẩn đoán phần dư, dự báo kèm khoảng, và so với mốc chuẩn.
+\tp{Cách triển khai} Nội dung này dùng dữ liệu thực của NI, AP và DP. Ta lập bảng tám phần cho ba bộ dữ liệu, với mô hình của NI là ARIMA$(0,1,1)$ không trôi, của AP là airline và của DP là bước ngẫu nhiên có trôi khớp trên $1500$ ngày huấn luyện. Phần dư được kiểm tra bằng $Q_{LB}$ của phần dư và của bình phương phần dư.
+\tp{Mã lệnh Python}
+\begin{codeblock}
+mo_hinh = {"NI": ARIMA(NI, order=(0, 1, 1), trend="n").fit(), "AP": airline(TR),
+           "DP": ARIMA(LD[:1500], order=(0, 1, 0), trend="t").fit()}
+for ten, f in mo_hinh.items():
+    a0, a1 = adfuller(y, regression="c")[1], adfuller(np.diff(y), regression="c")[1]   # ADF
+    k0, k1 = kpss(y, regression="c", nlags="auto")[0], kpss(np.diff(y), regression="c", nlags="auto")[0]
+    e = F.zero_diffuse_residuals(f.resid, k)        # bo phan du khoi dong
+    q, p = lb(e, H, df); q2, p2 = lb(e ** 2, H, 0)  # Ljung-Box phan du va phan du binh phuong
+    goc = np.abs(f.maroots)                          # kiem tra kha nghich
+\end{codeblock}
+\tp{Kết quả tính toán} Bảng~\ref{tab:tab_b12_14_checklist} lập tám phần này cho ba bộ dữ liệu.
+\input{\tabdir/tab_b12_14_checklist.tex}
+\tp{Phân tích và diễn giải}
+\bodl{NI.} Không biến đổi, $d=1$ và $D=0$: ở chuỗi sai phân ADF bác bỏ nghiệm đơn vị và KPSS không bác bỏ, còn ở chuỗi gốc ADF cũng bác bỏ vì lần đổi mức, như ở \mucnd{5.3(b)}. $\hat\rho(1)$ từ $-0.40$ xuống $-0.63$ khi sai phân thêm một lần nên $d=1$ là đủ. $\hat\theta=-0.733$ khả nghịch với môđun nghiệm MA là $1.36$, và phần dư là nhiễu trắng với $Q_{LB}(12)=13.6$, $p=0.26$, còn phần dư bình phương có $p=0.84$. Dự báo là $799$ với khoảng $[517,1080]$ ở $h=1$ và $[438,1159]$ ở $h=10$, và RMSE là $122.8$ trên $20$ năm cuối, ngang naive với $123.1$.
+
+\bodl{AP.} Biến đổi log hợp lý vì độ lệch chuẩn trong từng năm của số hành khách dao động từ $13.7$ đến $77.7$, khác nhau hơn $5$ lần, còn của log chỉ từ $0.108$ đến $0.160$; $d=1$ và $D=1$. Airline có $\hat\theta=-0.343$ và $\hat\Theta=-0.541$, khả nghịch nhưng nghiệm MA gần biên với môđun $1.05$. Phần dư không tự tương quan với $Q_{LB}(24)=19.8$, $p=0.60$, còn phần dư bình phương ở ranh giới với $p=0.066$. RMSE là $43.2$ so với $77.0$ của naive mùa vụ.
+
+\bodl{DP.} Lấy log, $d=1$ và $D=0$; sai phân thêm một lần đưa $\hat\rho(1)$ từ $-0.004$ xuống $-0.490$, tức sai phân thừa, nên $d=1$ là đủ. Phần dư không tự tương quan với $p=0.40$ nhưng phần dư bình phương còn tự tương quan rất mạnh với $p=5.6\times10^{-8}$, nên khoảng dự báo dựa trên phương sai không đổi chưa đáng tin và cần mô hình cho phương sai như GARCH. RMSE một bước của trôi là $1.435\%$, chỉ ngang naive với $1.439\%$.
+
+\tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: cả tám phần thực hiện được cho cả ba bộ dữ liệu và cho một bức tranh nhất quán, đồng thời chỉ ra đúng những điểm cần thận trọng: nghiệm MA gần biên và phần dư bình phương ở ranh giới của AP, và cụm biến động còn lại của DP. Với NI và DAX, mô hình không hơn mốc chuẩn đơn giản; chỉ với AP mô hình mới mang lại giá trị rõ ràng.
