@@ -18,26 +18,7 @@ Mục tiêu chung là kiểm chứng bằng Python các kết quả lý thuyết
 \end{enumerate}
 
 \subsection{Phạm vi}
-Báo cáo dùng sáu bộ dữ liệu của R, được ký hiệu như trong Bảng~\ref{tab:kyhieudl} và chỉ gọi bằng các ký hiệu ấy ở những phần sau. Hai ký hiệu DR và DP cùng chỉ số DAX nhưng ở hai dạng khác nhau, vì suất sinh lợi là dạng dừng còn log giá là dạng không dừng của cùng một chuỗi.
-
-\begin{table}[H]
-\centering\footnotesize
-\caption{Ký hiệu các bộ dữ liệu}\label{tab:kyhieudl}
-\renewcommand{\arraystretch}{1.2}
-\begin{tabular}{@{}llp{9cm}@{}}
-\toprule
-Ký hiệu & Bộ dữ liệu & Biến được mô hình hóa \\
-\midrule
-HU & Hồ Huron & mực nước hồ hằng năm \\
-LY & Linh miêu & logarit số linh miêu bị bẫy hằng năm \\
-DR & DAX, dạng suất sinh lợi & suất sinh lợi log hằng ngày của chỉ số DAX \\
-NI & Nile & lưu lượng hằng năm của sông Nile \\
-AP & AirPassengers & logarit số hành khách hàng không hằng tháng \\
-DP & DAX, dạng log giá & logarit giá đóng cửa hằng ngày của chỉ số DAX \\
-\bottomrule
-\end{tabular}
-\end{table}
-
+Báo cáo dùng sáu bộ dữ liệu của R, được ký hiệu theo Danh mục ký hiệu và chữ viết tắt ở đầu báo cáo, và chỉ gọi bằng các ký hiệu ấy ở những phần sau. Hai ký hiệu DR và DP cùng chỉ số DAX nhưng ở hai dạng khác nhau, vì suất sinh lợi là dạng dừng còn log giá là dạng không dừng của cùng một chuỗi.
 Về phương pháp, báo cáo dùng mô hình ARMA, ARIMA và ARIMA mùa vụ cùng các công cụ đi kèm là tự tương quan, kiểm định Ljung--Box, kiểm định nghiệm đơn vị và kiểm định Diebold--Mariano. Các mô hình như GARCH, Prophet hay học máy nằm ngoài phạm vi, dù có những chuỗi, điển hình là DR, mang đặc điểm mà các mô hình đó xử lý tốt hơn.
 
 Nội dung kiểm chứng gồm 28 kết quả lý thuyết, được liệt kê cùng ký hiệu bộ dữ liệu áp dụng trong Bảng~\ref{tab:danhmuc}. Trong số đó, 20 kết quả được kiểm chứng bằng dữ liệu thực, 7 bằng cả dữ liệu thực lẫn mô phỏng và 1 chỉ bằng mô phỏng.
