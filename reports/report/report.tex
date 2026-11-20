@@ -1,0 +1,100 @@
+% Khung báo cáo AS3179 (tiếng Việt). Biên dịch: python scripts/04_build_report.py  (pdflatex + T5, cần MiKTeX hoặc TeX Live)
+% Các mục đánh số 4.1–4.9 đúng theo đặc tả. Mọi chỗ \TODO{...} do nhóm điền; không có kết luận nào được viết sẵn.
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath,amssymb,graphicx,booktabs,longtable,listings,xcolor,hyperref,geometry,float}
+\geometry{margin=2.5cm}
+\renewcommand{\thesection}{4.\arabic{section}}
+\setcounter{secnumdepth}{3}
+\newcommand{\TODO}[1]{{\color{red}\textbf{TODO(nhóm):} #1}}
+\graphicspath{{../figures/}}
+\newcommand{\fig}[2]{\begin{figure}[H]\centering\IfFileExists{../figures/#1.png}{\includegraphics[width=\linewidth]{#1}}{\TODO{thiếu hình #1}}\caption{#2}\end{figure}}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,frame=single,language=Python}
+\hypersetup{colorlinks=true,linkcolor=black,urlcolor=blue}
+
+\title{Bài tập lớn AS3179 -- Mô hình thống kê\\[4pt]
+\large Kiểm chứng Bài 11 (Chuỗi thời gian I: phụ thuộc và mô hình ARMA)\\ và Bài 12 (Chuỗi thời gian II: ARIMA và dự báo) bằng Python}
+\author{Khoa Khoa học Ứng dụng, HCMUT\\ \TODO{tên nhóm}}
+\date{Hạn nộp bản mềm: 12:00 thứ Hai 30/11/2026}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Thông tin chung}
+\subsection*{Thành viên nhóm}
+\begin{tabular}{@{}llll@{}}\toprule STT & Họ và tên & MSSV & Email \\ \midrule
+1 & \TODO{họ tên} & \TODO{MSSV} & \TODO{} \\
+2 & \TODO{họ tên} & \TODO{MSSV} & \TODO{} \\
+3 & \TODO{họ tên} & \TODO{MSSV} & \TODO{} \\ \bottomrule\end{tabular}
+
+\subsection*{Cặp bài giảng}
+Bài giảng thứ nhất: \textbf{Bài 11} -- Chuỗi thời gian I: phụ thuộc và mô hình ARMA. Bài giảng thứ hai: \textbf{Bài 12} -- Chuỗi thời gian II: ARIMA và dự báo.
+(Đặc tả còn sót cụm ``hai cặp bài giảng''; nhóm hiểu là một cặp 11 + 12.)
+
+\subsection*{Sáu bộ dữ liệu}
+\begin{tabular}{@{}lllll@{}}\toprule Bài & Mã & Ví dụ & Bộ dữ liệu (R \texttt{datasets}) & n \\ \midrule
+11 & HU & (i) & \texttt{LakeHuron}: mực nước hồ Huron 1875--1972 & 98 \\
+11 & LY & (ii) & \texttt{lynx}: linh miêu bị bẫy 1821--1934, $\log_{10}$ & 114 \\
+11 & DR & (iii) & \texttt{EuStockMarkets} (DAX): suất sinh lợi log ngày & 1859 \\
+12 & NI & (i) & \texttt{Nile}: lưu lượng sông Nile 1871--1970 & 100 \\
+12 & AP & (ii) & \texttt{AirPassengers}: hành khách hàng không 1949--1960, $\log$ & 144 \\
+12 & DP & (iii) & \texttt{EuStockMarkets} (DAX): log giá đóng cửa ngày & 1860 \\ \bottomrule\end{tabular}
+
+\section{Tóm tắt nội dung lý thuyết cần kiểm chứng}
+Danh sách 28 nội dung (14 của Bài 11, 14 của Bài 12) và một phần mở rộng tùy chọn $\star$. Kiểu: [D] trên dữ liệu thật, [M] mô phỏng có điều khiển (seed 3179).
+\input{theory_table}
+\TODO{thêm cột ``kiểu'' [D]/[M] và số hiệu Định nghĩa/Định lý nếu muốn; không sao chép lại lý thuyết.}
+
+\section{Mô tả và xử lý dữ liệu}
+Nguồn, đơn vị và các bước làm sạch: xem \texttt{data/DATA\_SOURCES.md}. Dữ liệu DAX \textbf{không có ngày lịch}: chỉ dùng chỉ số ngày giao dịch $t=1,\dots,1860$.
+\subsection*{HU -- \texttt{LakeHuron}}\TODO{nguồn (chép trích dẫn từ \texttt{?LakeHuron}), đơn vị quan sát, biến đáp ứng, tiền xử lý, nhận xét EDA.}\fig{eda_HU_overview}{HU: chuỗi, ACF, PACF.}
+\subsection*{LY -- \texttt{lynx}}\TODO{như trên.}\fig{eda_LY_overview}{LY: $\log_{10}$(số lượng), ACF, PACF.}
+\subsection*{DR -- DAX, suất sinh lợi}\TODO{như trên.}\fig{eda_DR_overview}{DR: suất sinh lợi log (\%), ACF, PACF.}
+\subsection*{NI -- \texttt{Nile}}\TODO{như trên; nêu đổi mức quanh 1899.}\fig{eda_NI_overview}{NI: lưu lượng, ACF, PACF.}
+\subsection*{AP -- \texttt{AirPassengers}}\TODO{như trên; log, chia huấn luyện 120 / kiểm định 24.}\fig{eda_AP_overview}{AP: log hành khách, ACF, PACF.}
+\subsection*{DP -- DAX, log giá}\TODO{như trên; chia 1500 / 360 ngày giao dịch.}\fig{eda_DP_overview}{DP: log giá, ACF, PACF.}
+
+\section{Kiểm chứng cặp bài giảng thứ nhất (Bài 11)}
+Mỗi mục có đủ sáu phần theo đặc tả. Mã nguồn đầy đủ: \texttt{notebooks/bai11\_arma.ipynb}.
+\input{sec_bai11}
+
+\section{Kiểm chứng cặp bài giảng thứ hai (Bài 12)}
+Mã nguồn đầy đủ: \texttt{notebooks/bai12\_arima\_du\_bao.ipynb}.
+\input{sec_bai12}
+
+\section{So sánh và thảo luận}
+\subsection*{Mức độ phù hợp của kết quả thực nghiệm với lý thuyết}\TODO{tổng hợp từ bảng cuối hai notebook.}
+\subsection*{Sự khác biệt giữa các bộ dữ liệu}\TODO{}
+\subsection*{Ảnh hưởng của đặc điểm dữ liệu đến kết quả mô hình}\TODO{xu thế, đổi mức, mùa vụ, cụm biến động\dots}
+\subsection*{Những giả thiết được đáp ứng hoặc không được đáp ứng}\TODO{}
+\subsection*{Hạn chế và vấn đề phát sinh}\TODO{gồm các chỗ lệch giữa R và Python đã ghi ở \texttt{reports/tables/lecture\_reference\_check.md}.}
+
+\section{Kết luận}
+\TODO{tóm tắt kết quả quan trọng từ hai bài giảng và sáu bộ dữ liệu, nhận xét chính.}
+
+\section{Đóng góp của các thành viên}
+\begin{tabular}{@{}p{4cm}p{9cm}p{2cm}@{}}\toprule Thành viên & Công việc cụ thể & Tỷ lệ \\ \midrule
+\TODO{họ tên} & \TODO{} & \TODO{} \\ \TODO{họ tên} & \TODO{} & \TODO{} \\ \bottomrule\end{tabular}
+
+\section{Mục lục, nguồn dữ liệu và tài liệu tham khảo}
+\subsection*{Nguồn dữ liệu}
+Sáu bộ dữ liệu thuộc gói R \texttt{datasets}, tải từ Rdatasets (\url{https://vincentarelbundock.github.io/Rdatasets/}), ngày tải 20/11/2026. \TODO{chép trích dẫn nguyên văn từ \texttt{?LakeHuron}, \texttt{?lynx}, \texttt{?EuStockMarkets}, \texttt{?Nile}, \texttt{?AirPassengers}.}
+\subsection*{Tài liệu tham khảo}
+\begin{enumerate}
+\item Dung Nguyen, AS3179 Mô hình thống kê, Bài 11: Chuỗi thời gian I -- Phụ thuộc và mô hình ARMA; Bài 12: Chuỗi thời gian II -- ARIMA và dự báo (slide bài giảng). Khoa Khoa học Ứng dụng, HCMUT. \TODO{ghi năm học}
+\item Box, G.E.P., Jenkins, G.M., Reinsel, G.C., Ljung, G.M., \textit{Time Series Analysis: Forecasting and Control}, 5th ed., Wiley, 2015.
+\item Brockwell, P.J., Davis, R.A., \textit{Introduction to Time Series and Forecasting}, 3rd ed., Springer, 2016.
+\item Shumway, R.H., Stoffer, D.S., \textit{Time Series Analysis and Its Applications}, 4th ed., Springer, 2017.
+\item Hyndman, R.J., Athanasopoulos, G., \textit{Forecasting: Principles and Practice}, 3rd ed., OTexts.
+\item Box, G.E.P., Pierce, D.A. (1970), JASA 65. \quad Ljung, G.M., Box, G.E.P. (1978), Biometrika 65. \quad Bartlett, M.S. (1946), J. Roy. Statist. Soc. Suppl. 8.
+\item Dickey, D.A., Fuller, W.A. (1979), JASA 74. \quad Kwiatkowski, Phillips, Schmidt, Shin (1992), J. Econometrics 54. \quad Diebold, F.X., Mariano, R.S. (1995), J. Bus. Econ. Statist. 13.
+\item Hyndman, R.J., Koehler, A.B. (2006), Int. J. Forecasting 22 (MASE). \quad Engle, R.F., Granger, C.W.J. (1987), Econometrica 55.
+\item Seabold, S., Perktold, J. (2010), Statsmodels: Econometric and statistical modeling with Python, Proc. 9th Python in Science Conf.
+\end{enumerate}
+\TODO{đối chiếu lại số trang/tập của từng tài liệu với danh sách ở cuối hai bài giảng; chỉ giữ những tài liệu thực sự được dùng.}
+
+\end{document}

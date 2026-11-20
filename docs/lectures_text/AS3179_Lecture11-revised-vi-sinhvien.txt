@@ -1,0 +1,1363 @@
+
+===== Trang 1 =====
+AS3179 Mô hình thống kê
+Bài 11: Chuỗi thời gian I: Phụ thuộc và mô hình ARMA
+Hôm nay
+Các quan sát theo thời gian thường không độc lập: giá trị hôm nay chứa thông tin
+về ngày mai. Ta mô tả sự phụ thuộc này bằng hàm tự hiệp phương sai, đo bằng
+ACF và PACF mẫu, rồi mô hình hóa bằng các quá trình tự hồi quy (AR), trung bình
+trượt (MA) và ARMA. Mục tiêu không chỉ là khớp một đường theo thời gian, mà
+còn là tạo sai số chuẩn, chẩn đoán và dự báo đáng tin cậy.
+Dung Nguyen | Khoa Khoa học Ứng dụng, HCMUT
+
+===== Trang 2 =====
+Vị trí của Bài 11
+L9: spline,
+mô hình cộng
+L10: mô hình
+Bayes
+B11: phụ thuộc,
+mô hình ARMA
+B12: ARIMA,
+dự báo
+Nhắc lại (Bài 2–10)
+Tính chuẩn tiệm cận của MLE (Bài 2); tương quan chuỗi của phần dư và Durbin–Watson
+(Bài 5); AIC/BIC và thẩm định theo thứ tự thời gian (Bài 6); bootstrap khối (Bài 8); cỡ
+mẫu hiệu dụng của xích Markov (Bài 10).
+Ý chính trong một dòng
+Mô hình hóa tương quan giữa hiện tại và
+quá khứ; phần còn lại, không dự đoán
+được, là nhiễu trắng.
+Vì sao quan trọng
+Khi có phụ thuộc, SE iid, chia ngẫu nhiên
+huấn luyện/kiểm tra (train/test) và kiểm
+định ngây thơ có thể sai nặng; đơn vị
+thường là một khối thời gian, không phải
+một dòng dữ liệu.
+AS3179 Mô hình thống kê | Bài 11 2/68
+
+===== Trang 3 =====
+Chuẩn đầu ra
+Sau bài này, sinh viên cần có thể
+1. định nghĩa tính dừng, tự hiệp phương sai, nhiễu trắng và nhiễu iid; định lượng cách
+phụ thuộc làm thay đổi phương sai của trung bình mẫu;
+2. tính và đọc ACF mẫu, dùng dải iid/Bartlett và kiểm định Ljung–Box, đồng thời tránh
+diễn giải quá mức các gai mẫu đơn lẻ;
+3. suy ra nghiệm dừng, trung bình, phương sai, ACF và phương sai sai số dự báo của mô
+hình AR(1) và AR(p) từ đa thức đặc trưng;
+4. suy ra ACF của mô hình MA(q) và ARMA(p,q), đồng thời giải thích tính nhân quả,
+khả nghịch, thừa nhân tử chung và sai phân quá mức;
+5. nhận diện, ước lượng, chọn (AIC, BIC, thẩm định cuốn chiếu) và kiểm tra mô hình
+ARMA bằng PACF, hàm hợp lý (likelihood) và chẩn đoán phần dư;
+6. triển khai quy trình trong R/Python và báo cáo các giới hạn: xu thế, nghiệm đơn vị,
+cụm biến động và thẩm định có xét thời gian.
+AS3179 Mô hình thống kê | Bài 11 3/68
+
+===== Trang 4 =====
+Kế hoạch bài học 100 phút
+1. Phụ thuộc và
+tính dừng
+2. ACF mẫu
+và nhiễu trắng
+3. Mô hình
+tự hồi quy
+4. Trung bình trượt
+và mô hình ARMA
+5. PACF, ước lượng,
+chọn, kiểm tra
+6. Tính toán
+bằng R và Python
+Phân bổ thời gian
+Lộ trình chính: Mục 1–2 (35’), Mục 3 (25’),
+Mục 4–5 (30’), tính toán/danh sách kiểm
+(10’).
+Nhịp học trên lớp
+Định nghĩa/định lý → ví dụ mẫu → ví dụ
+tương tự → ví dụ nâng cao. Các trang
+chiếu có ký hiệu ⋆ và các chứng minh dài
+có thể xem là phần mở rộng/tự học.
+AS3179 Mô hình thống kê | Bài 11 4/68
+
+===== Trang 5 =====
+Các ví dụ xuyên suốt
+(i) Mực nước hồ Huron (dữ liệu
+thật)
+Mực nước hằng năm của hồ Huron (ft so với
+mực nước biển), 1875–1972, n = 98 (R:
+LakeHuron). Trung bình 579.0 ft, SD 1.32 ft;
+có xu thế giảm chậm và các đợt ẩm/khô kéo
+dài.
+(ii) Linh miêu Canada (dữ liệu thật)
+Số linh miêu bị bẫy hằng năm ở vùng sông
+Mackenzie, 1821–1934, n = 114 (R: lynx); ta
+mô hình hóa yt = log10(số lượng). Đây là chu
+kỳ thú săn mồi–con mồi nổi tiếng khoảng
+mười năm (Elton và Nicholson, 1942; Moran,
+1953).
+(iii) Suất sinh lợi ngày của DAX (dữ
+liệu thật)
+Chỉ số chứng khoán Đức, 1991–1998 (R:
+EuStockMarkets): n = 1859 suất sinh lợi log
+theo ngày rt = 100 log(Pt /Pt−1) (đơn vị %),
+trung bình 0.065, SD 1.03.
+Ký hiệu
+{Yt }: một chuỗi thời gian, t ∈ Z (quan sát tại
+t = 1,..., n); µt = EYt ; γ(h): tự hiệp phương
+sai; ρ(h): tự tương quan; εt ∼ WN(0,σ2):
+nhiễu trắng; B: toán tử lùi (backshift),
+BYt = Yt−1.
+Tất cả số liệu được tính từ các bộ dữ liệu này bằng mã ở Mục 6 (hoặc biến thể nhỏ của mã); mô phỏng đặt
+seed 3179. Với suất sinh lợi tài chính, mục tiêu mô hình là phụ thuộc ngắn hạn trong trung bình và độ biến
+động, không phải tư vấn đầu tư dài hạn.AS3179 Mô hình thống kê | Bài 11 5/68
+
+===== Trang 6 =====
+1. Phụ thuộc và tính dừng
+
+===== Trang 7 =====
+Định nghĩa 1 và 2: chuỗi thời gian và tính dừng
+Định nghĩa 1 (mô hình chuỗi thời gian, kỳ vọng và tự hiệp phương sai)
+Mô hình chuỗi thời gian (time series model) là một dãy biến ngẫu nhiên {Yt , t ∈ Z}; dữ liệu
+y1,..., yn là một hiện thực quan sát tại t = 1,..., n. Nếu EY 2 t <∞ với mọi t, hàm trung bình là
+µt = EYt và hàm tự hiệp phương sai là γ(s, t) = Cov(Ys , Yt ).
+Định nghĩa 2 (tính dừng, nhiễu trắng)
+(a) {Yt } được gọi là dừng nghiêm ngặt nếu (Yt1+h,..., Ytk +h) có cùng phân phối đồng thời với
+(Yt1,..., Ytk ) với mọi k, t1,..., tk và mọi độ dịch h.
+(b) {Yt } được gọi là dừng yếu nếu EY 2 t <∞, µt ≡µ, và γ(t + h, t) = γ(h) chỉ phụ thuộc vào
+độ trễ h. Hàm tự tương quan (ACF) của chuỗi là ρ(h) = γ(h)/γ(0).
+(c) {εt } được gọi là nhiễu trắng (white noise), εt ∼ WN(0,σ2), nếu nó dừng yếu, có trung bình
+0, γ(0) = σ2 và γ(h) = 0 với h ̸= 0. Nó là nhiễu iid nếu, thêm vào đó, các εt độc lập và
+cùng phân phối.
+Dừng nghiêm ngặt cùng với EY 2 t <∞ kéo theo dừng yếu; với quá trình Gauss, dừng yếu kéo theo dừng
+nghiêm ngặt, và nhiễu trắng Gauss là iid. Dưới đây, “dừng” nghĩa là dừng yếu, trừ khi nói rõ khác đi.
+AS3179 Mô hình thống kê | Bài 11 6/68
+
+===== Trang 8 =====
+Mệnh đề 1: các tính chất của mọi hàm tự hiệp phương sai
+Mệnh đề 1
+Giả sử γ là hàm tự hiệp phương sai của một chuỗi dừng yếu. Khi đó
+(a) γ(0) ≥ 0 và |γ(h)|≤γ(0), nên |ρ(h)|≤ 1;
+(b) γ(−h) = γ(h) (hàm chẵn);
+(c) γ xác định không âm: ∑k i,j=1 ai aj γ(ti −tj ) ≥ 0 với mọi k, mọi số thực ai và mọi
+thời điểm ti . Tương đương, với mọi n, ma trận Toeplitz n×n, Γn = [γ(i −j)]n i,j=1, là
+ma trận hiệp phương sai của (Y1,...,Yn) và xác định không âm.
+Chứng minh
+(a) γ(0) = Var Yt ≥ 0; theo bất đẳng thức Cauchy–Schwarz, | Cov(Yt+h,Yt )| ≤√
+Var Yt+h Var Yt = γ(0). (b) γ(−h) = Cov(Yt−h,Yt ) = Cov(Ys ,Ys+h) = γ(h) với
+s = t −h. (c) ∑ i,j ai aj γ(ti −tj ) = Var (∑ i ai Yti ) ≥ 0. □
+Ngược lại, mọi hàm chẵn xác định không âm đều là tự hiệp phương sai của một chuỗi dừng nào đó
+(chẳng hạn chuỗi Gauss): (c) là đặc trưng chính xác.
+AS3179 Mô hình thống kê | Bài 11 7/68
+
+===== Trang 9 =====
+Minh họa: bốn chuỗi, bốn kiểu phụ thuộc
+−4
+−2
+0
+2
+4
+nhiễu trắng εt : ρ(h) = 0, h ̸= 0
+−5
+0
+5
+AR(1), ϕ = 0.9: ρ(h) = 0.9|h|
+0 50 100 150 200
+−15
+−10
+−5
+0
+t
+bước ngẫu nhiên Yt = Yt−1 + εt : không dừng
+1880 1900 1920 1940 1960
+576
+578
+580
+582
+năm
+Mực nước hồ Huron (ft), 1875–1972
+Ba chuỗi đầu dùng chung nhiễu mới εt
+iid
+∼N (0,1). AR(1) dao động nhưng quay về 0; bước ngẫu nhiên
+không bị kéo về 0 (không hồi quy về trung bình): phương sai tσ2 tăng theo thời gian. Hồ Huron cho
+thấy các giai đoạn khô/ẩm kéo dài quanh một xu thế giảm chậm: có cả phụ thuộc và xu thế.
+AS3179 Mô hình thống kê | Bài 11 8/68
+
+===== Trang 10 =====
+Định lý 1: trung bình mẫu khi có phụ thuộc
+Định lý 1
+Giả sử {Yt } dừng yếu với trung bình µ và tự hiệp phương sai γ, và ¯Y = 1 n ∑n t=1 Yt . Khi đó
+(a) E ¯Y = µ và Var ¯Y = 1 n ∑ |h|<n ( 1−|h| n ) γ(h);
+(b) nếu ∑ h |γ(h)|<∞, thì n Var ¯Y → ∞∑
+h=−∞
+γ(h) = γ(0) τ, τ = 1 + 2
+∑
+h≥1
+ρ(h);
+(c) nếu thêm nữa Yt = µ + ∑ j ψj εt−j với εt iid và ∑ j |ψj |<∞ (Mục 3), thì √n( ¯Y −µ) d −−→N (0,γ(0)τ).
+Khi τ > 0, neff = n/τ là cỡ mẫu hiệu dụng: cùng ý tưởng phương sai dài hạn như ESS của một xích
+MCMC (Bài 10, Định lý 7). Với AR(1): τ = (1 + ϕ)/(1−ϕ) (Bài 5, Mệnh đề 8, ở đó ký hiệu là ρ).
+AS3179 Mô hình thống kê | Bài 11 9/68
+
+===== Trang 11 =====
+Chứng minh Định lý 1 và khoảng tin cậy
+Chứng minh
+(a) Var ∑ t Yt = ∑n s,t=1 γ(t − s) = ∑ |h|<n(n −|h|)γ(h): có n −|h| cặp ở độ trễ h. Chia
+cho n2. (b) Các hạng (1−|h|/n)γ(h)1{|h| < n} hội tụ đến γ(h) và bị chặn bởi |γ(h)|, là
+một dãy khả tổng: dùng định lý hội tụ bị chặn. (c) Áp dụng CLT cho quá trình tuyến tính
+(Brockwell và Davis, 1991, Định lý 7.1.2). □
+Kiểm tra bằng mô phỏng
+AR(1) với ϕ = 0.6 (τ = 4), n = 100, 2000
+lần lặp: khoảng iid ¯y ±1.96 s/√n chỉ bao
+phủ µ khoảng 65–67% số lần;
+¯y ±1.96 s
+√
+τ/n bao phủ khoảng 94–95%
+(Mục 6).
+Trong thực hành
+τ không biết trước: có thể ước lượng từ mô
+hình đã khớp (Mục 3–5), bằng tổng có trọng
+số và cắt cụt của các tự hiệp phương sai
+phần dư (phương sai nhất quán với phương
+sai thay đổi và tự tương quan,
+HAC/Newey–West), hoặc bằng bootstrap
+khối (Bài 8). Độ dài khối hoặc độ trễ cắt cụt
+là một phần của phân tích và cần được báo
+cáo.
+AS3179 Mô hình thống kê | Bài 11 10/68
+
+===== Trang 12 =====
+Ví dụ mẫu: mực nước hồ Huron có giảm không?
+Bài toán
+Ví dụ xuyên suốt (i). Khớp xu thế yt = β0 + β1(t−1920) + ut bằng OLS, kiểm tra tự tương
+quan của phần dư, và so sánh sai số chuẩn của hệ số dốc với sai số chuẩn từ hồi quy có sai
+số AR(2) (AR(2) được định nghĩa ở Mục 3; khớp bằng cực đại khả năng hợp lý, Mục 5).
+Mức giảm có ý nghĩa không?
+AS3179 Mô hình thống kê | Bài 11 11/68
+
+===== Trang 13 =====
+Ví dụ 1.1 (tương tự): trung bình của một chuỗi MA(1)
+Bài toán
+Cho Yt = µ + εt + 0.5εt−1, trong đó εt ∼ WN(0,1).
+1. Tính γ(h) với mọi h. Chuỗi có dừng không?
+2. Với n = 100, tính chính xác Var ¯Y (Định lý 1(a)) và so sánh với công thức iid γ(0)/n.
+3. Tính τ và cỡ mẫu hiệu dụng.
+AS3179 Mô hình thống kê | Bài 11 12/68
+
+===== Trang 14 =====
+Ví dụ 1.2 (nâng cao): hồi quy giả mạo (spurious regression)
+Bài toán
+Sinh hai bước ngẫu nhiên độc lập Xt = ∑ s≤t us , Yt = ∑ s≤t vs (u,v iid N (0,1)), n = 100,
+hồi quy Y theo X bằng OLS và kiểm định H0 : β1 = 0 ở mức 5%. Lặp lại 2000 lần. Giải
+thích kết quả bằng Định nghĩa 2 và Định lý 1.
+AS3179 Mô hình thống kê | Bài 11 13/68
+
+===== Trang 15 =====
+⋆ Ứng dụng hiện đại: rò rỉ thời gian trong thẩm định mô
+hình
+Nội suy không phải là dự báo
+Với AR(1) dừng có ϕ = 0.9 (Mục 3), các sai số
+dự báo tuyến tính tốt nhất là:
+thông tin dùng phương sai sai số
+láng giềng Yt−1, Yt+1 σ2/(1 + ϕ2) = 0.55σ2
+quá khứ, trước 1 bước σ2
+quá khứ, trước 5 bước σ2 1−ϕ10 1−ϕ2 = 3.43σ2
+Kiểm định chéo K -fold ngẫu nhiên (CV) đặt các
+điểm lân cận của phần lớn điểm kiểm tra vào tập
+huấn luyện. Khi đó một bộ học linh hoạt có thể
+dùng cả hai phía của điểm kiểm tra: CV đang đo
+nội suy, không phải dự báo. Trong phép tính
+AR(1) này, phương sai sai số nội suy là 0.55σ2,
+thấp hơn khoảng 45% so với phương sai dự báo
+một bước.
+Thẩm định trung thực
+CV cuốn chiếu (rolling-origin): huấn
+luyện trên t ≤ t0, kiểm tra trên
+t0 < t ≤ t0 + h, rồi dịch t0 về phía trước
+(Bài 6); CV theo khối có khoảng đệm
+cho dữ liệu không gian và thời gian
+(Bergmeir và Benítez, 2012; Roberts và
+cộng sự, 2017). Trong scikit-learn:
+TimeSeriesSplit.
+Ngoài ra
+Chỉ số thử nghiệm A/B theo ngày có tự
+tương quan: nếu ρ(h) = 0.5|h|, SE ngây
+thơ của trung bình nhỏ hơn đúng√
+3 = 1.73 lần.
+AS3179 Mô hình thống kê | Bài 11 14/68
+
+===== Trang 16 =====
+Bài tập 1: tính toán với phụ thuộc
+Mức 2: Tính toán và diễn giải
+1. Yt = εt + 0.8εt−1, εt ∼ WN(0,2). Tính γ(0), γ(1), γ(h) với h ≥ 2, ρ(1), và
+Var ¯Y khi n = 50; so sánh với công thức iid.
+2. Yt = 3 + 0.5t + εt , εt ∼ WN(0,σ2). Yt có dừng không? Tính trung bình và
+tự hiệp phương sai của ∇Yt = Yt −Yt−1.
+3. Nếu phần dư hồ Huron sau khi khử xu thế là AR(1) với ϕ = 0.78, sai số chuẩn
+iid của trung bình sẽ nhỏ hơn bao nhiêu lần? neff bằng bao nhiêu khi n = 98?
+4. Một chỉ số theo ngày có ρ(h) = 0.5|h|. Cần bao nhiêu ngày để đạt độ chính
+xác của 100 ngày độc lập?
+AS3179 Mô hình thống kê | Bài 11 15/68
+
+===== Trang 17 =====
+Bài tập 2: lý thuyết về tính dừng
+Mức 3: Lý thuyết
+1. Chứng minh Mệnh đề 1. Chỉ ra rằng nếu γ(h) = γ(0) > 0 với mọi h, thì Γn
+suy biến với n ≥ 2 và Yt = Y1 với mọi t (hầu chắc chắn). Một chuỗi như vậy
+trông ra sao?
+2. Chứng minh Định lý 1(a) và (b), rồi suy ra τ = (1 + ϕ)/(1−ϕ) khi ρ(h) = ϕ|h|.
+3. Với bước ngẫu nhiên Yt = ∑t s=1 εs , tính Var Yt , Cov(Yt ,Yt+h) và
+Corr(Yt ,Yt+h) (h ≥ 0). Vì sao chuỗi không dừng, và tương quan tiến đến đâu
+khi t →∞?
+4. Cho Yt = A cos(ωt) + B sin(ωt), trong đó A,B không tương quan, có trung
+bình 0, phương sai σ2, và 0 <ω <π. Chỉ ra rằng Yt dừng với
+γ(h) = σ2 cos(ωh). 1 n ∑ t y2 t hội tụ đến đâu? Một hiện thực có thể ước lượng
+σ2 không?
+AS3179 Mô hình thống kê | Bài 11 16/68
+
+===== Trang 18 =====
+2. ACF mẫu và nhiễu trắng
+
+===== Trang 19 =====
+Định nghĩa 3: tự hiệp phương sai mẫu và tự tương quan
+mẫu
+Định nghĩa 3
+Với dữ liệu y1,...,yn có trung bình ¯y, tự hiệp phương sai mẫu và ACF mẫu tại độ trễ
+0 ≤ h < n được định nghĩa bởi
+ˆγ(h) = 1 n
+n−h∑
+t=1
+(yt+h − ¯y)(yt − ¯y), ˆρ(h) = ˆγ(h) ˆγ(0) ,
+với ˆγ(−h) = ˆγ(h). Đồ thị của ˆρ(h) theo h = 1,2,... là biểu đồ tự tương quan (correlo-
+gram).
+Vì sao chia cho n, không chia cho
+n−h?
+Với mẫu số n, ma trận ˆΓn = [ˆγ(i − j)] luôn
+xác định không âm, giống như Γn thật (Mệnh
+đề 1(c); Bài tập 4(1)); khi đó các mô hình
+AR khớp được là nhân quả (Mục 5). Đổi lại,
+ở độ trễ lớn h sẽ có thiên lệch âm nhỏ.
+Đọc cẩn thận
+ˆρ(h) chỉ đáng tin khi h ≪ n (quy tắc kinh
+nghiệm: h ≤ n/4). Xu thế hoặc dịch mức
+làm ˆρ(h) suy giảm rất chậm: khi đó biểu đồ
+tự tương quan cho thấy tính không dừng,
+không phải “trí nhớ”.AS3179 Mô hình thống kê | Bài 11 17/68
+
+===== Trang 20 =====
+Định lý 2: phân phối lấy mẫu của ACF mẫu
+Định lý 2 (Bartlett, 1946; Box và Pierce, 1970; Ljung và Box, 1978)
+(a) Nếu Yt là iid và có mômen bậc bốn hữu hạn, thì với mỗi H cố định,√n ( ˆρ(1),..., ˆρ(H) ) d −−→NH (0, IH ). Do đó, dưới nhiễu iid, một ˆρ(h) riêng lẻ với h cố định có dải
+xấp xỉ 95% là ±1.96/√n; khi xét nhiều độ trễ, một vài gai giả là điều có thể xảy ra.
+(b) Dưới (a), thống kê Ljung–Box thỏa mãn QLB(H) = n(n + 2)
+∑H
+h=1
+ˆρ(h)2
+n−h
+d
+−−→χ2 H . Giá trị lớn bác
+bỏ giả thuyết không có tự tương quan tuyến tính đến độ trễ H. Đây không phải kiểm định độc lập
+đầy đủ.
+(c) (Công thức Bartlett) Nếu Yt = µ +
+∑
+j ψj εt−j với εt iid, Eε4 t <∞, và ρ(h) = 0 khi |h|> q (một
+MA(q), Mục 4), thì với h > q: √n ˆρ(h) d −−→N ( 0, 1 + 2 ∑q k=1 ρ(k)2) .
+Phác thảo chứng minh (a) và (b)
+Trước hết giả sử µ = 0, σ2 = Var Yt , và đặt Sh = n−1/2 ∑n−h t=1 Yt Yt+h. Khi đó ESh = 0, Var Sh = (n − h)σ4/n,
+và Cov(Sh, Sk ) = 0 với h ̸= k: mỗi tích hỗn hợp bậc bốn đều có một thừa số xuất hiện một lần. Mômen bậc bốn
+hữu hạn và CLT cho tổng phụ thuộc cố định cho (S1,..., SH )
+d
+−−→N (0,σ4I). Ngoài ra ˆγ(0) P −−→ σ2, và thay µ
+bằng ¯y chỉ làm ˆγ(h) thay đổi Op (n−1). Định lý Slutsky cho (a). Với (b), QLB = ∑ h(√n ˆρ(h))2(n + 2)/(n − h), và
+(n + 2)/(n − h) → 1. □
+AS3179 Mô hình thống kê | Bài 11 18/68
+
+===== Trang 21 =====
+Minh họa: bốn biểu đồ tự tương quan
+0 5 10 15 20
+−0.2
+0
+0.5
+1
+Hồ Huron: ˆρ(h) của mức nước
+0 5 10 15 20
+−0.2
+0
+0.5
+1
+Hồ Huron: phần dư đã khử xu thế
+0 10 20 30
+−0.1
+0
+0.1
+0.2
+độ trễ h
+Suất sinh lợi DAX rt
+0 10 20 30
+−0.1
+0
+0.1
+0.2
+độ trễ h
+Bình phương suất sinh lợi DAX r 2 t
+Đường gạch: ±1.96/√n (±0.198 khi n = 98; ±0.045 khi n = 1859). Trên: xu thế làm ACF thô suy
+giảm chậm; sau khi khử xu thế, suy giảm nhanh (giống AR, Mục 3). Dưới: suất sinh lợi trông như
+nhiễu trắng, nhưng bình phương suất sinh lợi thì không.
+AS3179 Mô hình thống kê | Bài 11 19/68
+
+===== Trang 22 =====
+Ví dụ mẫu: suất sinh lợi DAX, nhiễu trắng hay iid?
+Bài toán
+Ví dụ xuyên suốt (iii), n = 1859. Dùng các biểu đồ tự tương quan ở trang trước và Định lý
+2 để kiểm tra suất sinh lợi ngày rt có phải nhiễu trắng hay không, và có iid hay không. Các
+kết luận này có ý nghĩa gì với nhà giao dịch và người quản trị rủi ro?
+AS3179 Mô hình thống kê | Bài 11 20/68
+
+===== Trang 23 =====
+Ví dụ 2.1 (tương tự): tính biểu đồ tự tương quan bằng tay
+Bài toán
+Với y = (3, 5, 6, 5, 3, 2, 2, 6), tính ˆρ(1), ˆρ(2), ˆρ(3), dải iid, và QLB(3) cùng p-value. Có
+bằng chứng về phụ thuộc không?
+AS3179 Mô hình thống kê | Bài 11 21/68
+
+===== Trang 24 =====
+Ví dụ 2.2 (nâng cao): công thức Bartlett ở độ trễ 2
+Bài toán
+Một chuỗi độ dài n = 100 có ˆρ(1) = 0.45, ˆρ(2) = 0.22 và ˆρ(h) nhỏ với h ≥ 3. (1) ˆρ(2) có
+ý nghĩa theo dải iid không? (2) Có ý nghĩa nếu chuỗi là MA(1) không (Định lý 2(c))? (3)
+Nên đề xuất mô hình nào?
+AS3179 Mô hình thống kê | Bài 11 22/68
+
+===== Trang 25 =====
+⋆ Ứng dụng hiện đại: cụm biến động và GARCH
+GARCH(1,1) cho DAX
+Mô hình hóa phương sai theo kiểu tự hồi quy
+(Engle, 1982; Bollerslev, 1986):
+rt = σt zt , σ2 t = ω + αr 2 t−1 + βσ2 t−1,
+trong đó zt iid, có trung bình 0, phương sai 1, độc
+lập với quá khứ, và ω > 0, α,β ≥ 0, α + β < 1.
+Khi đó rt là nhiễu trắng, nhưng r 2 t có phụ thuộc
+kiểu ARMA (và có biểu diễn ARMA(1,1) khi
+mômen bậc bốn tồn tại). MLE Gauss cho suất
+sinh lợi DAX đã căn giữa: ˆω = 0.048, ˆα = 0.068,
+ˆβ = 0.888. Độ dai dẳng ˆα + ˆβ = 0.956: một cú
+sốc biến động giảm một nửa sau khoảng 15 ngày;
+ˆσt nằm trong khoảng 0.70% đến 2.73%. Bình
+phương phần dư chuẩn hóa: QLB(10) = 0.9.
+Dùng ở đâu
+Giá trị rủi ro (Value-at-Risk), yêu cầu ký
+quỹ, định giá quyền chọn, phân bổ danh
+mục và dự báo biến động. Engle được
+đồng trao giải Nobel Kinh tế 2003 nhờ
+ARCH.
+Bài học cho ta
+“Không có tự tương quan” (nhiễu trắng)
+không đồng nghĩa với “độc lập”. Luôn
+kiểm tra bình phương/giá trị tuyệt đối
+của phần dư; nếu còn cụm biến động, chỉ
+chẩn đoán trung bình ARMA là chưa đủ.
+AS3179 Mô hình thống kê | Bài 11 23/68
+
+===== Trang 26 =====
+Bài tập 3: đọc biểu đồ tự tương quan
+Mức 2: Tính toán và diễn giải
+1. Với y = (1,3,5,6,4,2,3,4), tính ˆρ(1), ˆρ(2) và dải iid.
+2. Mực nước hồ Huron có ˆρ(1) = 0.832, ˆρ(10) = 0.183 (n = 98). Các mức nước
+có iid không? Nêu hai cơ chế khác nhau có thể tạo biểu đồ tự tương quan suy
+giảm chậm như vậy.
+3. Một biểu đồ tự tương quan phần dư với n = 200 có một giá trị ˆρ(17) = 0.15
+trong 20 độ trễ đầu, còn lại đều nằm trong dải. Kết luận.
+4. Với n = 150 và ˆρ(1), ˆρ(2), ˆρ(3) = 0.10, −0.15, 0.08, tính QLB(3) và kiểm định
+nhiễu iid ở mức 5%.
+AS3179 Mô hình thống kê | Bài 11 24/68
+
+===== Trang 27 =====
+Bài tập 4: lý thuyết về ACF mẫu
+Mức 3: Lý thuyết
+1. Chỉ ra rằng ˆΓn = 1 n TT⊤ với một ma trận n× (2n−1), T, được xây từ dữ liệu
+đã trừ trung bình, nên ˆΓn xác định không âm. Vì sao điều này có thể sai khi
+dùng mẫu số n−h?
+2. Với Yt iid, trung bình 0, phương sai σ2, chứng minh
+Var
+(∑n−h
+t=1 Yt Yt+h
+)
+= (n−h)σ4 và Cov (∑ t Yt Yt+1,∑ t Yt Yt+2 ) = 0.
+3. Cho SE tiệm cận của ˆρ(3) cho MA(2) với ρ(1) = 0.5, ρ(2) = 0.2, n = 200.
+4. Cho rt = σt zt như trong GARCH, với zt độc lập với quá khứ, nên
+E(rt | quá khứ) = 0 và Er2 t = ¯σ2. Chứng minh
+Var
+( 1√n ∑ t rt rt+1 ) = n−1 n E(r2 t r2 t+1), và giải thích vì sao đại lượng này lớn hơn
+¯σ4 khi có cụm biến động.
+AS3179 Mô hình thống kê | Bài 11 25/68
+
+===== Trang 28 =====
+3. Mô hình tự hồi quy
+
+===== Trang 29 =====
+Định nghĩa 4: toán tử lùi, quá trình tuyến tính, tính nhân
+quả
+Định nghĩa 4
+(a) Toán tử lùi (backshift) là BYt = Yt−1, nên Bj Yt = Yt−j . Với đa thức AR (đa thức
+đặc trưng) ϕ(z) = 1−ϕ1z −···−ϕp z p , ta có ϕ(B)Yt = Yt −ϕ1Yt−1 −···−ϕp Yt−p .
+(b) Mô hình tự hồi quy bậc p, AR(p), là ϕ(B)(Yt −µ) = εt , εt ∼ WN(0,σ2); tương
+đương Yt = c + ϕ1Yt−1 + ··· + ϕp Yt−p + εt , với c = µ(1−ϕ1 −···−ϕp ).
+(c) Yt = µ + ∑∞ j=−∞ψj εt−j với ∑ j |ψj |<∞ là một quá trình tuyến tính; nó nhân quả
+nếu ψj = 0 với j < 0, tức là Yt chỉ phụ thuộc vào nhiễu hiện tại và quá khứ.
+Mệnh đề 2 (quá trình tuyến tính)
+Một quá trình tuyến tính dừng yếu với trung bình µ và γ(h) = σ2 ∑ j ψj ψj+h.
+Chứng minh.
+∑
+j |ψj |<∞ làm chuỗi hội tụ bình phương trung bình; khi đó
+Cov
+(∑
+j ψj εt+h−j ,
+∑
+k ψk εt−k
+)
+= σ2 ∑ k ψk+hψk , vì chỉ các cặp j = k + h dùng chung một nhiễu. □
+AS3179 Mô hình thống kê | Bài 11 26/68
+
+===== Trang 30 =====
+Định lý 3: mô hình AR(1)
+Định lý 3
+Cho Yt −µ = ϕ(Yt−1 −µ) + εt , εt ∼ WN(0,σ2).
+(a) Nếu |ϕ|< 1, nghiệm dừng duy nhất là quá trình tuyến tính nhân quả
+Yt = µ + ∑ j≥0 ϕj εt−j .
+(b) Khi đó γ(h) = σ2ϕ|h|
+1−ϕ2 và ρ(h) = ϕ|h|: suy giảm hình học, đổi dấu xen kẽ nếu ϕ< 0.
+(c) Nếu |ϕ| = 1 thì không có nghiệm dừng với phương sai hữu hạn (bước ngẫu nhiên
+hoặc bước ngẫu nhiên đổi dấu); nếu |ϕ|> 1 thì nghiệm dừng duy nhất,
+Yt = µ−∑ j≥1 ϕ−j εt+j , phụ thuộc vào tương lai. Vì vậy AR(1) dừng nhân quả cần
+|ϕ|< 1.
+(d) Với |ϕ|< 1, dự báo tuyến tính tốt nhất của Yn+h từ Yn,Yn−1,... là µ + ϕh(Yn −µ),
+với sai số bình phương trung bình σ21−ϕ2h
+1−ϕ2 →γ(0) khi h →∞.
+Nói cách khác: |ϕ| là độ dai dẳng. Một cú sốc suy giảm theo hệ số ϕ sau mỗi chu kỳ (bán rã
+log 0.5/ log |ϕ|); dự báo quay về µ theo hình học, và độ bất định tăng đến phương sai vô điều kiện.
+AS3179 Mô hình thống kê | Bài 11 27/68
+
+===== Trang 31 =====
+Chứng minh Định lý 3
+Chứng minh
+(a)Lặpphươngtrìnhk lần, Yt −µ = ∑k−1 j=0 ϕj εt−j +ϕk (Yt−k −µ). NếuY dừng, E{ϕk (Yt−k −
+µ)}2 = ϕ2k γ(0) → 0, nên Yt −µ là giới hạn bình phương trung bình của các tổng riêng:
+nghiệm là duy nhất. Ngược lại, ∑ j |ϕ|j < ∞, nên chuỗi là một quá trình tuyến tính nhân
+quả (Mệnh đề 2), và thay vào cho thấy nó thỏa phương trình.
+(b) Áp dụng Mệnh đề 2 với ψj = ϕj : γ(h) = σ2 ∑ j≥0 ϕj ϕj+h = σ2ϕh/(1−ϕ2), h ≥ 0.
+(c) Nếu |ϕ| = 1 và Y dừng, Var
+(
+Yt −ϕk Yt−k ) = Var (∑ j<k ϕj εt−j ) = kσ2 sẽ không bị chặn
+theo k, nhưng nó không vượt quá 4γ(0). Nếu |ϕ|> 1, viết Yt −µ = ϕ−1(Yt+1−µ)−ϕ−1εt+1
+và lặp về phía trước như trong (a).
+(d) Lặp trước h bước, Yn+h −µ = ϕh(Yn −µ) + ∑h−1 j=0 ϕj εn+h−j . Do tính nhân quả, các
+nhiễu tương lai không tương quan với Yn,Yn−1,..., nên hạng thứ nhất là phép chiếu và hạng
+thứ hai là sai số, có phương sai σ2 ∑ j<h ϕ2j . □
+AS3179 Mô hình thống kê | Bài 11 28/68
+
+===== Trang 32 =====
+Định lý 4: mô hình AR(p) và phương trình Yule–Walker
+Định lý 4
+Cho ϕ(B)(Yt −µ) = εt , εt ∼ WN(0,σ2), với ϕ(z) = 1−ϕ1z −···−ϕp z p .
+(a) (tính nhân quả) Có nghiệm dừng nhân quả duy nhất khi và chỉ khi mọi nghiệm của
+ϕ(z) = 0 nằm ngoài vòng tròn đơn vị, |z|> 1. Khi đó Yt = µ + ∑ j≥0 ψj εt−j , trong
+đó ∑ j ψj z j = 1/ϕ(z) với |z|≤ 1.
+(b) (phương trình Yule–Walker; Yule, 1927) Với AR(p) nhân quả,
+γ(h) = ϕ1γ(h−1) + ··· + ϕp γ(h−p) (h ≥ 1), σ2 = γ(0) −ϕ1γ(1) −···−ϕp γ(p);
+ở dạng ma trận Γp ϕ = γp , Γp = [γ(i −j)]p i,j=1, γp = (γ(1),...,γ(p))⊤.
+(c) ρ(h) giải cùng phương trình sai phân: nếu các nghiệm z1,...,zp phân biệt, thì
+ρ(h) = ∑ i ci z−|h| i , là hỗn hợp các hàm mũ tắt dần (nghiệm thực) và dao động sin tắt
+dần (cặp nghiệm phức).
+AS3179 Mô hình thống kê | Bài 11 29/68
+
+===== Trang 33 =====
+Chứng minh Định lý 4
+Chứng minh
+(a) Phân tích ϕ(z) = ∏p i=1(1−z/zi ): mỗi thừa số là một toán tử AR(1) với “ϕ” bằng 1/zi ,
+khả nghịch như trong Định lý 3 khi |zi |> 1; ghépp phép nghịch đảo lại (chiều ngược tương tự
+Địnhlý3(c); BrockwellvàDavis, 1991, Địnhlý3.1.1). (b)Nhân Yt −µ = ∑ j ϕj (Yt−j −µ)+εt
+với Yt−h −µ rồi lấy kỳ vọng: với h ≥ 1, E{εt (Yt−h −µ)} = 0 do tính nhân quả; với h = 0,
+E{εt (Yt −µ)} = σ2. (c) Chia (b) cho γ(0); z−h i thỏa truy hồi vì ϕ(zi ) = 0. □
+Cách đọc (a)
+AR(1): ϕ(z) = 1−ϕz có nghiệm z = 1/ϕ;
+|z|> 1 ⇐⇒ |ϕ|< 1: đúng lại Định lý 3.
+Nghiệm trong vòng tròn nghĩa là nghiệm
+bùng nổ hoặc phụ thuộc tương lai; nghiệm
+trên vòng tròn (z = 1) là nghiệm đơn vị, chủ
+đề của Bài 12.
+Cách đọc (b)
+Các phương trình Yule–Walker biến tự hiệp
+phương sai thành hệ số AR: thay γ bằng ˆγ ta
+được một ước lượng (Định lý 6(a)). Chúng
+cũng cho thấy p + 1 tự hiệp phương sai xác
+định toàn bộ ACF của AR(p).
+AS3179 Mô hình thống kê | Bài 11 30/68
+
+===== Trang 34 =====
+Mệnh đề 3: AR(2), tam giác nhân quả và chu kỳ
+Mệnh đề 3 (AR(2))
+Yt −µ = ϕ1(Yt−1 −µ) + ϕ2(Yt−2 −µ) + εt
+nhân quả khi và chỉ khi
+ϕ1 + ϕ2 < 1, ϕ2 −ϕ1 < 1, |ϕ2|< 1.
+Khi đó ρ(1) = ϕ1 1−ϕ2 ,
+ρ(h) = ϕ1ρ(h −1) + ϕ2ρ(h −2). Các nghiệm là
+phức khi và chỉ khi ϕ2 1 + 4ϕ2 < 0; khi đó
+ρ(h) = a r h cos(ωh + b) với r = √−ϕ2,
+cos ω = ϕ1/(2r ), a, b được xác định bởi
+ρ(0),ρ(1): một chu kỳ tắt dần có chu kỳ
+2π/ω.
+Chứng minh. Các nghịch đảo λ = 1/z của các nghiệm
+thỏa λ2 = ϕ1λ + ϕ2; tính nhân quả nghĩa là |λ1,2|< 1,
+tương đương với ba bất đẳng thức (Bài tập 6(4)). Với
+λ = re±iω: λ1λ2 = r 2 = −ϕ2, λ1 + λ2 = 2r cos ω = ϕ1;
+Định lý 4(c) cho cλh + ¯c ¯λh = 2|c|r h cos(ωh + arg c). □
+Huron
+lynx
+nghiệm
+thực
+nghiệm phức
+−2 −1 1 2
+−1
+1
+ϕ1
+ϕ2
+Tam giác: miền nhân quả. Vùng cam: nghiệm phức
+(ϕ2 <−ϕ2 1/4), tức chu kỳ tắt dần. Các điểm: hồ
+Huron (ML, Ví dụ 3.2) và linh miêu (Yule–Walker, ví
+dụ mẫu).
+AS3179 Mô hình thống kê | Bài 11 31/68
+
+===== Trang 35 =====
+Ví dụ mẫu: chu kỳ linh miêu bằng Yule–Walker
+Bài toán
+Ví dụ xuyên suốt (ii): n = 114, ˆγ(0) = 0.309, ˆρ(1) =
+0.785, ˆρ(2) = 0.340. Khớp AR(2) bằng Yule–Walker
+(thay ρ bằng ˆρ). Có nhân quả không? Tìm ˆσ2, các
+nghiệm và chu kỳ.
+0 5 10 15 20
+−0.5
+0
+0.5
+1
+độ trễ h
+ACF
+mẫu ˆρ(h) khớp AR(2) ρ(h)
+AR(2) tái hiện chu kỳ mười năm nhưng làm tắt
+nhanh hơn dữ liệu (r 10 = 0.19); Mục 5 xét xem có
+cần bậc cao hơn không.
+AS3179 Mô hình thống kê | Bài 11 32/68
+
+===== Trang 36 =====
+Ví dụ 3.1 (tương tự): tính AR(1) bằng tay
+Bài toán
+Yt = 2 + 0.6Yt−1 + εt , εt ∼ WN(0,4).
+1. Tìm µ, γ(0), ρ(3) và thời gian bán rã của một cú sốc.
+2. Cho Yn = 8, hãy cho dự báo của Yn+1, Yn+2 và các MSE tương ứng, cùng giới hạn
+dài hạn. Cho khoảng dự báo 95% cho Yn+1 giả sử nhiễu chuẩn.
+AS3179 Mô hình thống kê | Bài 11 33/68
+
+===== Trang 37 =====
+Ví dụ 3.2 (nâng cao): hồ Huron như một AR(2)
+Bài toán
+Với hồ Huron có xu thế tuyến tính, cực đại khả năng hợp lý cho hồi quy với sai số AR(2)
+cho ˆϕ1 = 1.005, ˆϕ2 = −0.291, ˆσ2 = 0.457 (Mục 5). (1) Mô hình có nhân quả không?
+Nghiệm thực hay nghiệm phức? (2) Tính các trọng số ψ đầu tiên và diễn giải. (3) So sánh
+ρ(1),...,ρ(4) suy ra với các giá trị mẫu 0.76, 0.46, 0.26, 0.14.
+AS3179 Mô hình thống kê | Bài 11 34/68
+
+===== Trang 38 =====
+⋆ Ứng dụng hiện đại: mô hình tự hồi quy trong AI
+Một phân rã, nhiều mô hình
+Mọi luật đồng thời đều phân rã thành
+p(y1,..., yn) =
+∏
+t p(yt | y1,..., yt−1) (quy tắc
+dây chuyền; so sánh với dạng tiền tuần tự, Bài
+10, Mệnh đề 5(b)). AR(p) chọn một điều kiện
+Gauss, tuyến tính và có bộ nhớ hữu hạn. Các mô
+hình hiện đại giữ phân rã này và học phân phối
+có điều kiện bằng mạng nơ-ron:
+▶ DeepAR: dự báo xác suất cho hàng nghìn
+chuỗi liên quan (Salinas và cộng sự, 2020);
+▶ WaveNet: âm thanh theo từng mẫu (van
+den Oord và cộng sự, 2016);
+▶ mô hình ngôn ngữ lớn: dự đoán token kế
+tiếp.
+AR tuyến tính là mô hình nền
+(baseline) mạnh
+Trên nhiều bộ chuẩn (benchmark) dự
+báo dài hạn, một ánh xạ tuyến tính một
+lớp từ cửa sổ quá khứ đến chân trời dự
+báo (“DLinear”) vượt qua nhiều mô hình
+dự báo kiểu Transformer theo quy trình
+đánh giá của các tác giả (Zeng và cộng
+sự, 2023).
+Bài học
+Hãy khớp và kiểm tra mô hình AR nền
+trước: tính nhân quả, độ trắng của phần
+dư và thẩm định cuốn chiếu trung thực
+áp dụng cho mọi mô hình tự hồi quy,
+tuyến tính hay mạng nơ-ron.
+AS3179 Mô hình thống kê | Bài 11 35/68
+
+===== Trang 39 =====
+Bài tập 5: tính toán với mô hình AR
+Mức 2: Tính toán và diễn giải
+1. Yt = 1 + 0.5Yt−1 + εt , εt ∼ WN(0,3): tìm µ, γ(0), ρ(1),ρ(2),ρ(3); dự báo
+Yn+1, Yn+2 từ Yn = 4, cùng các MSE.
+2. Mô hình nào nhân quả? Nghiệm thực hay nghiệm phức? Nếu phức, cho chu
+kỳ. (a) Yt = 1.2Yt−1 −0.5Yt−2 + εt ; (b) Yt = 0.4Yt−1 + 0.6Yt−2 + εt ; (c)
+Yt = −0.5Yt−2 + εt .
+3. Với AR(2) của linh miêu trong ví dụ mẫu, tính ρ(3) suy ra và so sánh với
+ˆρ(3) = −0.132.
+4. Với AR(1) có ϕ = 0.9, sau bao nhiêu bước thì MSE dự báo đạt 90% của γ(0)?
+AS3179 Mô hình thống kê | Bài 11 36/68
+
+===== Trang 40 =====
+Bài tập 6: lý thuyết mô hình AR
+Mức 3: Lý thuyết
+1. Chứng minh chi tiết Định lý 3(a), (b) và (d).
+2. Với |ϕ|> 1, kiểm tra rằng Yt = −∑ j≥1 ϕ−j εt+j giải Yt = ϕYt−1 + εt , và chỉ
+ra rằng nó có hàm tự hiệp phương sai của AR(1) nhân quả với tham số 1/ϕ và
+phương sai nhiễu σ2/ϕ2.
+3. Viết các phương trình Yule–Walker của AR(2) và giải để biểu diễn ϕ1,ϕ2 theo
+ρ(1),ρ(2).
+4. Chứng minh điều kiện tam giác của Mệnh đề 3: các nghiệm của
+λ2 −ϕ1λ−ϕ2 nằm trong |λ|< 1 khi và chỉ khi ϕ1 + ϕ2 < 1, ϕ2 −ϕ1 < 1,
+|ϕ2|< 1. (Gợi ý: xét riêng nghiệm thực và nghiệm phức.)
+AS3179 Mô hình thống kê | Bài 11 37/68
+
+===== Trang 41 =====
+4. Mô hình trung bình trượt và ARMA
+
+===== Trang 42 =====
+Định nghĩa 5: mô hình MA(q) và ARMA(p, q)
+Định nghĩa 5
+Cho εt ∼ WN(0,σ2) và θ(z) = 1 + θ1z + ··· + θq z q .
+(a) Mô hình trung bình trượt bậc q, MA(q), là
+Yt = µ + θ(B)εt = µ + εt + θ1εt−1 + ··· + θq εt−q .
+(b) Một mô hình ARMA(p,q) là ϕ(B)(Yt −µ) = θ(B)εt , trong đó ϕ (Định nghĩa 4) và θ
+không có nghiệm chung.
+(c) Một nghiệm là khả nghịch nếu εt = ∑ j≥0 πj (Yt−j −µ) với ∑ j |πj |<∞: nhiễu có
+thể được khôi phục từ quan sát hiện tại và quá khứ.
+Số hạng MA đến từ đâu
+Cú sốc ngắn hạn (đình công, khuyến mãi)
+tác động trong q chu kỳ; các tổng chồng lấn
+như sai số dự báo h bước; sai phân một
+chuỗi dừng (Ví dụ 4.2).
+Vì sao cần “không có nghiệm
+chung”
+Một nhân tử chung bị triệt tiêu:
+(1−0.5B)Yt = (1−0.5B)εt chỉ là Yt = εt .
+Các mô hình như vậy không nhận dạng được
+(Ví dụ 4.2).
+AS3179 Mô hình thống kê | Bài 11 38/68
+
+===== Trang 43 =====
+Mệnh đề 4: tự hiệp phương sai của MA(q) bị cắt cụt
+Mệnh đề 4
+(a) MA(q) dừng với mọi θj , với θ0 = 1 và
+γ(h) = σ2
+q−|h|∑
+j=0
+θj θj+|h| (|h|≤ q), γ(h) = 0 (|h|> q).
+(b) MA(1), Yt = µ + εt + θεt−1: ρ(1) = θ/(1 + θ2), nên |ρ(1)|≤ 1 2, dấu bằng xảy ra khi
+và chỉ khi θ = ±1.
+(c) MA(1) với (θ,σ2) và MA(1) với (1/θ,θ2σ2) có cùng hàm tự hiệp phương sai. Mô
+hình có |θ|< 1 là khả nghịch: εt = ∑ j≥0(−θ)j (Yt−j −µ).
+Chứng minh
+(a) Áp dụng Mệnh đề 2 với ψj = θj cho 0 ≤ j ≤ q và bằng 0 nếu không; với |h|> q thì không có
+nhiễu chung. (b) ρ(1) = θ/(1 + θ2) và 1 + θ2 −2|θ| = (1−|θ|)2 ≥ 0. (c) θ2σ2(1 + θ−2) = σ2(1 + θ2)
+và θ2σ2 ·θ−1 = θσ2. Phép nghịch đảo: εt = (Yt −µ) −θεt−1, rồi lặp như trong Định lý 3(a). □
+AS3179 Mô hình thống kê | Bài 11 39/68
+
+===== Trang 44 =====
+Định lý 5: quá trình ARMA nhân quả và khả nghịch
+Định lý 5
+Cho ϕ(B)(Yt −µ) = θ(B)εt , trong đó ϕ,θ không có nghiệm chung.
+(a) Mô hình có nghiệm dừng nhân quả duy nhất khi và chỉ khi ϕ(z) ̸= 0 với |z|≤ 1; khi
+đó Yt = µ + ∑ j≥0 ψj εt−j , với ∑ j ψj z j = θ(z)/ϕ(z), và γ(h) = σ2 ∑ j≥0 ψj ψj+|h|.
+(b) Mô hình khả nghịch khi và chỉ khi θ(z) ̸= 0 với |z|≤ 1; khi đó ∑ j πj z j = ϕ(z)/θ(z).
+(c) ARMA(1,1), Yt −µ = ϕ(Yt−1 −µ) + εt + θεt−1, |ϕ|< 1, ϕ + θ̸= 0: ψ0 = 1,
+ψj = (ϕ + θ)ϕj−1 (j ≥ 1),
+γ(0) = σ21 + 2ϕθ + θ2
+1−ϕ2 , ρ(1) = (1 + ϕθ)(ϕ + θ) 1 + 2ϕθ + θ2 , ρ(h) = ϕρ(h−1) (h ≥ 2).
+AS3179 Mô hình thống kê | Bài 11 40/68
+
+===== Trang 45 =====
+Chứng minh Định lý 5
+Chứng minh
+(a), (b) Tương tự Định lý 4(a): 1/ϕ(z), và do đó θ(z)/ϕ(z), là một chuỗi lũy thừa hội tụ với
+|z|< 1 + δ khi ϕ không có nghiệm trong |z|≤ 1; áp dụng toán tử cho εt và dùng Mệnh đề
+2 (Brockwell và Davis, 1991, Định lý 3.1.1–3.1.2). (c) So khớp hệ số trong ψ(z)(1−ϕz) =
+1 + θz: ψ1 −ϕ = θ, ψj = ϕψj−1 với j ≥ 2. Khi đó γ(0) = σ2[ 1 + (ϕ + θ)2/(1 −ϕ2) ]
+và γ(1) = σ2[ (ϕ + θ) + (ϕ + θ)2ϕ/(1 −ϕ2) ] = σ2(ϕ + θ)(1 + ϕθ)/(1 −ϕ2); với h ≥ 2,
+γ(h) = ϕγ(h−1) theo truy hồi của các ψj . □
+Hai điều kiện, hai đa thức
+Tính nhân quả liên quan đến nghiệm của ϕ
+(phần AR); khả nghịch liên quan đến nghiệm
+của θ (phần MA). Phần mềm thường ước
+lượng trong miền nhân quả và khả nghịch,
+nhờ đó tham số nhận dạng được.
+ARMA(1,1) bằng lời
+Tự tương quan đầu tiên được quyết định bởi
+cả ϕ và θ; sau độ trễ 1, ACF suy giảm như
+AR(1). Tác động của cú sốc nhảy lên ϕ + θ
+rồi suy giảm với tốc độ ϕ.
+AS3179 Mô hình thống kê | Bài 11 41/68
+
+===== Trang 46 =====
+Ví dụ mẫu: hồ Huron, AR(2) hay ARMA(1,1)?
+Bài toán
+Với xu thế, ML cho AR(2) ( ˆϕ1, ˆϕ2) = (1.005, −0.291) và ARMA(1,1) ˆϕ = 0.653, ˆθ = 0.357, cả hai
+có ˆσ2 = 0.457, ˆℓ = −101.20. Có nhân quả không? Có khả nghịch không? So sánh ρ(h), ψj suy ra
+và ACF mẫu của chuỗi đã khử xu thế.
+0 5 10
+0
+0.5
+1
+độ trễ h
+ACF
+AR(2)
+ARMA(1,1)
+mẫu (đã khử xu thế)
+Hai mô hình gần như trùng ở các độ trễ ngắn
+chi phối hàm hợp lý, nên dữ liệu khó phân biệt
+chúng; AR(2) bám ACF mẫu tốt hơn ở độ trễ
+3–5. Nên chọn AR(2): tốt tương đương với
+cùng k = 5, dễ diễn giải hơn, và PACF cũng gợi
+ý mô hình này (Mục 5).
+AS3179 Mô hình thống kê | Bài 11 42/68
+
+===== Trang 47 =====
+Ví dụ 4.1 (tương tự): MA(1) từ ρ(1)
+Bài toán
+Một chuỗi dừng có γ(0) = 2.5, ρ(1) = 0.4 và ρ(h) = 0 với h ≥ 2.
+1. Tìm tất cả mô hình MA(1) (θ,σ2) có tự hiệp phương sai này. Mô hình nào khả
+nghịch?
+2. Một chuỗi có ρ(1) = 0.6 và ρ(h) = 0, h ≥ 2, có thể là MA(1) không? Có thể là
+MA(q) nào không?
+AS3179 Mô hình thống kê | Bài 11 43/68
+
+===== Trang 48 =====
+Ví dụ 4.2 (nâng cao): dư thừa và sai phân quá mức
+Bài toán
+(1) Chỉ ra rằng Yt = 0.5Yt−1 + εt − 0.5εt−1 là nhiễu trắng. Mô phỏng n = 200 giá trị
+nhiễu trắng và khớp ARMA(1,1): điều gì xảy ra? (2) Nếu Yt = µ + εt là nhiễu trắng, thì
+∇Yt = Yt −Yt−1 là gì? Nó có khả nghịch không?
+AS3179 Mô hình thống kê | Bài 11 44/68
+
+===== Trang 49 =====
+⋆ Ứng dụng hiện đại: sai số dự báo và HAC
+Sai số dự báo là quá trình MA
+Với một quá trình tuyến tính nhân quả và khả
+nghịch (nên εt là các nhiễu mới), sai số của dự
+báo tuyến tính tốt nhất h bước là
+et (h) = Yt+h − ˆYt+h|t =
+h−1∑
+j=0
+ψj εt+h−j :
+một MA(h −1) theo t, với phương sai
+σ2 ∑ j<h ψ2 j (Bài tập 8(4)). Vì vậy dự báo tháng
+với chân trời trước 12 tháng có sai số tự tương
+quan đến độ trễ 11, ngay cả khi mô hình đúng
+hoàn hảo.
+Hệ quả
+Để so sánh hai bộ dự báo bằng chênh
+lệch tổn thất trung bình, SE phải dùng
+Định lý 1 chứ không dùng s/√n: kiểm
+định Diebold–Mariano (1995) dùng∑
+|k|<h ˆγ(k), tức một phương sai HAC
+(Newey–West, 1987, thêm trọng số
+Bartlett để giữ tính dương). Vấn đề
+tương tự xuất hiện với suất sinh lợi
+chồng lấn trong tài chính và thẩm định
+nhiều bước trong ML.
+Ngoài ra
+Làm trơn hàm mũ đơn giản là tối ưu cho
+ARIMA(0,1,1): một thành phần MA sau
+sai phân (Bài 12).
+AS3179 Mô hình thống kê | Bài 11 45/68
+
+===== Trang 50 =====
+Bài tập 7: tính toán với MA và ARMA
+Mức 2: Tính toán và diễn giải
+1. Yt = εt + 0.6εt−1 −0.3εt−2, σ2 = 1: tính γ(0),...,γ(3), ρ(1), ρ(2).
+2. MA(1) có thể có các giá trị ρ(1) nào? Với ρ(1) = −0.3, tìm θ khả nghịch.
+3. ARMA(1,1) với ϕ = 0.5, θ = 0.4, σ2 = 1: tính ψ1,ψ2,ψ3, γ(0), ρ(1), ρ(2).
+4. Yt −0.8Yt−1 = εt −1.25εt−1 có khả nghịch không? Thay phần MA bằng
+dạng khả nghịch tương đương (Mệnh đề 4(c)) và rút gọn. Yt là loại quá trình
+nào?
+AS3179 Mô hình thống kê | Bài 11 46/68
+
+===== Trang 51 =====
+Bài tập 8: lý thuyết mô hình MA và ARMA
+Mức 3: Lý thuyết
+1. Chứng minh Mệnh đề 4(a), và chỉ ra rằng |ρ(1)|≤ 1 2 với MA(1).
+2. Chỉ ra rằng các mô hình MA(1) (θ,σ2) và (1/θ,θ2σ2) có cùng tự hiệp phương
+sai; với nhiễu Gauss, chúng có cùng phân phối. Vì sao ta khớp mô hình khả
+nghịch?
+3. Suy ra ψj , γ(0) và γ(1) của ARMA(1,1) (Định lý 5(c)).
+4. Với quá trình tuyến tính nhân quả và khả nghịch Yt = µ + ∑ j≥0 ψj εt−j , εt iid,
+chỉ ra rằng sai số dự báo tuyến tính tốt nhất h bước là ∑h−1 j=0 ψj εt+h−j , một
+MA(h−1) theo t, với phương sai σ2 ∑ j<h ψ2 j .
+AS3179 Mô hình thống kê | Bài 11 47/68
+
+===== Trang 52 =====
+5. PACF, ước lượng, chọn và kiểm tra mô hình
+
+===== Trang 53 =====
+Định nghĩa 6 và Mệnh đề 5: PACF
+Định nghĩa 6 (PACF)
+Với một chuỗi dừng, gọi ϕh1Yt−1 + ··· + ϕhhYt−h (đã trừ trung bình) là dự báo tuyến tính tốt nhất
+của Yt từ Yt−1,..., Yt−h, tức là Γhϕh = γh (như trong Định lý 4(b)). Tự tương quan riêng phần
+(partial autocorrelation) tại độ trễ h là α(h) = ϕhh: tương quan giữa Yt và Yt−h sau khi loại tác
+động tuyến tính của Yt−1,..., Yt−h+1. PACF mẫu ˆα(h) dùng ˆγ.
+Mệnh đề 5
+(a) α(1) = ρ(1) và α(2) = ρ(2) −ρ(1)2
+1−ρ(1)2 .
+(b) Với AR(p) nhân quả: α(p) = ϕp và α(h) = 0 với mọi h > p: PACF bị cắt cụt sau độ trễ p.
+(c) Với MA(q) khả nghịch và q ≥ 1, α(h) ̸= 0 với vô hạn nhiều h: PACF suy giảm dần.
+(d) Với AR(p) nhân quả có nhiễu iid, √n ˆα(h) d −−→N (0,1) với mỗi h > p (Quenouille, 1949):
+dải ±1.96/√n.
+AS3179 Mô hình thống kê | Bài 11 48/68
+
+===== Trang 54 =====
+Chứng minh Mệnh đề 5
+Chứng minh
+(a) Giải Γ2ϕ2 = γ2 để tìm ϕ22. (b) Với h ≥ p, Yt −∑ j≤p ϕj Yt−j = εt không tương quan
+với Yt−1,...,Yt−h (tính nhân quả), nên ∑ j≤p ϕj Yt−j là dự báo tốt nhất: ϕhh = ϕp nếu
+h = p, và bằng 0 nếu h > p. (c) Một chuỗi dừng có PACF triệt tiêu sau độ trễ m là AR(m)
+(dự báo tốt nhất từ toàn bộ quá khứ chỉ dùng m độ trễ). Một MA(q) khả nghịch, q ≥ 1,
+là AR(∞) với π(z) = 1/θ(z), không phải một đa thức; do đó α(h) ̸= 0 với vô hạn nhiều h.
+(d) Quenouille (1949); Brockwell và Davis (1991), Định lý 8.1.2. □
+Đệ quy Durbin–Levinson
+Tất cả ϕhh có thể tính đệ quy, bắt đầu từ ϕ11 = ρ(1):
+ϕhh =
+ρ(h) −∑h−1 j=1 ϕh−1,j ρ(h−j)
+1−∑h−1 j=1 ϕh−1,j ρ(j) , ϕhj = ϕh−1,j −ϕhh ϕh−1,h−j (j < h).
+Với h = 2, công thức này chính là (a). R tính PACF mẫu theo cách này (statsmodels:
+pacf(y, method="ldb")).
+AS3179 Mô hình thống kê | Bài 11 49/68
+
+===== Trang 55 =====
+Nhận diện mô hình từ ACF và PACF
+mô hình ACF ρ(h) PACF α(h)
+nhiễu trắng 0 với mọi h ≥ 1 0 với mọi h ≥ 1
+AR(p) suy giảm dần (mũ/dao động tắt dần) bị cắt cụt sau độ trễ p
+MA(q) bị cắt cụt sau độ trễ q suy giảm dần
+ARMA(p,q), p,q ≥ 1 suy giảm dần suy giảm dần
+không dừng suy giảm rất chậm, gần tuyến tính α(1) ≈ 1
+Chu trình Box–Jenkins
+Nhận diện (đồ thị, biến đổi, ACF/PACF) →
+ước lượng (ML) → kiểm tra (phần dư) →
+quay lại nhận diện nếu cần (Box và Jenkins,
+1970).
+Một quy tắc kinh nghiệm, không
+phải kiểm định
+ACF/PACF mẫu nhiễu và tương quan giữa
+các độ trễ (Ví dụ 2.2); mô hình ARMA hỗn
+hợp khó đọc trực tiếp. Hãy lập danh sách
+ngắn các ứng viên, rồi so sánh bằng hàm hợp
+lý (AIC, BIC) và kiểm tra phần dư.
+AS3179 Mô hình thống kê | Bài 11 50/68
+
+===== Trang 56 =====
+Định lý 6: ước lượng mô hình AR và ARMA
+Định lý 6
+(a) (Yule–Walker) ˆϕ = ˆΓ−1 p ˆγp , ˆσ2 = ˆγ(0) − ˆϕ⊤ ˆγp . Với mẫu số n trong Định nghĩa 3,
+AR(p) được khớp luôn nhân quả (với dữ liệu không hằng).
+(b) Với AR(p) nhân quả có nhiễu iid, các ước lượng Yule–Walker, bình phương tối thiểu
+có điều kiện và cực đại khả năng hợp lý Gauss đều thỏa√n ( ˆϕ − ϕ) d −−→Np ( 0, σ2Γ−1 p ) ; với AR(1): Var ˆϕ≈ (1−ϕ2)/n.
+(c) Với ARMA(p,q) nhân quả, khả nghịch và có nhiễu iid, MLE Gauss (tính từ hàm hợp
+lý chính xác, chẳng hạn bằng thuật toán đổi mới hoặc bộ lọc Kalman) là nhất quán
+và chuẩn tiệm cận, với hiệp phương sai được ước lượng bằng nghịch đảo thông tin
+quan sát: Bài 2, Định lý 3, mở rộng cho dữ liệu phụ thuộc.
+Chứng minh: Brockwell và Davis (1991), Định lý 8.1.1 và 10.8.2.
+AS3179 Mô hình thống kê | Bài 11 51/68
+
+===== Trang 57 =====
+Chọn và kiểm tra mô hình
+Chọn mô hình
+Với k tham số được ước lượng (các ϕ,
+các θ, hệ số trung bình/hồi quy, và
+thường cả σ2): AIC = −2ˆℓ + 2k,
+BIC = −2ˆℓ + k log n (Bài 6). Chỉ so sánh
+các khớp dùng cùng quy ước hàm hợp lý
+(chính xác so với có điều kiện). AIC
+nhắm đến rủi ro KL dự báo; BIC nhất
+quán khi bậc hữu hạn đúng nằm trong
+tập ứng viên.
+Kiểm tra phần dư
+Phần dư ˆεt của một mô hình tốt trông
+như nhiễu trắng: đồ thị theo thời gian,
+ACF, QLB(H) so với χ2 H−p−q như một
+xấp xỉ mẫu lớn thường dùng (tham số
+ARMA ước lượng dùng mất p + q bậc tự
+do), và ACF của ˆε2 t .
+vẽ đồ thị; khử xu
+thế hoặc biến đổi
+ACF, PACF:
+lập danh sách
+ngắn (p, q)
+khớp ML;
+AIC, BIC
+phần dư: ACF,
+QLB, ˆε2 t
+khớp sai: hiệu chỉnh
+AS3179 Mô hình thống kê | Bài 11 52/68
+
+===== Trang 58 =====
+Ví dụ mẫu: một mô hình cho hồ Huron
+Bài toán
+Mô hình hóa yt = β0 + β1(t −1920) + ut với sai số
+ARMA ut , khớp bằng ML Gauss. Dùng PACF của
+chuỗi đã khử xu thế (bên phải) và bảng dưới để chọn
+mô hình, rồi kiểm tra phần dư.
+sai số ut k AIC BIC QLB(10), p
+AR(1) 4 218.45 228.79 12.06, 0.21
+AR(2) 5 212.40 225.32 3.93, 0.86
+AR(3) 6 214.01 229.52 3.37, 0.85
+MA(1) 4 237.17 247.51 32.6, < 0.001
+MA(2) 5 219.75 232.68 10.91, 0.21
+ARMA(1,1) 5 212.40 225.32 3.79, 0.88
+0 5 10 15 20
+0
+0.5
+độ trễ h
+PACF
+hồ Huron đã khử xu thế
+AS3179 Mô hình thống kê | Bài 11 53/68
+
+===== Trang 59 =====
+Ví dụ 5.1 (tương tự): PACF và sai số chuẩn bằng tay
+Bài toán
+Với chuỗi hồ Huron đã khử xu thế (n = 98), ˆρ(1) = 0.762 và ˆρ(2) = 0.464.
+1. Tính ˆα(1) và ˆα(2), rồi so sánh với dải iid.
+2. Khớp AR(1) bằng Yule–Walker và cho CI xấp xỉ 95% cho ϕ (Định lý 6(b)). AR(1) có
+phù hợp không?
+AS3179 Mô hình thống kê | Bài 11 54/68
+
+===== Trang 60 =====
+Ví dụ 5.2 (nâng cao): linh miêu, AIC so với BIC
+Bài toán
+Khớp AR(p), p = 1,...,14, cho yt = log10(lynx)
+bằng ML Gauss. AIC và BIC chọn bậc nào? Kiểm
+tra phần dư của cả hai lựa chọn, và so sánh dự báo
+cuốn chiếu một bước cho giai đoạn 1915–1934 (mỗi
+năm khớp lại bằng toàn bộ dữ liệu trước đó).
+2 4 6 8 10 12 14
+−20
+0
+20
+bậc AR p
+tiêu chuẩn
+AIC
+BIC
+AR(1) nằm ngoài thang hình (AIC 84.1, BIC
+92.3). BIC có hai điểm trũng, tại p = 2 và
+p = 11, và chọn p = 2; AIC giảm mạnh tại
+p = 11.
+AS3179 Mô hình thống kê | Bài 11 55/68
+
+===== Trang 61 =====
+⋆ Ứng dụng hiện đại: dự báo ở quy mô lớn
+Dự báo ở quy mô lớn
+Nhà bán lẻ và nhà cung cấp đám mây dự báo
+hàng triệu chuỗi. Các quy trình tự động thực
+hiện quy trình của bài này: kiểm định/sai phân
+để đạt tính dừng, tìm kiếm (p, q) theo AICc, và
+loại mô hình không nhân quả hoặc không khả
+nghịch: R auto.arima; Python AutoARIMA.
+Bằng chứng
+Trong cuộc thi M4 (100000 chuỗi), các
+mô hình thống kê đơn giản và tổ hợp của
+chúng vượt phần lớn các mô hình học
+máy thuần túy; mô hình thắng cuộc là lai
+giữa làm trơn hàm mũ và mạng nơ-ron
+(Makridakis và cộng sự, 2020).
+Tự động hóa không thay thế
+kiểm tra
+Lựa chọn tự động vẫn cần chẩn đoán
+phần dư và đánh giá cuốn chiếu, đúng
+như ví dụ mẫu hồ Huron và Ví dụ 5.2.
+AS3179 Mô hình thống kê | Bài 11 56/68
+
+===== Trang 62 =====
+Bài tập 9: tính toán về khớp và kiểm tra mô hình
+Mức 2: Tính toán và diễn giải
+1. Với n = 100, ˆρ(1) = 0.6, ˆρ(2) = 0.2: tính ˆα(1), ˆα(2). AR(1) có hợp lý không?
+Nó sẽ hàm ý ρ(2) nào?
+2. Một khớp AR(1) cho ˆϕ = 0.45 với n = 150. Cho CI xấp xỉ 95% cho ϕ.
+3. Các khớp AR(2) và AR(3) cho hồ Huron (có xu thế) có log-likelihood
+−101.200 và −101.003, n = 98. Tính lại AIC và BIC (tính cả trung bình, hệ
+số dốc và σ2). Có đáng giữ ϕ3 không?
+4. Phần dư của một ARMA(1,1) cho QLB(10) = 12.3. Nêu bậc tự do, p-value và
+kết luận.
+AS3179 Mô hình thống kê | Bài 11 57/68
+
+===== Trang 63 =====
+Bài tập 10: lý thuyết về PACF và ước lượng
+Mức 3: Lý thuyết
+1. Chứng minh Mệnh đề 5(a) và (b).
+2. Chỉ ra rằng ước lượng Yule–Walker của AR(1) là ˆϕ = ˆρ(1), và |ˆρ(1)|< 1 với
+mọi dữ liệu không hằng, nên mô hình khớp là nhân quả.
+3. Với AR(1) Gauss có µ = 0, viết hàm hợp lý của y2,...,yn điều kiện theo y1.
+Chỉ ra rằng điểm cực đại theo ϕ là ∑ t≥2 yt yt−1/∑ t≥2 y2 t−1, và so sánh với
+ˆρ(1).
+4. Giải thích vì sao kiểm định Ljung–Box trên phần dư ARMA(p,q) dùng
+H −p −q bậc tự do (Box và Pierce, 1970), và vì sao H không nên quá nhỏ.
+AS3179 Mô hình thống kê | Bài 11 58/68
+
+===== Trang 64 =====
+Bài tập 11: thẩm định có xét thời gian và kiểm tra phần dư
+Mức 3: Bài tập tích hợp khoa học dữ liệu
+Một nhóm dự báo chuỗi nhu cầu hằng ngày. CV ngẫu nhiên 5-fold báo RMSE 8.1, còn đánh
+giá cuốn chiếu trên 60 ngày cuối báo RMSE 10.4. Phần dư của mô hình ARMA đã chọn có
+n = 240, ˆρ(1) = 0.17, ˆρ(2) = 0.13, ˆρ(3) = 0.09, và các tự tương quan về sau nhỏ; bình
+phương phần dư có ˆρ(1) = 0.21, ˆρ(2) = 0.18.
+1. Giải thích vì sao ước lượng CV ngẫu nhiên có thể lạc quan ngay cả khi không có lỗi
+mã.
+2. Tính QLB(3) cho phần dư và kiểm định ở mức 5%, dùng mốc bảo thủ χ2 3. Sau đó nêu
+kết luận thay đổi thế nào nếu đã khớp ARMA(1,1).
+3. ACF của bình phương phần dư gợi ý điều gì?
+4. Viết hai câu nên xuất hiện trong báo cáo mô hình.
+AS3179 Mô hình thống kê | Bài 11 59/68
+
+===== Trang 65 =====
+6. Tính toán bằng R và Python
+
+===== Trang 66 =====
+Hồ Huron: hồi quy với sai số ARMA
+R (hàm arima có sẵn)
+y <- LakeHuron; x <- time(y) - 1920
+acf(y); pacf(resid(lm(y ~ x)))
+fit <- function(o) arima(y, order = o,
+xreg = x)
+m <- list(ar1 = fit(c(1,0,0)),
+ar2 = fit(c(2,0,0)),
+ma2 = fit(c(0,0,2)),
+arma = fit(c(1,0,1)))
+round(sapply(m, AIC), 2)
+round(sapply(m, BIC), 2)
+m$ar2 # hệ số và SE
+Box.test(resid(m$ar2), lag = 10,
+type = "Ljung", fitdf = 2)
+coef(summary(lm(y ~ x)))[2, 1:2] # OLS
+Python (statsmodels)
+import numpy as np, statsmodels.api as sm
+from statsmodels.tsa.arima.model import ARIMA
+from statsmodels.stats.diagnostic import \
+acorr_ljungbox
+d = sm.datasets.get_rdataset("LakeHuron")
+y = d.data.value.values
+x = d.data.time.values - 1920.0
+for o in [(1,0,0), (2,0,0), (0,0,2),
+(1,0,1)]:
+m = ARIMA(y, exog=x, order=o).fit()
+print(o, round(m.aic, 2), round(m.bic, 2))
+m = ARIMA(y, exog=x, order=(2,0,0)).fit(
+cov_type="oim") # thông tin quan sát
+print(m.params.round(4), m.bse.round(4))
+print(acorr_ljungbox(m.resid, lags=[10],
+model_df=2))
+Kỳ vọng: AIC 218.45, 212.40, 219.75, 212.40; BIC 228.79, 225.32, 232.68, 225.32; AR(2):
+ˆϕ = (1.0048, −0.2913), hệ số dốc −0.0216 (SE 0.0081), ˆσ2 = 0.4566; QLB(10) = 3.93 (Python:
+3.95), p = 0.86; OLS hệ số dốc −0.0242 (SE 0.0040). Sai số chuẩn có thể khác nhẹ giữa R và Python
+(Hessian số); statsmodels có thể in cảnh báo hội tụ, nhưng cảnh báo này không ảnh hưởng các số trên.
+AS3179 Mô hình thống kê | Bài 11 60/68
+
+===== Trang 67 =====
+Linh miêu: Yule–Walker, nghiệm và chọn bậc
+R
+y <- log10(lynx)
+r <- acf(y, plot = FALSE)$acf[2:3]
+p2 <- (r[2] - r[1]^2) / (1 - r[1]^2)
+p1 <- r[1] * (1 - p2); c(p1, p2) # YW
+z <- polyroot(c(1, -p1, -p2))
+Mod(z); 2 * pi / abs(Arg(z[1])) # chu kỳ
+ic <- sapply(1:14, function(p) {
+m <- arima(y, order = c(p, 0, 0),
+method = "ML")
+c(AIC(m), BIC(m)) })
+apply(ic, 1, which.min) # AIC, BIC
+lb <- function(p) Box.test(resid(arima(y,
+order = c(p, 0, 0), method = "ML")),
+lag = 20, type = "Ljung",
+fitdf = p)$p.value
+c(lb(2), lb(11))
+Python (statsmodels)
+import numpy as np, statsmodels.api as sm
+from statsmodels.regression.linear_model \
+import yule_walker
+from statsmodels.tsa.arima.model import ARIMA
+d = sm.datasets.get_rdataset("lynx").data
+y = np.log10(d.value.values)
+phi, sig = yule_walker(y, order=2,
+method="mle")
+print(phi.round(3), round(sig**2, 4))
+z = np.roots([-phi[1], -phi[0], 1])
+print(abs(z).round(3),
+round(2*np.pi/abs(np.angle(z[0])), 2))
+f = [ARIMA(y, order=(p, 0, 0)).fit()
+for p in range(1, 15)]
+print(np.argmin([m.aic for m in f]) + 1,
+np.argmin([m.bic for m in f]) + 1)
+Kỳ vọng: ˆϕ = (1.350, −0.720), ˆσ2 = 0.057 (Python; R ar.yw báo cáo 0.0586, được hiệu chỉnh theo
+n/(n − p −1)), các nghiệm có môđun 1.178, chu kỳ 9.66 năm; AIC chọn p = 11, BIC chọn p = 2; các
+p-value Ljung–Box là 0.009 (AR(2)) và 0.52 (AR(11)). Có thể bỏ qua cảnh báo FutureWarning từ
+yule_walker.
+AS3179 Mô hình thống kê | Bài 11 61/68
+
+===== Trang 68 =====
+Phụ thuộc và trung bình; nhiễu trắng so với iid
+R
+set.seed(3179) # Định lý 1, AR(1)
+phi <- 0.6; n <- 100
+tau <- (1 + phi) / (1 - phi)
+cover <- replicate(2000, {
+y <- arima.sim(list(ar = phi), n)
+s <- sd(y) / sqrt(n)
+c(abs(mean(y)) < 1.96 * s,
+abs(mean(y)) < 1.96 * s * sqrt(tau))})
+rowMeans(cover) # ngây thơ, đã hiệu chỉnh
+P <- EuStockMarkets[, "DAX"]
+r <- 100 * diff(log(P))
+Box.test(r, lag = 10, type = "Ljung")
+Box.test(r^2, lag = 10, type = "Ljung")
+acf(r); acf(r^2)
+Python
+import numpy as np, statsmodels.api as sm
+from statsmodels.stats.diagnostic import \
+acorr_ljungbox
+rng = np.random.default_rng(3179)
+phi, n, B = 0.6, 100, 2000
+tau = (1 + phi) / (1 - phi); hit = 0
+for b in range(B): # Định lý 1
+e = rng.normal(size=n + 200); y = 0*e
+for t in range(1, n + 200):
+y[t] = phi * y[t-1] + e[t]
+y = y[200:]; s = y.std(ddof=1)
+hit += abs(y.mean()) < 1.96*s/np.sqrt(n)
+print(hit / B) # ngây thơ độ phủ
+P = sm.datasets.get_rdataset(
+"EuStockMarkets").data.DAX.values
+r = 100 * np.diff(np.log(P))
+print(acorr_ljungbox(r, lags=[10]))
+print(acorr_ljungbox(r**2, lags=[10]))
+Kỳ vọng: độ phủ ngây thơ 0.65 (R) và 0.67 (Python), đã hiệu chỉnh 0.94 (R); DAX: QLB(10) = 6.37
+(p = 0.78) cho rt , 110.7 (p ≈ 4×10−19) cho r 2 t . R arima.sim dùng giai đoạn đốt bỏ (burn-in), giống
+vòng lặp Python.
+AS3179 Mô hình thống kê | Bài 11 62/68
+
+===== Trang 69 =====
+Tổng kết
+
+===== Trang 70 =====
+Danh sách kiểm khi báo cáo mô hình ARMA
+1. Vẽ đồ thị;
+xu thế, mùa
+vụ, phương sai?
+2. Làm dừng
+(khử xu thế,
+biến đổi)
+3. ACF, PACF:
+ứng viên (p, q)
+4. Khớp ML;
+nhân quả,
+khả nghịch;
+AIC, BIC
+5. Phần dư
+trắng? Nếu
+có thì dùng
+khớp sai: hiệu chỉnh
+Báo cáo
+▶ đã làm gì để làm chuỗi dừng, và vì sao (xu thế, biến đổi, sai phân);
+▶ mô hình đã khớp cùng sai số chuẩn, ˆσ2, và các nghiệm (nhân quả, khả nghịch, không triệt
+tiêu gần đúng);
+▶ bậc được chọn như thế nào (ACF/PACF, AIC hoặc BIC) và những đối thủ gần nào bị loại;
+▶ chẩn đoán phần dư: ACF phần dư, QLB(H) với H − p − q bậc tự do, ACF của bình phương
+phần dư;
+▶ với mọi trung bình, hệ số dốc hoặc hiệu ứng ước lượng từ dữ liệu phụ thuộc: sai số chuẩn có
+tính đến phụ thuộc.
+AS3179 Mô hình thống kê | Bài 11 63/68
+
+===== Trang 71 =====
+Kiểm tra khái niệm: tìm lỗi sai
+Mức 2: Diễn giải
+Một sinh viên viết:
+1. “Xu thế hồ Huron có t = −6.0 trong kết quả OLS, nên mức giảm là áp đảo.”
+2. “Suất sinh lợi DAX vượt qua kiểm định Ljung–Box, nên chúng độc lập.”
+3. “AR(1) với ϕ = 1.2 chỉ là AR(1) dai dẳng hơn: nó vẫn dừng.”
+4. “Mô hình MA(1) tôi khớp hàm ý ρ(1) = 0.7.”
+5. “PACF của chuỗi bị cắt cụt sau độ trễ 2, nên chuỗi là MA(2).”
+6. “AIC chọn AR(11) cho linh miêu, nên quá trình thật của linh miêu là AR(11).”
+Xác định và sửa từng lỗi.
+AS3179 Mô hình thống kê | Bài 11 64/68
+
+===== Trang 72 =====
+Tóm tắt các đối tượng chính hôm nay
+Đối tượng Ý nghĩa
+tính dừng trung bình hằng; Cov(Yt+h,Yt ) = γ(h) chỉ phụ thuộc vào độ trễ
+nhiễu trắng không tương quan, trung bình 0, phương sai hằng; yếu hơn iid
+Var ¯Y 1 n ∑ |h|<n(1−|h| n )γ(h) ≈γ(0)τ/n; neff = n/τ
+ACF mẫu ˆρ(h); dải iid ±1.96/√n; Ljung–Box Q ≈χ2 H dưới nhiễu iid
+AR(p) ϕ(B)(Yt −µ) = εt ; nhân quả khi và chỉ khi nghiệm của ϕ nằm
+ngoài vòng tròn đơn vị; Yule–Walker
+MA(q) Yt = µ + θ(B)εt ; ACF bị cắt cụt sau q; khả nghịch khi và chỉ
+khi nghiệm của θ nằm ngoài
+ARMA(p,q) ϕ(B)(Yt −µ) = θ(B)εt ; ψ(z) = θ(z)/ϕ(z); không có nghiệm
+chung
+PACF α(h) = ϕhh; bị cắt cụt sau p với AR(p)
+khớp mô hình ML Gauss; AIC, BIC; phần dư trắng, cả bình phương phần dư
+cũng vậy
+AS3179 Mô hình thống kê | Bài 11 65/68
+
+===== Trang 73 =====
+Cần nhớ trước Bài 12
+Các công thức chính
+Var ¯Y ≈ γ(0) n ( 1 + 2 ∑
+h≥1
+ρ(h)
+)
+, QLB(H) = n(n + 2)
+H∑
+h=1
+ˆρ(h)2
+n − h ;
+AR(1) : ρ(h) = ϕ|h|, γ(0) = σ2
+1−ϕ2 ; MA(1) : ρ(1) = θ 1 + θ2 ; Γp ϕ = γp ;
+α(2) = ρ(2) −ρ(1)2
+1−ρ(1)2 , Var ˆϕ≈ 1−ϕ2 n , AR(2) nhân quả: ϕ1 + ϕ2 < 1, ϕ2 −ϕ1 < 1, |ϕ2|< 1.
+Ba thói quen
+Vẽ chuỗi trước khi dựng bất kỳ mô hình nào. Không dùng sai số chuẩn iid hoặc chia huấn
+luyện/kiểm tra (train/test) ngẫu nhiên cho dữ liệu có thứ tự thời gian. Kiểm tra phần dư
+và bình phương phần dư.
+Bài tiếp theo: Chuỗi thời gian II (không dừng, nghiệm đơn vị và sai phân, mô hình ARIMA
+và mô hình mùa vụ, dự báo với khoảng dự báo, đánh giá cuốn chiếu). Định lý 3(d) là công
+thức dự báo đầu tiên.
+AS3179 Mô hình thống kê | Bài 11 66/68
+
+===== Trang 74 =====
+Tài liệu đọc gợi ý và tài liệu tham khảo
+
+===== Trang 75 =====
+Tài liệu đọc gợi ý và tài liệu tham khảo
+Tài liệu đọc chính
+▶ Rigdon–Fricker–Montgomery, Introduction to Probability and Statistics for Data
+Science with R: Ch. 16 (các phương pháp chuỗi thời gian), các mục về phụ thuộc,
+tính dừng và ARMA.
+▶ Hyndman–Athanasopoulos, Forecasting: Principles and Practice, 3rd ed. (FPP3):
+Ch. 9 (mô hình ARIMA): tính dừng, ACF/PACF, các mô hình AR, MA và ARMA.
+▶ Thulin, Modern Statistics with R: các mục về chuỗi thời gian và dự báo.
+▶ Brockwell–Davis, Introduction to Time Series and Forecasting, 3rd ed. (2016):
+Ch. 1–3 và 5.
+▶ Shumway–Stoffer, Time Series Analysis and Its Applications, 4th ed. (2017): Ch. 1 và
+3.
+AS3179 Mô hình thống kê | Bài 11 67/68
+
+===== Trang 76 =====
+Đọc thêm: bài báo gốc và ứng dụng hiện đại
+Bài báo và sách được trích dẫn trong bài này
+Số linh miêu bị bẫy hằng năm ở vùng sông Mackenzie, 1821–1934, n = 114 (R: lynx); ta mô hình
+hóa yt = log10(số lượng). Đây là chu kỳ thú săn mồi–con mồi nổi tiếng khoảng mười năm (Elton
+và Nicholson, 1942; Moran, 1953).
+AS3179 Mô hình thống kê | Bài 11 68/68

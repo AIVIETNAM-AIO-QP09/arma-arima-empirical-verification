@@ -1,0 +1,6 @@
+# SHA-256, ghi ngày 2026-11-20
+7fe634970d5b28128ade898c3932dbc4015fecbeb6dabc443efaf88a2fd037d8  LakeHuron.csv
+0766d4043eb8a20ac83afefff1c78063beff3891571c59e8e38d72503ca86cf1  lynx.csv
+aa5513f3ca55daf51294accae9a3f946e957ba53f405dc4fafb4e125e5c03818  EuStockMarkets.csv
+d0452bea38c61e796a4eeb950bf91d20fb5c7f13d5822eadf5990fe54f9c8d07  Nile.csv
+bdb98adbd418a6de6842a742e0602f363c3b841c26677e7e61a1e055e9509bd8  AirPassengers.csv

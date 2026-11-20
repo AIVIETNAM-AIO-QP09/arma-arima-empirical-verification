@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "as3179ts"
+version = "0.1.0"
+description = "AS3179 - Bai tap lon: kiem chung Bai 11 (ARMA) va Bai 12 (ARIMA, du bao)"
+requires-python = ">=3.11"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

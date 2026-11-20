@@ -1,0 +1,1617 @@
+
+===== Trang 1 =====
+AS3179 Mô hình thống kê
+Bài 12: Chuỗi thời gian II: ARIMA và dự báo
+Hôm nay
+Phần lớn chuỗi thực tế không dừng: chúng trôi, có xu thế và lặp lại theo năm. Ta
+tách xu thế ngẫu nhiên khỏi xu thế tất định, chỉ lấy sai phân khi mô hình yêu cầu,
+xây dựng dự báo ARIMA và ARIMA mùa vụ với bất định đúng mức, rồi đánh giá
+toàn bộ quy trình dự báo mà không để tương lai rò rỉ vào quá khứ.
+Dung Nguyen | Khoa Khoa học Ứng dụng, HCMUT
+
+===== Trang 2 =====
+Định hướng
+
+===== Trang 3 =====
+Vị trí của Bài 12
+L10: mô hình
+Bayes
+L11: phụ thuộc,
+mô hình ARMA
+L12: ARIMA,
+dự báo
+Mở rộng: không
+gian trạng thái,
+học máy
+Nhắc lại từ Bài 11
+Tính dừng yếu và hàm tự hiệp phương sai γ(h) (Định nghĩa 1–2); ACF mẫu và PACF mẫu
+với các dải kiểm định cùng kiểm định Ljung–Box (Định lý 2, Mệnh đề 5); AR nhân quả(p),
+MA khả nghịch(q) và ARMA(p,q) thông qua các đa thức ϕ(z) và θ(z) (Định lý 3–5); hợp
+lý cực đại Gauss, AIC và BIC (Định lý 6); sai số dự báo h-bước của một quá trình tuyến tính
+nhân quả, khả nghịch (Bài tập 8(4)).
+Ý tưởng trong một dòng
+Làm cho chuỗi dừng, mô hình hóa phần
+còn lại bằng ARMA, rồi đảo biến đổi để
+dự báo.
+Vì sao quan trọng
+Chọn sai d có thể đổi dự báo từ “quay về
+trung bình” thành “giữ nguyên mức hiện
+tại”. Đó là toàn bộ khác biệt dự báo.
+AS3179 Mô hình thống kê | Bài 12 2/71
+
+===== Trang 4 =====
+Mục tiêu học tập
+Sau bài này, sinh viên có thể
+1. phân biệt xu thế tất định (dừng quanh xu thế) với xu thế ngẫu nhiên (dừng sau sai
+phân), và phát biểu nghiệm đơn vị là gì;
+2. chọn bậc sai phân d từ đồ thị, ACF và kiểm định nghiệm đơn vị, đồng thời nhận diện
+sai phân quá mức;
+3. định nghĩa ARIMA(p,d,q), suy ra hàm dự báo và liên hệ ARIMA(0,1,1) với làm trơn
+mũ;
+4. tính dự báo và khoảng dự báo h-bước từ các trọng số Ψ, chuyển ngược trung vị,
+trung bình và khoảng một cách đúng đắn, đồng thời nêu rõ đại lượng đang báo cáo;
+5. xây dựng mô hình ARIMA mùa vụ, đặc biệt là mô hình airline, và đọc dấu hiệu ACF
+của ∇∇s ;
+6. đánh giá dự báo với mốc chuẩn bằng MAE, RMSE và MASE trên gốc cuốn chiếu
+(rolling origin), với bước chọn mô hình nằm trong thiết kế đánh giá;
+7. thực hiện toàn bộ quy trình trong R và Python.
+AS3179 Mô hình thống kê | Bài 12 3/71
+
+===== Trang 5 =====
+Kế hoạch bài giảng 100 phút
+1. Tính không dừng
+và nghiệm đơn vị
+2. Mô hình ARIMA
+và dự báo
+3. Khoảng dự báo,
+biến đổi
+4. Tính mùa vụ:
+SARIMA
+5. Đánh giá
+dự báo
+6. Tính toán
+trong R và Python
+Kế hoạch thời gian
+Tiết 1 (50’): Mục 1–3.
+Tiết 2 (50’): Mục 4–6.
+Nhịp học trên lớp
+Định nghĩa/định lý → ví dụ minh họa →
+ví dụ tương tự → ví dụ nâng cao. Các
+trang chiếu có dấu ⋆ là phần mở rộng
+hoặc tự học.
+AS3179 Mô hình thống kê | Bài 12 4/71
+
+===== Trang 6 =====
+Ví dụ xuyên suốt
+(i) Lưu lượng hằng năm sông Nile
+(dữ liệu thật)
+Lưu lượng hằng năm của sông Nile tại Aswan,
+108 m3, 1871–1970, n = 100 (R: Nile). Trung
+bình 919, độ lệch chuẩn 169; giảm rõ quanh
+năm 1899, khi bắt đầu xây đập Aswan thứ
+nhất.
+(ii) Hành khách hàng không (dữ liệu
+thật)
+Số hành khách hàng không quốc tế hằng
+tháng (nghìn người), tháng 1/1949 – tháng
+12/1960, n = 144 (R: AirPassengers). Có
+xu thế, chu kỳ năm mạnh và dao động mùa
+vụ tăng theo mức: ví dụ gốc của Box–Jenkins.
+(iii) Chỉ số DAX (dữ liệu thật)
+Mức đóng cửa hằng ngày của chỉ số DAX
+Đức, 1991–1998, n = 1860 (R:
+EuStockMarkets). Ta mô hình hóa log giá;
+Bài 11 đã mô hình hóa suất sinh lợi của nó.
+Ký hiệu
+B: toán tử lùi (backshift), BYt = Yt−1;
+∇ = 1−B; ∇s = 1−Bs ; ϕ(z),θ(z): đa thức
+AR và MA; Φ(z), Θ(z): các đa thức mùa vụ
+tương ứng; ψj : hệ số của ψ(z) = θ(z)/ϕ(z)
+cho chuỗi sai phân; Ψj : các hệ số của
+Ψ(z) = θ(z)/{ϕ(z)(1−z)d } cho chính Y;
+ˆYn+h|n: dự báo h-bước tại thời điểm n;
+en(h) = Yn+h − ˆYn+h|n.
+Tất cả các số được tính từ các dữ liệu này bằng mã ở Mục 6 (hoặc biến thể nhỏ của mã đó); mô phỏng dùng
+seed 3179.
+AS3179 Mô hình thống kê | Bài 12 5/71
+
+===== Trang 7 =====
+1. Tính không dừng, sai phân và nghiệm đơn vị
+
+===== Trang 8 =====
+Định nghĩa 1: hai loại xu thế và tính tích hợp
+Định nghĩa 1
+Cho {Yt } là một chuỗi thời gian và ∇ = 1−B, nên ∇Yt = Yt −Yt−1.
+(a) {Yt } dừng quanh xu thế (xu thế tất định) nếu Yt = µt + Xt , trong đó µt là hàm cố định
+của t và X dừng yếu.
+(b) {Yt } tích hợp bậc d, Y ∼ I(d), nếu ∇d Yt dừng yếu với phương sai dài hạn
+v =
+∑
+h γ(h) ∈ (0,∞), và khi d ≥ 1, ∇d−1Yt không dừng. Xu thế ngẫu nhiên nghĩa là
+d ≥ 1.
+(c) Mô hình ϕ(B)Yt = θ(B)εt có d nghiệm đơn vị nếu ϕ(z) = (1−z)d ˜ϕ(z) với ˜ϕ(z) ̸= 0 trên
+|z|≤ 1; đặc biệt ϕ(1) = 0.
+(d) Bước ngẫu nhiên có trôi là Yt = δ + Yt−1 + εt , trường hợp điển hình của I(1).
+Vì sao cần v > 0 trong (b). v = γ(0)τ là đại lượng trong Bài 11, Định lý 1: Var ¯Y ≈ v/n. Lấy dư
+một sai phân vẫn có thể cho một chuỗi dừng yếu, nhưng với phương sai dài hạn bằng không; theo quy
+ước này, đó là chuỗi bị sai phân quá mức, không phải một thành phần I(0) hữu ích cho dự báo (Mệnh
+đề 1).
+Hai loại xu thế nhìn giống nhau nhưng vận hành khác nhau. Cả hai đều trôi lên. Nhưng cú sốc lên
+chuỗi dừng quanh xu thế sẽ tắt dần và chuỗi quay về µt ; cú sốc lên chuỗi I(1) dịch chuyển cả quỹ đạo
+tương lai.
+AS3179 Mô hình thống kê | Bài 12 6/71
+
+===== Trang 9 =====
+Định lý 1: bước ngẫu nhiên
+Định lý 1
+Cho Yt = Y0 + δt +
+∑t
+j=1 εj , với Y0 cố định và εj
+iid
+∼ (0,σ2).
+(a) EYt = Y0 + δt, Var Yt = tσ2, Cov(Ys ,Yt ) = min(s,t)σ2 và
+Corr(Yt ,Yt+h) =
+√
+t/(t + h) → 1 khi t →∞ với h. Chuỗi không dừng và không có trung
+bình để quay về.
+(b) Với mỗi h cố định, tự tương quan mẫu thỏa ˆρ(h)
+P
+−−→ 1: biểu đồ tương quan giảm rất chậm
+và trong mẫu hữu hạn gần như tuyến tính.
+(c) Dự báo tốt nhất của Yn+h khi biết Y1,...,Yn là ˆYn+h|n = Yn + δh, với sai số ∑h j=1 εn+j và
+Var en(h) = hσ2. Khoảng dự báo mở rộng như √ h không giới hạn: mọi cú sốc đều vĩnh viễn.
+(d) ∇Yt = δ + εt : lấy một sai phân biến nó thành nhiễu iid quanh độ trôi.
+Đối chiếu với AR nhân quả(1) (Bài 11, Định lý 3): khi đó Var Yt = σ2/(1−ϕ2) là hằng số,
+ρ(h) = ϕ|h|→ 0, dự báo quay về µ, và Var en(h) hội tụ đến γ(0).
+AS3179 Mô hình thống kê | Bài 12 7/71
+
+===== Trang 10 =====
+Chứng minh Định lý 1
+Chứng minh
+(a) Các εj không tương quan, nên Var Yt = tσ2 và, cho s ≤ t, Cov(Ys ,Yt ) = sσ2; chia cho√
+sσ2
+√
+tσ2 cho hệ số tương quan. Vì Var Yt phụ thuộc vào t, không có tính dừng yếu.
+(b) Lấy δ = 0. Theo định lý giới hạn trung tâm hàm, n−1/2Y⌊nr ⌋ d −−→σW (r) trên [0,1], trong đó
+W là chuyển động Brown chuẩn; do đó
+1
+n2
+n−h∑
+t=1
+(Yt − ¯Y )(Yt+h − ¯Y ) d −−→σ2
+∫ 1
+0
+(
+W (r) −
+∫ 1
+0 W
+)2
+dr
+cho mọi h cố định: dịch chỉ số một lượng cố định h là không đáng kể trên thang thời gian n. Tử số
+và mẫu số của ˆρ(h) có chung giới hạn này, dương gần như chắc chắn.
+(c) Yn+h = Yn + δh +
+∑h
+j=1 εn+j và các cú sốc tương lai độc lập với quá khứ. (d) Hiển nhiên. □
+Kiểm tra bằng mô phỏng
+Bước ngẫu nhiên, n = 200, 2000 lần lặp: trung bình của ˆρ(h) là 0.96,0.93,...,0.68 cho
+h = 1,...,10 và 0.43 tại h = 20. AR(1) dừng với ϕ = 0.9 có trung bình 0.24 tại độ trễ 10.
+AS3179 Mô hình thống kê | Bài 12 8/71
+
+===== Trang 11 =====
+Hình minh họa: bốn chuỗi không dừng
+0 50 100 150 200
+−10
+0
+10
+20
+30
+bước ngẫu nhiên và bước ngẫu nhiên có trôi
+0 50 100 150 200
+0
+10
+20
+30
+dừng quanh xu thế: 0.15t+AR(1)
+1880 1900 1920 1940 1960
+400
+600
+800
+1,000
+1,200
+1,400
+Lưu lượng Nile: đổi mức năm 1899
+0 500 1000 1500
+7.5
+8
+8.5
+log DAX, 1991–1998
+Hai ô đầu cho thấy khác biệt quan trọng: chuỗi dừng quanh xu thế luôn quay về đường gạch, bước
+ngẫu nhiên thì không. Nile không thuộc hẳn loại nào: trung bình của nó là 1098 trước năm 1899 và
+850 sau đó. Đường đỏ: hai trung bình mẫu.
+AS3179 Mô hình thống kê | Bài 12 9/71
+
+===== Trang 12 =====
+Mệnh đề 1: sai phân sửa được gì và làm hỏng gì
+Mệnh đề 1
+Cho {Xt } là chuỗi dừng với tự hiệp phương sai khả tổng tuyệt đối γX , và đặt σ2 = Var εt .
+(a) Nếu Yt = a + bt + Xt là xu thế dừng, thì ∇Yt = b + ∇Xt là dừng với
+γ∇X (h) = 2γX (h) −γX (h−1) −γX (h + 1) và phương sai dài hạn
+∑
+h γ∇X (h) = 0: lấy sai
+phân một chuỗi dừng sẽ tạo sai phân quá mức.
+(b) Nếu Xt ∼ WN(0,σ2), thì ∇Xt là MA(1) với θ = −1: γ(0) = 2σ2, γ(±1) = −σ2, ρ(1) = −1 2,
+giá trị cực biên cho phép bởi Bài 11, Mệnh đề 4(b). Đa thức MA 1 −z có nghiệm trên
+đường tròn đơn vị, nên mô hình không khả nghịch và ˆθ dồn về −1.
+(c) Chi phí của sai phân quá một lần. Nếu Yt = µ + εt là nhiễu trắng và ta dự báo với bước
+ngẫu nhiên, ˆYn+1 = Yn, sai số phương sai là 2σ2: gấp đôi mức tối ưu σ2.
+(d) Chi phí của thiếu một sai phân. Nếu Y là bước ngẫu nhiên không trôi và ta dự báo Yn+h
+bằng trung bình mẫu ¯Yn, thì Var(Yn+h − ¯Yn) = σ2{ (n−1)(2n−1) 6n + h } , bằng 33.8σ2 cho
+n = 100,h = 1 thay vì σ2.
+AS3179 Mô hình thống kê | Bài 12 10/71
+
+===== Trang 13 =====
+Chứng minh Mệnh đề 1, và chẩn đoán thu được
+Chứng minh
+(a) Cov(Xt − Xt−1, Xt+h − Xt+h−1) khai triển thành bốn
+hạng đã chỉ ra. Lấy tổng theo h ∈ Z, mỗi γX (k) xuất hiện
+với tổng trọng số 2 − 1 − 1 = 0, nên
+∑
+h γ∇X (h) = 0.
+Tương đương, mật độ phổ của ∇X là |1− e−iλ|2fX (λ), và
+bằng không tại λ = 0.
+(b) Đặt γX (0) = σ2, γX (h) = 0 cho h ̸= 0 trong (a).
+(c) Var(Yn+1 − Yn) = Var(εn+1 −εn) = 2σ2.
+(d)Với Y0 = 0và Yt =
+∑t
+j=1 εj , ¯Yn = 1 n ∑n j=1(n−j +1)εj ,
+nên Yn+h − ¯Yn = ∑n j=1 j−1 n εj + ∑n+h j=n+1 εj . Các hạng này
+không tương quan, và
+∑n−1
+i=0 i2 = (n−1)n(2n−1) 6 . □
+0 5 10
+−0.6
+−0.4
+−0.2
+0
+0.2
+độ trễ h
+ACF
+∇ của nhiễu trắng, n = 400
+Dấu hiệu sai phân quá mức
+Sau sai phân, một giá trị mẫu ˆρ(1) gần
+−0.5 và các độ trễ còn lại nằm trong
+dải, hoặc ước lượng ˆθ gần −1, cho
+thấy ta đã lấy sai phân quá một lần.
+AS3179 Mô hình thống kê | Bài 12 11/71
+
+===== Trang 14 =====
+Định lý 2: Kiểm định Dickey–Fuller, ADF và KPSS
+Định lý 2
+Cho Yt = ϕYt−1 + εt , εt
+iid
+∼ (0,σ2), Y0 = 0; kiểm định H0 : ϕ = 1 với đối thuyết |ϕ|< 1.
+(a) (Dickey–Fuller, 1979) Dưới H0, thống kê t τ = ( ˆϕ−1)/ SE( ˆϕ) thỏa mãn, với W là chuyển
+động Brown chuẩn,
+τ
+d
+−−→
+{
+W (1)2 −1 }/{ 2( ∫ 1 0 W2)1/2} .
+Giới hạn không chuẩn tắc: lệch và dịch sang trái. Một hệ số chặn, hoặc hệ số chặn kèm xu
+thế, thay W bằng phiên bản đã trừ trung bình, tương ứng là phiên bản đã khử xu thế; 5%
+phân vị là −1.95, −2.86 và −3.41; trong trường hợp có hệ số chặn, giá trị tra bảng là −2.89
+cho n ≈ 100–150.
+(b) (Dickey–Fuller mở rộng) Với AR(p), viết ∇Yt = α + βYt−1 +
+∑p−1
+i=1 ai ∇Yt−i + εt với
+β = −ϕ(1); thì H0 là β = 0, và thống kê t của ˆβ có giới hạn và giá trị tới hạn như trong (a).
+(c) (KPSS; Kwiatkowski et al., 1992) giả thuyết không đảo lại: H0 là tính dừng quanh một mức
+hoặc xu thế, bác bỏ khi η = n−2 ∑ t S2 t /ˆv, với St các tổng riêng của phần dư và ˆv phương
+sai dài hạn của chúng.
+Đọc hai kiểm định cùng nhau. Bác bỏ trong ADF và không bác bỏ trong KPSS: bằng chứng ủng hộ
+I(0); ngược lại: bằng chứng ủng hộ I(1). Cả hai cùng bị bác bỏ, hoặc cả hai đều không bị bác bỏ: dữ
+liệu không khớp khuôn mẫu nào, thường là có điểm gãy.
+AS3179 Mô hình thống kê | Bài 12 12/71
+
+===== Trang 15 =====
+Vì sao bảng Dickey–Fuller không phải bảng chuẩn tắc
+Giới hạn đến từ đâu
+Dưới H0, ˆϕ− 1 = ∑ t Yt−1εt / ∑ t Y 2 t−1, và biến hồi
+quy tự nó là bước ngẫu nhiên, nên
+∑
+t Y 2 t−1 có bậc
+n2: ước lượng hội tụ với tốc độ n, không phải √n. Với
+n−1/2Y⌊nr ⌋ d −−→σW (r ),
+1
+n2
+∑
+t
+Y 2 t−1 d −−→σ2
+∫ 1
+0
+W 2,
+1
+n
+∑
+t
+Yt−1εt
+d
+−−→σ2
+∫ 1
+0
+W dW = σ2 2 {W (1)2 −1}
+theo công thức Itô. Tỷ số là giới hạn đã nêu; nó không
+đối xứng quanh 0 và có trung bình −0.42. thống kê
+với hệ số chặn, nêu ở trên, có giới hạn tương tự với W
+được thay bằng phiên bản đã trừ trung bình, và trung
+bình −1.53. □
+−4 −2 0 2
+0
+0.2
+0.4
+τ
+mật độ
+DF có hệ số chặn
+N (0,1)
+5% điểm −2.88
+Mô phỏng 5% điểms (n = 200): −1.93 không có
+chặn, −2.88 có chặn. Bảng tra: −1.95 và −2.86.
+−1.645 sẽ là thảm họa
+Trong 20000 bước ngẫu nhiên mô phỏng
+thống kê nhỏ hơn −1.645 trong 46% mẫu:
+bảng chuẩn tắc bác bỏ nghiệm đơn vị đúng với
+tần suất cao gấp chín lần.
+AS3179 Mô hình thống kê | Bài 12 13/71
+
+===== Trang 16 =====
+Ví dụ mẫu: các chuỗi này có phải I(1) không?
+Bài toán
+Ví dụ xuyên suốt (i) và (iii). Chọn bậc sai phân cho log DAX và cho Nile từ đồ thị, biểu đồ tương
+quan, ADF và KPSS (chỉ có hệ số chặn).
+0
+0.5
+1
+log DAX: ˆρ(h)
+0 10 20 30
+0
+0.5
+1
+độ trễ h
+∇ log DAX
+Một sai phân biến biểu đồ tương quan gần như
+không giảm thành biểu đồ sạch.
+AS3179 Mô hình thống kê | Bài 12 14/71
+
+===== Trang 17 =====
+Ví dụ 1.1 (tương tự): đọc một hồi quy ADF
+Bài toán
+Một chuỗi theo quý có độ dài n = 120 cho ADF regression (hệ số chặn, một độ trễ)
+ˆ∇yt = 0.42−0.085yt−1 + 0.31∇yt−1, SE( ˆβ) = 0.031.
+(1) Thực hiện kiểm định ở mức 5%. (2) ˆβ cho biết gì về đa thức AR, và về nửa đời của cú sốc nếu
+chuỗi là AR(1) dừng? (3) Sau sai phân, chuỗi cho ˆρ(1) = −0.48 với mọi độ trễ khác nằm trong
+dải. Kết luận gì?
+AS3179 Mô hình thống kê | Bài 12 15/71
+
+===== Trang 18 =====
+Ví dụ 1.2 (nâng cao): kiểm định nghiệm đơn vị dễ gây hiểu
+sai thế nào
+Bài toán
+(1) Mô phỏng các chuỗi AR(1) với ϕ = 0.95,0.9,0.8 và n = 100,200, rồi ghi lại tần suất kiểm định
+ADF (5%, hệ số chặn) bác bỏ giả thuyết không. (2) Làm tương tự cho dữ liệu iid N (0,1) có độ
+dài 100, với một bước nhảy bằng 2 được thêm vào nửa sau.
+Tỷ lệ bác bỏ, 4000 replications
+mô hình đúng n = 100 n = 200
+AR(1), ϕ = 0.95 0.14 0.32
+AR(1), ϕ = 0.90 0.35 0.84
+AR(1), ϕ = 0.80 0.84 0.99
+iid + dịch mức 0.08 —
+AS3179 Mô hình thống kê | Bài 12 16/71
+
+===== Trang 19 =====
+⋆ Ứng dụng hiện đại: cointegration và pairs trading
+Tổ hợp dừng của các chuỗikhôngdừng
+Hai chuỗi I(1) Xt ,Yt được gọi là đồng tích hợp
+(cointegrated) nếu Yt −βXt là I(0) cho một β
+nào đó (Engle và Granger, 1987; Giải Nobel
+2003). Khi đó chênh lệch quay về trung bình và
+cặp có biểu diễn hiệu chỉnh sai số
+(error-correction)
+∇Yt = α(Yt−1 −βXt−1) + ··· + εt , α< 0.
+Sai phân riêng từng chuỗi sẽ loại bỏ liên kết dài
+hạn này.
+Dùng cho
+Giao dịch cặp (pairs trading) và kinh
+doanh chênh lệch thống kê (statistical
+arbitrage); giá giao ngay và giá kỳ hạn;
+tiêu dùng và thu nhập; nhu cầu điện và
+nhiệt độ; mô hình VECM trong kinh tế vĩ
+mô.
+R2 cao không phải là đồng tích
+hợp
+Hồi quy log DAX theo log SMI
+(1991–1998) cho ˆβ = 0.820 và
+R2 = 0.965, nhưng kiểm định
+Engle–Granger trên phần dư cho
+p = 0.28: không có bằng chứng về một
+chênh lệch dừng. Đây là hồi quy giả tạo
+của Bài 11, Ví dụ 1.2.
+AS3179 Mô hình thống kê | Bài 12 17/71
+
+===== Trang 20 =====
+Bài tập 1: tính không dừng qua số liệu
+Mức 2: Tính toán và diễn giải
+1. Với bước ngẫu nhiên không trôi với σ2 = 4 và Y0 = 0: tính Var Y10,
+Corr(Y10,Y15), và khoảng 95% dự báo cho Y15 khi biết Y10 = 3 và Gaussian
+cú sốc.
+2. Nhiễu trắng với σ2 = 1 bị lấy sai phân nhầm. Tính γ(0), γ(1) và ρ(1) của ∇Y,
+và phương sai của một bước sai số dự báo. Nó lớn quá mức theo hệ số nào?
+3. Một hồi quy ADF với hệ số chặn trên n = 150 quan sát cho ˆβ = −0.19 với
+SE = 0.055. Kiểm định ở mức 5% và nêu ˆϕ(1).
+4. Một chuỗi độ dài 200 có ˆρ(1),..., ˆρ(4) = 0.97,0.94,0.91,0.88. Điều này có
+chứng minh nghiệm đơn vị không? Nêu thêm hai kiểm tra.
+AS3179 Mô hình thống kê | Bài 12 18/71
+
+===== Trang 21 =====
+Bài tập 2: lý thuyết về tính tích hợp và sai phân
+Mức 3: Lý thuyết
+1. Chứng minh Định lý 1(a) và (d), và chỉ ra rằng Var(Yt −Ys ) = |t −s|σ2 mặc
+dù Var Yt tăng.
+2. Chứng minh Mệnh đề 1(a): suy ra γ∇X và chỉ ra rằng ∑ h γ∇X (h) = 0. Suy ra
+rằng ∇X không thể là I(0) theo nghĩa của Định nghĩa 1(b).
+3. Chứng minh Mệnh đề 1(d) và evaluate phương sai ratio cho n = 100, h = 1.
+4. Bắt đầu từ AR(p) mô hình Yt = ∑p i=1 ϕi Yt−i + εt , suy ra dạng ADF
+∇Yt = βYt−1 + ∑p−1 i=1 ai ∇Yt−i + εt và chỉ ra β = −ϕ(1) và ai = −∑ j>i ϕj .
+AS3179 Mô hình thống kê | Bài 12 19/71
+
+===== Trang 22 =====
+2. Mô hình ARIMA và dự báo
+
+===== Trang 23 =====
+Định nghĩa 2: ARIMA(p, d, q) mô hình
+Định nghĩa 2
+{Yt } theo mô hình ARIMA(p,d,q) mô hình nếu Wt = ∇d Yt theo ARMA nhân quả, khả
+nghịch(p,q):
+ϕ(B) ∇d Yt = c + θ(B)εt , εt ∼ WN(0,σ2),
+với ϕ(z) = 1−ϕ1z −···−ϕp z p và θ(z) = 1 + θ1z + ··· + θq z q không có nghiệm trong |z|≤ 1 và
+không có nghiệm chung. trung bình của chuỗi sai phân là µW = EWt = c/ϕ(1).
+Điều gì hằng số có nghĩa
+d = 0: µW là mức. d = 1: µW là độ trôi, tức
+trung bình thay đổi mỗi kỳ, và dự báo trở thành
+một đường thẳng có độ dốc µW . d = 2: c ̸= 0
+ép một xu thế bậc hai, nên thường đặt c = 0.
+Mặc định phần mềm khác nhau
+arima của R bỏ hằng số khi d ≥ 1;
+forecast::Arima khôi phục bằng
+include.drift=TRUE. Trong
+statsmodels, trend="t" thêm độ trôi cho
+mô hình sai phân. Cần kiểm tra ngay khi
+khớp mô hình: thiếu độ trôi sẽ làm dự báo
+chân trời dài phẳng.
+Các trường hợp đặc biệt: ARIMA(0,1,0) là bước ngẫu nhiên, và ARIMA(p,0,q) là ARMA của Bài 11.
+AS3179 Mô hình thống kê | Bài 12 20/71
+
+===== Trang 24 =====
+Định lý 3(a),(b): cấu trúc và ảnh hưởng vĩnh viễn của cú sốc
+Định lý 3 (phần đầu)
+Cho Y như trong Định nghĩa 2 và đặt ψ(z) = θ(z)/ϕ(z) =
+∑
+j≥0 ψj z j cho các trọng số ψ của chuỗi
+sai phân.
+(a) Wt = ∇d Yt = µW + ∑ j≥0 ψj εt−j với ∑ j |ψj |<∞; Y là I(d), và với d ≥ 1, Y không dừng.
+(b) (Ảnh hưởng vĩnh viễn của một cú sốc) Với d = 1 ảnh hưởng của εt lên Yt+k là
+Ψk =
+∑k
+j=0 ψj , các trọng số Ψ của chính Y ( các hệ số của Ψ(z) = θ(z)/{ϕ(z)(1−z)d }),
+và Ψk →ψ(1) = θ(1)/ϕ(1) khi k →∞. Một cú sốc đơn vị làm dịch chuyển mức vĩnh viễn
+một lượng θ(1)/ϕ(1): 1 cho bước ngẫu nhiên và 1 + θ cho ARIMA(0,1,1). Với mô hình dừng
+(d = 0) ảnh hưởng tắt dần: Ψk = ψk → 0.
+Cách đọc (b)
+θ(1)/ϕ(1) là hệ số nhân dài hạn (long-run multiplier), và nó trả lời câu hỏi mà nhà quản lý thực
+sự đặt ra: “tháng này thực tế cao hơn 1 đơn vị so với dự báo — nên điều chỉnh quan điểm về năm
+tới bao nhiêu?” Bước ngẫu nhiên trả lời “một đơn vị trọn vẹn”, ARIMA(0,1,1) với θ = −0.73 trả
+lời 0.27, mô hình dừng trả lời “hoàn toàn không”.
+AS3179 Mô hình thống kê | Bài 12 21/71
+
+===== Trang 25 =====
+Chứng minh Định lý 3(a) và (b)
+Chứng minh
+(a) Theo giả thiết ϕ không có nghiệm trong |z|≤ 1, nên ψ(z) = θ(z)/ϕ(z) giải tích trên
+một đĩa có bán kính lớn hơn 1, các hệ số của nó giảm theo cấp số nhân, và Bài 11, Định lý
+5(a) cho biểu diễn nhân quả của W. Cho d ≥ 1; phương sai dài hạn của W là
+∑
+h∈Z
+γW (h) = σ2ψ(1)2 = σ2{θ(1)/ϕ(1)}2 > 0,
+vì θ,ϕ không có nghiệm tại z = 1. Nếu Y dừng, Mệnh đề 1(a) áp dụng d lần sẽ buộc
+phương sai dài hạn của W bằng 0: mâu thuẫn.
+(b) Lấy d = 1, c = 0. Vì Yt+k = Yt−1 + ∑k i=0 Wt+i và Wt+i = ∑ j≥0 ψj εt+i−j , hệ số của
+εt trong Yt+k là Ψk = ∑k i=0 ψi . Vì ∑ j |ψj | < ∞, Ψk → ψ(1) = θ(1)/ϕ(1); cho mô hình
+dừng phép tính tương tự cho ψk → 0. □
+AS3179 Mô hình thống kê | Bài 12 22/71
+
+===== Trang 26 =====
+Định lý 3(c),(d): làm trơn và hàm dự báo
+Định lý 3 (phần sau)
+(c) (ARIMA(0,1,1) = đơn giản làm trơn mũ) Nếu ∇Yt = εt + θεt−1 với |θ|< 1 và α = 1 + θ, thì
+với mọi h ≥ 1
+ˆYn+h|n = ˆYn+1|n = αYn + (1−α) ˆYn|n−1 = α ∑
+j≥0
+(1−α)j Yn−j .
+(d) (Hàm dự báo về lâu dài) Với h > q giải ϕ(B)(1−B)d ˆYn+h|n = c như một phương trình sai phân
+theo h, nên
+ˆYn+h|n = µW hd d! + pd−1(h) + ∑
+i
+ci z−h i ,
+trong đó zi là nghiệm của ϕ, các hạng tắt dần biến mất khi h →∞, và pd−1 là đa thức bậc không
+quá d −1 được xác định bởi dữ liệu.
+dạng của dự báo chân trời dài được quyết định bởi d và hạng tất định được phép trước khi ước lượng bất kỳ
+tham số ARMA nào: d = 0 quay về trung bình, d = 1 không có độ trôi thì phẳng, d = 1 có độ trôi thì là
+đường thẳng với hệ số góc µW , và d = 2 không có độ trôi bậc hai thì là đường thẳng ngoại suy với bất định
+lớn hơn nhiều.
+AS3179 Mô hình thống kê | Bài 12 23/71
+
+===== Trang 27 =====
+Chứng minh Định lý 3(c) và (d)
+Chứng minh
+(c) Với εn = Yn − ˆYn|n−1 một bước đổi mới, lấy kỳ vọng
+có điều kiện trong Yn+1 = Yn + εn+1 + θεn cho
+ˆYn+1|n = Yn + θεn = (1 + θ)Yn −θ ˆYn|n−1,
+bằng đệ quy làm trơn mũ với α = 1 + θ. Lặp ngược đệ quy
+cho các trọng số α(1 −α)j , có tổng bằng 1 vì |1 −α| =
+|θ| < 1. Với h ≥ 2 mọi cú sốc tương lai có trung bình 0,
+nên dự báo không đổi.
+(d) Với h > q mọi hạng MA trong phương trình cho Yn+h
+chỉ liên quan đến cú sốc tương lai, nên lấy kỳ vọng có điều
+kiện trong ϕ(B)(1 − B)d Yn+h = c + θ(B)εn+h dẫn đến
+ϕ(B)(1− B)d ˆYn+h|n = c. Phương trình sai phân tuyến tính
+này theo h có các nghiệm đặc trưng zi (từ ϕ) và nghiệm
+1 với bội d; nghiệm thuần nhất là z−h i và hk , k < d. Vì
+(1 − B)d hd = d! và ϕ(B)d! = ϕ(1)d!, hàm µW hd /d! là
+một nghiệm riêng. □
+0 5 10
+0
+1
+2
+3
+chân trời h
+ˆYn+h|n
+d = 0 d = 1, không trôi
+d = 1, trôi d = 2
+d = 0 quay về trung bình, d = 1 không có độ
+trôi thì phẳng, d = 1 có độ trôi thì là đường
+thẳng với hệ số góc µW , và d = 2 không có độ
+trôi bậc hai là một đường thẳng có hệ số góc
+suy ra từ các sai phân cuối (với các khoảng
+rộng hơn nhiều).
+AS3179 Mô hình thống kê | Bài 12 24/71
+
+===== Trang 28 =====
+Ví dụ mẫu: mô hình ARIMA cho Nile
+Bài toán
+Ví dụ xuyên suốt (i). Khớp ARIMA(0,1,1) bằng hợp lý cực đại, diễn giải ˆθ thông qua α = 1 + ˆθ,
+cho dự báo và 95% khoảng cho 1971 và 1980, và so sánh với dùng trung bình sau năm 1899.
+1900 1950
+500
+1,000
+năm
+lưu lượng
+95% khoảng Nile dự báo
+Dự báo phẳng vì d = 1 và không có độ trôi; dải dự
+báo mở rộng vì Ψj không suy giảm.
+AS3179 Mô hình thống kê | Bài 12 25/71
+
+===== Trang 29 =====
+Ví dụ 2.1 (tương tự): ARIMA(1,1,0) bằng tay
+Bài toán
+Cho ∇Yt = 0.5∇Yt−1 + εt với σ2 = 1, và suppose Yn = 20, Yn−1 = 18. (1) Tính ˆYn+1|n,
+ˆYn+2|n, ˆYn+3|n và limh→∞ ˆYn+h|n. (2) Tìm các trọng số Ψ Ψ0,..., Ψ3 của chuỗi chưa sai
+phân và ảnh hưởng vĩnh viễn của một cú sốc. (3) Give khoảng 95% dự báo cho Yn+3 dưới
+Gaussian cú sốc.
+AS3179 Mô hình thống kê | Bài 12 26/71
+
+===== Trang 30 =====
+Ví dụ 2.2 (nâng cao): mô hình mức cục bộ
+Bài toán
+mô hình mức cục bộ là Yt = µt + εt , µt = µt−1 + ηt , với εt ,ηt nhiễu trắng độc lập có phương
+sai σ2 ε,σ2 η và tỷ số tín hiệu/nhiễu q = σ2 η/σ2 ε. (1) Chỉ ra rằng ∇Y là MA(1) và tìm ρ(1). (2) Khôi
+phục q,σ2 ε,σ2 η cho Nile từ ˆθ = −0.733, ˆσ2 = 20600. (3) Điều gì là liên hệ với α?
+AS3179 Mô hình thống kê | Bài 12 27/71
+
+===== Trang 31 =====
+⋆ Ứng dụng hiện đại: bộ lọc Kalman
+Một thuật toán đứng sau tất cả
+Mọi ARIMA có thể viết thành mô hình không gian
+trạng thái tuyến tính Yt = Z ⊤αt + εt ,
+αt = T αt−1 + Rηt . arima của R bỏ hằng số khi
+d ≥ 1; forecast::Arima khôi phục bằng
+include.drift=TRUE. Trong statsmodels, trend="t"
+thêm độ trôi cho mô hình sai phân. Cần kiểm tra ngay
+khi khớp mô hình: thiếu độ trôi sẽ làm dự báo chân
+trời dài phẳng.
+Vì sao người thực hành thích
+góc nhìn không gian trạng thái
+Các thành phần được viết trực tiếp — mức,
+hệ số góc, mùa vụ, hồi quy — thay vì bị ẩn
+trong ϕ và θ (Harvey, 1989). Prophet khớp
+mô hình xu thế cộng, mùa vụ và phân rã với
+ngày lễ, và CausalImpact đo tác động can
+thiệp bằng chuỗi thời gian cấu trúc Bayes.
+liên hệ là chính xác
+Ví dụ 2.2 là minh họa ý tưởng: mô hình mức
+cục bộ và ARIMA(0,1,1) là cùng một quá
+trình, và α vừa là hằng số làm trơn vừa là
+Kalman gain.
+AS3179 Mô hình thống kê | Bài 12 28/71
+
+===== Trang 32 =====
+Bài tập 3: ARIMA dự báo qua số liệu
+Mức 2: Tính toán và diễn giải
+1. Một ARIMA(0,1,1) khớp cho ˆθ = −0.4, ˆσ2 = 9; quan sát cuối là Yn = 50 và
+đổi mới cuối là ˆεn = 2. Tính ˆYn+1|n và ˆYn+5|n, hằng số làm trơn α, và ảnh
+hưởng vĩnh viễn của một cú sốc.
+2. Với cùng mô hình cho Var en(h) tại h = 1 và h = 5, và khoảng 95% dự báo tại
+h = 5.
+3. Bây giờ giả sử cùng mô hình là đã được khớp với trôi, c = 0.5. Tính lại ˆYn+1|n
+và ˆYn+5|n và mô tả hàm dự báo về lâu dài.
+4. Với ARIMA(1,1,0) với ϕ = 0.6, tính Ψ0,..., Ψ4 và ảnh hưởng vĩnh viễn
+limk Ψk . Sau bao nhiêu kỳ thì 90% ảnh hưởng đã xuất hiện?
+AS3179 Mô hình thống kê | Bài 12 29/71
+
+===== Trang 33 =====
+Bài tập 4: lý thuyết mô hình ARIMA
+Mức 3: Lý thuyết
+1. Chứng minh Định lý 3(c): suy ra đệ quy làm trơn mũ, chỉ ra rằng các trọng số
+α(1−α)j có tổng bằng 1, và giải thích vì sao |θ|< 1 là cần thiết.
+2. Chứng minh Định lý 3(b) cho một mô hình d = 1 tổng quát, và chỉ ra rằng
+θ(1)/ϕ(1) = 0 chính xác khi sai phân chuỗi là sai phân quá mức theo nghĩa
+của Mệnh đề 1(a). (Trường hợp này cần nới điều kiện khả nghịch trong Định
+nghĩa 2 để cho phép θ có nghiệm tại z = 1.)
+3. Với mô hình mức cục bộ của Ví dụ 2.2, suy ra ρ(1) = −1/(q + 2) và giải
+θ/(1 + θ2) = ρ(1) cho nghiệm khả nghịch.
+4. Trong ARIMA(0,1,1), diễn giải hai trường hợp biên: chỉ ra rằng θ→−1
+(α→ 0) cho chuỗi là nhiễu trắng quanh một mức cố định, và θ→ 0 (α→ 1)
+cho bước ngẫu nhiên. Giải thích vì sao α là “ phần của mỗi cú sốc trở thành
+vĩnh viễn”.
+AS3179 Mô hình thống kê | Bài 12 30/71
+
+===== Trang 34 =====
+3. Dự báo điểm, khoảng dự báo và biến đổi
+
+===== Trang 35 =====
+Định nghĩa 3 và Định lý 4(a),(b): sai số dự báo
+Định nghĩa 3
+ChoFn = {Yn,Yn−1,...}, h-bướclàmộthàm ˆYn+h|n củaFn, saisốdựbáolàen(h) = Yn+h − ˆYn+h|n,
+và một (1−a) khoảng dự báo là In(h) với P{Yn+h ∈ In(h)} = 1−a.
+Định lý 4 (phần đầu)
+Cho Y là ARIMA(p,d,q) với εt
+iid
+∼ (0,σ2) và Ψ(z) = θ(z)/{ϕ(z)(1−z)d } = ∑ j Ψj z j , và đặt Fn
+là quá khứ vô hạn.
+(a) dự báo sai số bình phương trung bình nhỏ nhất dự báo là ˆYn+h|n = E(Yn+h |Fn), sai số là
+en(h) =
+∑h−1
+j=0 Ψj εn+h−j , MA(h−1) theo n, và
+Var en(h) = σ2
+h−1∑
+j=0
+Ψ2 j .
+(b) Các trường hợp đặc biệt: hσ2 cho ARIMA(0,1,0); σ2{1 + (h−1)α2} cho ARIMA(0,1,1) với
+α = 1 + θ; và σ2(1−ϕ2h)/(1−ϕ2) →γ(0) cho AR nhân quả(1).
+AS3179 Mô hình thống kê | Bài 12 31/71
+
+===== Trang 36 =====
+Định lý 4(c),(d): khoảng dự báo và cách chúng tăng
+Định lý 4 (phần sau)
+(c) Nếu εt
+iid
+∼N (0,σ2), thì với điều kiện trên quá
+khứ vô hạn và các tham số đã biết,
+ˆYn+h|n ±z1−a/2 σ( ∑ j<h Ψ2 j )1/2 là khoảng (1−a)
+chính xác; khi σ, Ψj , phép biến đổi và bậc mô
+hình được ước lượng, khoảng này chỉ là xấp xỉ
+(Ví dụ 3.2).
+(d) Với d = 0 độ rộng hội tụ đến 2z
+√
+γ(0); cho
+d = 1 nó tăng như σ|ψ(1)|
+√
+h và cho d = 2 như
+h3/2: sai phân giúp dự báo nhưng đánh đổi độ
+chắc chắn.
+Ba điều công thức bỏ qua
+ˆθ, ˆϕ được ước lượng, bậc (p,d,q) được chọn từ cùng
+dữ liệu, biến đổi có thể đã được chọn từ đồ thị, và đổi
+mới thực tế thường có đuôi nặng hơn chuẩn. Một
+công thức khoảng sạch sẽ không thay thế được cho
+kiểm tra hiệu chỉnh bằng gốc cuốn chiếu (rolling
+origin).
+0 10 20
+0
+2
+4
+chân trời h
+SE của en(h), σ = 1 ARIMA(0,1,0):
+√
+h
+ARIMA(0,1,1), α = 0.5
+AR(1), ϕ = 0.8
+√
+γ(0)
+Khoảng của mô hình dừng ngừng mở rộng, còn khoảng
+của mô hình tích hợp thì không. Sự khác biệt giữa
+d = 0 và d = 1 được thể hiện rõ ở đây.
+AS3179 Mô hình thống kê | Bài 12 32/71
+
+===== Trang 37 =====
+Chứng minh Định lý 4
+Chứng minh
+(a) Bắt đầu quá trình từ một đoạn đầu cố định và viết Yn+h bằng phần tất định cộng với∑
+j≥0 Ψj εn+h−j , được cắt ở đầu; tách tổng tại j = h. Các hạng với j < h chứa εn+1,...,εn+h,
+độc lập với Fn và có trung bình 0; các hạng với j ≥ h là hàm của εn,εn−1,..., do đó là hàm của
+Fn nhờ tính khả nghịch. Vì vậy kỳ vọng có điều kiện là tổng thứ hai, sai số là tổng thứ nhất và
+phương sai của nó là σ2 ∑ j<h Ψ2 j do tính trực giao.
+(b) Ψj ≡ 1 cho ARIMA(0,1,0); Ψ0 = 1 và Ψj = 1 + θ = α cho j ≥ 1 đối với ARIMA(0,1,1); Ψj = ϕj
+cho AR nhân quả(1).
+(c) Khi đó en(h) là tổ hợp tuyến tính của các biến chuẩn tắc độc lập.
+(d) Với d = 1, Ψj →ψ(1) = θ(1)/ϕ(1) ̸= 0, nên tổng h bình phương tăng tuyến tính theo h; cho
+d = 2, Ψj tăng tuyến tính theo j, nên tổng tăng như h3. □
+Chi phí của giả thiết “quá khứ vô hạn”
+Với mẫu hữu hạn, dự báo chính xác được tính bằng bộ lọc Kalman. Với mô hình khả nghịch, hai
+dự báo khác nhau cỡ O(ρ n) với một ρ< 1 nào đó, vì các trọng số π của θ(z)−1 giảm theo cấp số
+nhân; sai số bậc O(n−1) đến từ ước lượng tham số, không phải từ việc cắt ngắn quá khứ.
+AS3179 Mô hình thống kê | Bài 12 33/71
+
+===== Trang 38 =====
+Mệnh đề 2: dự báo trên thang đo đã biến đổi
+Mệnh đề 2
+Giả sử phân phối dự báo của log Yn+h khi biết Fn là N (m,s2).
+(a) Khoảng được chuyển đổi chính xác. Nếu (L,U) là một khoảng (1−a) cho log Yn+h, thì (eL,eU ) là
+khoảng (1−a) cho Yn+h: biến đổi tăng đưa phân vị thành phân vị.
+(b) Chuyển ngược dự báo điểm thì không. em là trung vị của Yn+h, trong khi
+E(Yn+h |Fn) = em+s2/2 > em.
+(c) Báo cáo trung vị nếu dự báo là đánh giá bằng sai số tuyệt đối, trung bình nếu bằng sai số bình phương
+hoặc nếu cần cộng gộp qua các chuỗi hay các kỳ (Định lý 6(a)).
+(d) Với biến đổi Box–Cox w = (yλ −1)/λ (λ̸= 0), nếu ˆw là dự báo trên thang biến đổi và s2 là phương sai
+của nó, thì trung bình sau khi chuyển ngược theo phương pháp delta xấp xỉ bằng
+(λ ˆw + 1)1/λ{1 + s2(1−λ) 2(λ ˆw +1)2 }, với điều kiện λ ˆw + 1 > 0 và phân phối dự báo trên thang biến đổi đủ tập
+trung để khai triển bậc hai đáng tin cậy.
+Vì sao cần biến đổi, và hiệu chỉnh lớn đến mức nào
+Biến đổi logarit chuyển tăng trưởng nhân và tính mùa vụ nhân thành dạng cộng, đồng thời ổn định phương sai
+tăng theo mức: đúng với dữ liệu airline (Mục 4). Hệ số es2/2 không đáng kể ở chân trời ngắn (s = 0.04:
+0.08%) nhưng đáng kể ở chân trời dài (s = 0.3: 4.6%). Báo cáo trung vị là một lựa chọn, không phải sai sót
+— nhưng phải nêu rõ đại lượng được báo cáo.
+AS3179 Mô hình thống kê | Bài 12 34/71
+
+===== Trang 39 =====
+Ví dụ mẫu: DAX sau một năm
+Bài toán
+Ví dụ xuyên suốt (iii). Xem giá logarit như một bước ngẫu nhiên có độ trôi, ước lượng δ,σ từ 1859
+suất sinh lợi logarit hằng ngày, rồi dự báo 1, 20 và 250 ngày giao dịch sau giá trị cuối 5473.72.
+0 200 400
+4,000
+6,000
+8,000
+ngày giao dịch
+DAX
+95% khoảng
+300 ngày cuối
+trung vị dự báo
+Quy luật
+√
+h của Định lý 4(b) trên thang giá; sau khi
+lấy mũ, khoảng trở nên bất đối xứng vì ex là hàm lồi.
+AS3179 Mô hình thống kê | Bài 12 35/71
+
+===== Trang 40 =====
+Ví dụ 3.1 (tương tự): như thế nào fast có khoảng widen?
+Bài toán
+Một ARIMA(0,1,1) được khớp cho chuỗi hằng tháng cho ˆθ = −0.6 và ˆσ = 2.5, với ˆYn+h|n =
+40 với mọi h. (1) Cho khoảng 95% dự báo tại h = 1,4,16. (2) So sánh sự tăng của khoảng
+với bước ngẫu nhiên đã được khớp đến cùng dữ liệu. (3) Khoảng sẽ có dạng nào nếu d = 0
+với γ(0) = 9?
+AS3179 Mô hình thống kê | Bài 12 36/71
+
+===== Trang 41 =====
+Ví dụ 3.2 (nâng cao): khoảng 95% có thực sự bao phủ 95%?
+Bài toán
+Mô phỏng 2000 chuỗi độ dài n = 100 từ ARIMA(0,1,1) với θ = −0.5, σ = 1. Khớp lại mô hình đúng
+trên từng chuỗi, xây dựng khoảng danh nghĩa 95% khoảng tại h = 1,5,10 và ghi lại độ bao phủ. Giải
+thích và đề xuất cách khắc phục.
+Độ bao phủ
+h độ bao phủ
+1 0.952
+5 0.936
+10 0.939
+Mức danh định 0.95; sai số chuẩn
+Monte Carlo ≈ 0.005.
+AS3179 Mô hình thống kê | Bài 12 37/71
+
+===== Trang 42 =====
+⋆ Ứng dụng hiện đại: dự báo xác suất
+Quyết định cần một phân vị, không
+phải trung bình
+Một kho hàng muốn tỷ lệ hết hàng 2% cần phân
+vị 98% của nhu cầu; đơn vị vận hành lưới cần
+phân vị 99.9% của phụ tải. Phân vị τ được ước
+lượng bằng cách cực tiểu hóa mất mát pinball
+(pinball loss)
+Lτ (y,q) =
+{
+τ (y −q), y ≥ q,
+(1−τ)(q −y), y < q,
+đại lượng có điểm cực tiểu theo q đúng bằng
+phân vị τ của Y. Lấy trung bình trên nhiều τ
+cho CRPS, một điểm số đúng (proper score) cho
+toàn bộ phân phối dự báo.
+Nơi thuật ngữ này được dùng
+Cuộc thi M5 Uncertainty (2020, doanh
+số Walmart) chấm điểm chín phân vị cho
+mỗi chuỗi bằng hàm mất mát pinball có
+trọng số; DeepAR và các mô hình tương
+tự xuất ra toàn bộ phân phối dự báo
+thay vì một dự báo điểm.
+Khoảng không phụ thuộc phân
+phối (distribution-free)
+Dự báo conformal (conformal prediction)
+xây dựng khoảng từ các phân vị thực
+nghiệm của phần dư ngoài mẫu trong
+quá khứ, với bảo đảm độ bao phủ không
+cần giả định chuẩn; phiên bản cho chuỗi
+thời gian (EnbPI, Xu và Xie, 2021) dùng
+gốc cuốn chiếu (rolling origin), đúng như
+trong Ví dụ 3.2.AS3179 Mô hình thống kê | Bài 12 38/71
+
+===== Trang 43 =====
+Bài tập 5: dự báo và khoảng qua số liệu
+Mức 2: Tính toán và diễn giải
+1. Logarit doanh số hằng tháng tuân theo bước ngẫu nhiên có trôi, ˆδ = 0.004,
+ˆσ = 0.05; giá trị quan sát cuối là log 200. Cho dự báo điểm và khoảng dự báo
+95% trước 12 tháng trên thang logarit và trên thang doanh số. Đại lượng nào
+là trung vị và đại lượng nào là trung bình?
+2. Với ARIMA(0,1,1) với θ = −0.7 và σ = 10, tính SE{en(h)} tại h = 1,12,60,
+và so sánh với bước ngẫu nhiên với cùng σ.
+3. Một khoảng danh nghĩa 95% chỉ bao phủ 88% trong 200 kết quả theo gốc
+cuốn chiếu (rolling-origin). Nêu ba nguyên nhân khả dĩ và một cách khắc phục
+không giả định chuẩn tính.
+4. Một dự báo trên thang logarit có s = 0.2. Trung bình sau chuyển ngược lớn
+hơn trung vị sau chuyển ngược bao nhiêu phần trăm? Lặp lại với s = 0.5.
+AS3179 Mô hình thống kê | Bài 12 39/71
+
+===== Trang 44 =====
+Bài tập 6: lý thuyết sai số dự báo
+Mức 3: Lý thuyết
+1. Chứng minh Định lý 4(a), nêu rõ tính nhân quả và tính khả nghịch được dùng
+ở đâu, và chỉ ra rằng en(h) là quá trình MA(h−1) theo n (như trong Bài 11,
+Bài tập 8(4)).
+2. Suy ra Var en(h) = σ2{1 + (h−1)α2} cho ARIMA(0,1,1) và suy ra rằng độ
+rộng khoảng tăng như ασ
+√
+h, tức chậm hơn bước ngẫu nhiên một hệ số α.
+3. Với ARIMA(0,2,2) chỉ ra rằng Ψj tăng tuyến tính theo j và do đó
+Var en(h) ≍ h3. Vì sao có điều này làm d = 2 trở thành một giả thiết mạnh?
+4. Cho log X ∼N (m,s2). Chứng minh rằng trung vị của X là em, rằng
+EX = em+s2/2, và rằng lấy mũ một khoảng cho log X cho chính xác khoảng
+cho X. Đồng thời chỉ ra rằng EX không phải là trung điểm của khoảng đó.
+AS3179 Mô hình thống kê | Bài 12 40/71
+
+===== Trang 45 =====
+4. Tính mùa vụ: mùa vụ ARIMA
+
+===== Trang 46 =====
+Định nghĩa 4: mùa vụ differences và SARIMA mô hình
+Định nghĩa 4
+Cho s là số quan sát mỗi chu kỳ (12 hằng tháng, 4 theo quý, 7 hằng ngày).
+(a) Sai phân mùa vụ (seasonal difference) là ∇s = 1−Bs : ∇s Yt = Yt −Yt−s .
+(b) {Yt } theo mô hình SARIMA(p,d,q)(P,D,Q)s mô hình nếu
+Φ(Bs ) ϕ(B) ∇d ∇D s Yt = c + Θ(Bs ) θ(B) εt ,
+trong đó Φ(z) = 1− Φ1z −···− ΦP z P và Θ(z) = 1 + Θ1z + ··· + ΘQ z Q là các đa thức mùa
+vụ; cả bốn đa thức đều có các nghiệm nằm ngoài đường tròn đơn vị.
+(c) mô hình airline là SARIMA(0,1,1)(0,1,1)s : ∇∇s Yt = (1 + θB)(1 + ΘBs )εt .
+Multiplicative, không additive
+các hệ số mùa vụ tác động bổ sung lên các hệ
+số thông thường: (1 + θB)(1 + ΘB12) liên kết
+các độ trễ lân cận và độ trễ theo năm chỉ bằng
+hai tham số, trong khi một MA tự do(13) cần
+mười ba tham số.
+Chi phí của sai phân
+∇∇12 làm mất 13 quan sát: 144 giá trị hằng
+tháng còn 131. Dùng D ≤ 1 và d + D ≤ 2;
+sai phân nhiều hơn hầu như luôn là sai phân
+quá mức.
+AS3179 Mô hình thống kê | Bài 12 41/71
+
+===== Trang 47 =====
+Định lý 5: ∇s loại bỏ gì, và dấu hiệu của mô hình airline
+Định lý 5
+(a) ∇s = (1−B)(1 + B + ··· + Bs−1). Do đó, một sai phân mùa vụ loại bỏ cả một mẫu mùa vụ
+cố định (mọi mt với mt = mt−s ) lẫn một xu thế tuyến tính.
+(b) Với mô hình airline với s ≥ 3, Wt = ∇∇s Yt = εt + θεt−1 + Θεt−s + θΘεt−s−1 là MA(s + 1)
+với γ(0) = σ2(1 + θ2)(1 + Θ2) và các hệ số tự tương quan chỉ khác không tại bốn độ trễ:
+ρ(1) = θ 1 + θ2 , ρ(s) = Θ 1 + Θ2 , ρ(s −1) = ρ(s + 1) = ρ(1)ρ(s),
+và ρ(h) = 0 cho tất cả h ≥ 1. mô hình là invertible iff |θ|< 1 và |Θ|< 1.
+(c) Với h > q + Qs hàm dự báo thỏa mãn ∇∇s ˆYn+h|n = 0. nghiệm của (1−z)(1−z s ) gồm
+nghiệm z = 1 bội hai và s −1 nghiệm đơn còn lại của đơn vị, nên
+ˆYn+h|n = a + bh + mh, mh+s = mh, ∑s j=1 mj = 0 :
+một đường thẳng cộng với một mẫu mùa vụ cố định, cả hai đều được ước lượng từ dữ liệu.
+mẫu bốn độ trễ trong (b) là một ràng buộc kiểm định được: một MA tự do(s + 1) có s + 1 tham số,
+mô hình airline chỉ hai.
+AS3179 Mô hình thống kê | Bài 12 42/71
+
+===== Trang 48 =====
+Chứng minh Định lý 5
+Chứng minh
+(a) phân tích nhân tử là tổng cấp số nhân 1 −z s = (1−z)(1 + z + ··· + z s−1). Nếu mt = mt−s
+thì ∇s mt = 0; và vì (1−B) là một nhân tử, ∇s (a + bt) = bs, một hằng số, được loại bởi hằng số
+của mô hình hoặc bởi một sai phân ∇ nữa.
+(b) Khai triển tích cho vectơ hệ số c0 = 1, c1 = θ, cs = Θ, cs+1 = θΘ, tất cả cj = 0. Với MA có
+các hệ số cj , γ(h) = σ2 ∑ j cj cj+h (Bài 11, Mệnh đề 4(a)). Do đó
+γ(0) = σ2(1 + θ2)(1 + Θ2), γ(1) = σ2θ(1 + Θ2), γ(s) = σ2Θ(1 + θ2), γ(s ±1) = σ2θΘ,
+và mọi độ trễ khác ghép một hệ số khác không cj với một hệ số bằng không. Chia cho γ(0) cho
+ba công thức đã hiển thị và ρ(s − 1) = ρ(s + 1) = ρ(1)ρ(s). Tính khả nghịch là điều kiện rằng
+(1 + θz)(1 + Θz s ) không có nghiệm trong |z|≤ 1, rằng là |θ|< 1 và |Θ|< 1.
+(c) Lấy kỳ vọng có điều kiện triệt tiêu mọi εn+j với j > 0, điều này cho h > s + 1 để lại phương
+trình thuần nhất. nghiệm tổng quát của một phương trình sai phân tuyến tính là tổ hợp của z−h i
+trên các nghiệm, với hk z−h i cho nghiệm có bội lớn hơn k; ở đây z = 1 là nghiệm kép, cho a + bh,
+còn s −1 nghiệm đơn vị khác cho một thành phần chu kỳ s; vì thành phần này là tổ hợp của các
+hàm mũ phức tuần hoàn s, tổng của nó bằng không trên mỗi chu kỳ đầy đủ. □
+AS3179 Mô hình thống kê | Bài 12 43/71
+
+===== Trang 49 =====
+Hình minh họa: làm cho dữ liệu airline dừng
+0 50 100
+200
+400
+600
+hành khách (nghìn người)
+0 50 100
+5
+5.5
+6
+log hành khách
+0 50 100
+−0.1
+0
+0.1
+tháng
+∇∇12 log hành khách
+0 10 20 30
+−0.4
+−0.2
+0
+0.2
+độ trễ h
+ACF của ∇∇12 log hành khách
+logarit làm ổn định biên độ mùa vụ: độ lệch chuẩn trong năm của mức tăng từ 13.7 đến 77.7, trong
+khi trên thang logarit nó chỉ thay đổi từ 0.108 đến 0.157. Sau ∇∇12, chuỗi trông dừng và ACF (toàn
+mẫu, dải ±0.171) là có ý nghĩa rõ ở các độ trễ 1 và 12 — dấu hiệu của Định lý 5(b).
+AS3179 Mô hình thống kê | Bài 12 44/71
+
+===== Trang 50 =====
+Ví dụ mẫu: mô hình airline cho dữ liệu hành khách hàng
+không
+Bài toán
+Ví dụ xuyên suốt (ii). Với 1949–1958 làm tập huấn luyện (n = 120), chọn một biến đổi và (d,D),
+khớp mô hình airline, kiểm tra mô hình và dự báo 1959–1960.
+80 100 120 140
+200
+400
+600
+chỉ số tháng
+hành khách
+95% khoảng tập huấn luyện
+thực tế 1959–60 dự báo
+Dự báo giữ dạng mùa vụ và thêm một xu thế tuyến
+tính, như Định lý 5(c) dự đoán.
+Dự báo: Tháng 1 1959 348.6, khoảng (324,375),
+thực tế 360; Tháng 12 1960 388, khoảng (286,526),
+thực tế 432. Cả 24 giá trị thực tế đều nằm trong các
+khoảng tương ứng, nhưng dự báo điểm hơi thấp:
+tăng trưởng đã tăng tốc vào năm 1960.AS3179 Mô hình thống kê | Bài 12 45/71
+
+===== Trang 51 =====
+Ví dụ 4.1 (tương tự): mô hình airline theo quý bằng tay
+Bài toán
+Một chuỗi theo quý được mô hình hóa bằng SARIMA(0,1,1)(0,1,1)4 với θ = −0.3, Θ =
+−0.6 và σ2 = 1. (1) Viết Wt = ∇∇4Yt theo các cú sốc. (2) Tính γ(0) và ρ(h) cho
+h = 1,...,6. (3) Có bao nhiêu quý quan sát bị mất do sai phân, và có bao nhiêu tham số
+được ước lượng? (4) Mô tả dạng của dự báo.
+AS3179 Mô hình thống kê | Bài 12 46/71
+
+===== Trang 52 =====
+Ví dụ 4.2 (nâng cao): ba cách mô hình hóa tính mùa vụ
+Bài toán
+Trên tập huấn luyện dữ liệu hành khách hàng không; so sánh (i) mô hình airline, (ii) ∇ log y với 11
+mùa vụ biến giả và MA(1) sai số, (iii) cùng với K cặp hạng Fourier, theo AIC và theo 1959–1960
+độ chính xác trên tập kiểm định giữ lại.
+Kết quả
+mô hình k ndòng AIC RMSE
+airline 3 107 −389.0 43.2
+11 biến giả 13 119 −424.3 85.5
+Fourier K = 2 6 119 −311.7 74.8
+Fourier K = 3 8 119 −330.0 77.9
+Fourier K = 4 10 119 −384.6 82.0
+Tất cả trừ mô hình đầu tiên dùng ∇ log y với
+MA(1) sai số.
+AS3179 Mô hình thống kê | Bài 12 47/71
+
+===== Trang 53 =====
+⋆ Ứng dụng hiện đại: nhiều mùa vụ cùng lúc
+Khi s lớn hoặc có nhiều chu kỳ
+Nhu cầu điện nửa giờ lặp lại theo ngày (s = 48),
+theo tuần (336) và theo năm (17532). Mùa vụ
+sai phân là không khả thi và biến giả là phi thực
+tế, nhưng 2K hạng Fourier mỗi chu kỳ,
+K∑
+k=1
+{
+ak sin 2πkt s + bk cos 2πkt s } ,
+mô tả từng chu kỳ bằng một số ít tham số và có
+thể xếp chồng. Phần còn lại được mô hình hóa
+bằng sai số ARIMA.
+Công cụ xây dựng trên ý tưởng
+này
+TBATS (De Livera, Hyndman và Snyder,
+2011) cho nhiều mùa vụ; Prophet (Taylor
+và Letham, 2018), bổ sung biến giả ngày
+lễ và một xu thế tuyến tính từng đoạn;
+STL (Cleveland et al., 1990), phân rã
+loess thành xu thế, mùa vụ và phần còn
+lại cho phép dạng mùa vụ thay đổi;
+X-13ARIMA-SEATS tại các cơ quan
+thống kê.
+Hiệu ứng lịch là có thật
+Số ngày giao dịch, năm nhuận và ngày lễ
+di động (T´êt, Easter) dịch chuyển mẫu
+mùa vụ theo tuần. Chúng đi vào dưới
+dạng biến hồi quy, không phải dưới dạng
+s lớn hơn.AS3179 Mô hình thống kê | Bài 12 48/71
+
+===== Trang 54 =====
+Bài tập 7: mô hình mùa vụ qua số liệu
+Mức 2: Tính toán và diễn giải
+1. Một mô hình SARIMA hằng tháng(0,1,1)(0,1,1)12 có θ = −0.4, Θ = −0.6,
+σ2 = 1. Tính γ(0) và ρ(h) tại h = 1,11,12,13,24.
+2. Có bao nhiêu quan sát bị mất khi ∇∇12 được áp dụng cho 144 hằng tháng giá
+trị? Có bao nhiêu đến ∇∇4 trên 80 giá trị theo quý giá trị?
+3. Một chuỗi theo quý có một xu thế tuyến tính rõ và một mẫu mùa vụ mạnh.
+Giải thích vì sao ∇4 riêng nó đã có thể cho một chuỗi dừng, và điều gì còn lại
+hằng số có nghĩa.
+4. Một đồng nghiệp khớp SARIMA(0,1,1)(0,1,1)12 và
+SARIMA(1,1,1)(0,0,0)12 với 11 mùa vụ biến giả, và chọn mô hình thứ hai vì
+AIC của nó thấp hơn 30. Điều gì là sai với so sánh, và nên làm gì thay vào đó?
+AS3179 Mô hình thống kê | Bài 12 49/71
+
+===== Trang 55 =====
+Bài tập 8: lý thuyết mô hình mùa vụ
+Mức 3: Lý thuyết
+1. Chứng minh Định lý 5(b): suy ra γ(h) cho mô hình airline và kiểm tra rằng chỉ
+các độ trễ 1,s −1,s,s + 1 là khác không.
+2. Chứng minh Định lý 5(a) và suy ra rằng áp dụng ∇s cho a + bt + mt + Xt , với
+m tuần hoàn chu kỳ s và X dừng, thu được một chuỗi dừng với trung bình bs.
+3. Chỉ ra rằng hàm dự báo về lâu dài của mô hình airline là a + bh + mh với m
+tuần hoàn chu kỳ s và có tổng bằng không, bằng cách tìm nghiệm của
+(1−z)(1−z s ) và bội của chúng.
+4. Mô hình MA tự do(s + 1) có s + 1 tham số, mô hình airline chỉ hai. Chỉ ra
+rằng mô hình airline áp đặt ρ(s −1) = ρ(s + 1) = ρ(1)ρ(s), và mô tả một
+kiểm định tỷ số hợp lý cho ràng buộc này, nêu bậc tự do cho s = 12.
+AS3179 Mô hình thống kê | Bài 12 50/71
+
+===== Trang 56 =====
+5. Đánh giá dự báo
+
+===== Trang 57 =====
+Định nghĩa 5: mốc chuẩn và sai số thước đo
+Định nghĩa 5
+Cho y1,...,yn là dữ liệu huấn luyện, yn+1,...,yn+m là các giá trị kiểm định, và ei = yn+i − ˆyn+i là
+m sai số kiểm định.
+(a) Mốc chuẩn. Trung bình ¯y; naive yn; naive mùa vụ yn+h−s(k+1) với k = ⌊(h−1)/s⌋; trôi
+yn + h(yn −y1)/(n−1).
+(b) Thước đo.
+MAE = 1 m ∑m i=1 |ei |, RMSE = ( 1 m ∑m i=1 e2 i )1/2, MAPE = 100 m ∑m i=1 |ei /yn+i |, MASE = MAE Q ,
+với Q = 1 n−s ∑n t=s+1 |yt −yt−s | trong mẫu naive mùa vụ một bước MAE (s = 1 nếu không
+mùa vụ).
+(c) Đánh giá theo gốc cuốn chiếu (rolling origin). Với các gốc t = t0,...,n−h, tính
+et (h) = yt+h − ˆyt+h|t , khớp lại tại mỗi gốc, rồi lấy trung bình mất mát theo t riêng cho từng
+h.
+Một con số không kèm chân trời dự báo không phải là kết quả
+“RMSE = 42” có nghĩa không có ý nghĩa cho đến khi cũng nói rõ: ở chân trời nào, trong giai đoạn
+nào, so với mốc chuẩn nào và trên thang đo nào.
+AS3179 Mô hình thống kê | Bài 12 51/71
+
+===== Trang 58 =====
+Định lý 6: mất mát nào, và khác biệt có thật không?
+Định lý 6
+(a) (Hàm mất mát xác định phiếm hàm) Nếu EY2 <∞ thì arg minc E(Y −c)2 = EY; nếu
+E|Y|<∞ thì arg minc E|Y −c| là một trung vị của Y. RMSE nhắm đến trung bình dự báo,
+còn MAE nhắm đến trung vị; trên dữ liệu lệch, hai đại lượng này khác nhau và có thể xếp
+hạng phương pháp khác nhau.
+(b) (MASE) MASE là bất biến theo đơn vị của y, hữu hạn khi chuỗi huấn luyện không hằng số
+theo mùa vụ, và vẫn xác định ngay cả khi một số yi = 0. MASE < 1 có nghĩa phương pháp
+tốt hơn dự báo naive mùa vụ một bước trong mẫu.
+(c) (MAPE bất đối xứng) Với yn+i > 0 và ˆyn+i ≥ 0, dự báo thấp có |ei |/yn+i ≤ 1 trong khi dự
+báo cao không bị chặn; tối thiểu hóa MAPE do đó làm dự báo bị chệch xuống dưới. Nó
+không xác định khi yn+i = 0.
+(d) (Diebold–Mariano, 1995) Với hàm mất mát L, đặt dt = L(e1t ) −L(e2t ). Nếu dt dừng với
+trung bình 0 dưới giả thuyết độ chính xác bằng nhau, thì DM = ¯d/ √ ˆv/m d −−→N (0,1),
+trong đó ˆv ước lượng
+∑
+k γd (k) (Bài 11, Định lý 1).
+AS3179 Mô hình thống kê | Bài 12 52/71
+
+===== Trang 59 =====
+Chứng minh Định lý 6, và bố trí đánh giá
+Chứng minh
+(a) E(Y − c)2 = Var Y + (EY − c)2 đạt cực tiểu tại
+c = EY . Với g(c) = E|Y − c|, tính lồi và định lý hội tụ
+bị chặn cho g′(c) = 2F (c) −1 tại các điểm liên tục; đạo
+hàm bằng không đúng tại một trung vị.
+(b) Nhân mọi y với λ > 0 làm MAE và Q nhân với λ.
+Q > 0 trừ khi yt = yt−s với mọi t.
+(c) Nếu 0 ≤ ˆyi < yi thì |ei |/yi < 1, trong khi ˆyi →∞
+làm nó tiến tới ∞.
+(d) ¯d là trung bình của một dãy dừng, nên Bài 11, Định
+lý 1 cho √m ¯d d −−→N (0, v ) với v = ∑ k γd (k); sai số
+h-bước là MA(h −1), nên γd (k) = 0 cho k ≥ h. □
+gốc t0
+gốc t0 + 1
+gốc t0 + 2
+gốc t0 + 3
+← huấn luyện (khớp lại) → kiểm định
+thời gian
+Hai quy tắc
+Không bao giờ dùng chia ngẫu nhiên, và
+không bao giờ chọn mô hình trên chính dữ
+liệu dùng để báo cáo độ chính xác: giữ
+nguyên một khối cuối chưa chạm tới, hoặc
+lồng bước chọn mô hình trong từng gốc cuốn
+chiếu (rolling origin).
+AS3179 Mô hình thống kê | Bài 12 53/71
+
+===== Trang 60 =====
+Ví dụ mẫu: mô hình airline có đáng dùng không?
+Bài toán
+Ví dụ xuyên suốt (ii). So sánh mô hình airline với naive, naive mùa vụ và trôi mốc chuẩn trên
+24-tháng tập kiểm định giữ lại của Mục 4, và nêu rõ so sánh này cho biết và không cho biết điều gì.
+AS3179 Mô hình thống kê | Bài 12 54/71
+
+===== Trang 61 =====
+Ví dụ mẫu: độ chính xác phụ thuộc vào chân trời
+Bài toán
+Lặp lại so sánh trên gốc cuốn chiếu (rolling origin), khớp lại mô hình mỗi tháng, và kiểm định khác
+biệt.
+2 4 6 8 10 12
+0
+20
+40
+chân trời h
+RMSE cuốn chiếu
+naive mùa vụ
+mô hình airline
+RMSE gốc cuốn chiếu theo chân trời. bảng dùng 24
+gốc của văn bản; đường cong dùng mọi gốc từ tháng
+108 trở đi, 36 trong số đó tại h = 1 giảm xuống 25 tại
+h = 12. sai số của mô hình tăng từ 15 đến 21; mốc
+chuẩn ở gần 45, do tăng trưởng theo năm, không do
+chân trời.
+AS3179 Mô hình thống kê | Bài 12 55/71
+
+===== Trang 62 =====
+Ví dụ 5.1 (tương tự): thước đo disagree
+Bài toán
+Bốn tháng kiểm định có các giá trị thực tế 100,120,90,110; phương pháp A dự báo
+95,115,100,105 và phương pháp B dự báo 100,110,95,120. MAE naive mùa vụ trên
+tập huấn luyện là Q = 20. Tính MAE, RMSE, MAPE và MASE cho cả hai và quyết định
+dùng đại lượng nào.
+AS3179 Mô hình thống kê | Bài 12 56/71
+
+===== Trang 63 =====
+Ví dụ 5.2 (nâng cao): một mốc chuẩn khó vượt qua
+Bài toán
+Ví dụ xuyên suốt (iii). Huấn luyện trên 1500 ngày đầu của log DAX và dự báo còn lại 360 trước
+một bước với dự báo naive, bước ngẫu nhiên có độ trôi và một ARIMA(1,1,0).
+Độ chính xác một bước
+phương pháp RMSE MAE
+naive 1.439% 1.094%
+trôi 1.435% 1.092%
+ARIMA(1,1,0) 1.439% 1.094%
+AS3179 Mô hình thống kê | Bài 12 57/71
+
+===== Trang 64 =====
+⋆ Ứng dụng hiện đại: bài học từ các cuộc thi
+Ba kết luận vững
+1. Kết hợp. Trung bình đơn giản của vài dự báo
+hợp lý thường tốt hơn hầu hết các thành viên
+(Bates–Granger, 1969), và trọng số “tối ưu” ước
+lượng thường kém hơn trọng số bằng nhau —
+nghịch lý kết hợp dự báo (forecast combination
+puzzle).
+2. Phương pháp đơn giản vẫn mạnh. Trong
+M4 (100000 chuỗi) và M5 (Walmart), các mốc
+chuẩn thống kê và mô hình lai đánh bại hầu hết
+các bài nộp thuần học máy.
+3. Đánh giá trung thực. Thứ hạng thay đổi khi
+đánh giá chuyển từ một gốc duy nhất sang gốc
+cuốn chiếu.
+Điều hòa dự báo (forecast rec-
+onciliation)
+Dự báo của từng sản phẩm phải cộng lại
+thành dự báo của nhóm và tổng. Dự báo
+riêng từng mức phá vỡ điều này. MinT
+(Wickramasuriya, Athanasopoulos và
+Hyndman, 2019) chiếu các dự báo cơ sở
+lên không gian con nhất quán, vừa khôi
+phục tính nhất quán và thường cải thiện
+độ chính xác.
+Thiết kế đánh giá là một phần
+của phương pháp
+Kiểm định lùi (backtesting) theo gốc
+cuốn chiếu (rolling origin), với đúng chân
+trời, mất mát và mốc chuẩn, đáng giá
+hơn một mô hình tinh vi hơn.
+AS3179 Mô hình thống kê | Bài 12 58/71
+
+===== Trang 65 =====
+Bài tập 9: đánh giá dự báo qua số liệu
+Mức 2: Tính toán và diễn giải
+1. Một tập kiểm định năm kỳ có các giá trị thực tế 50,55,53,60,58 và dự báo
+52,54,56,57,60. Tính ME, MAE, RMSE và MAPE, và MASE nếu MAE một
+bước naive trên tập huấn luyện là Q = 3.0. Phương pháp có bị chệch không?
+2. Giải thích, với một ví dụ hai điểm, như thế nào một phương pháp có thể có
+MAE thấp hơn nhưng RMSE cao hơn phương pháp khác.
+3. Một báo cáo nêu “mô hình của chúng tôi đạt RMSE 42 trên tập kiểm định”.
+Liệt kê ba thông tin còn thiếu trước khi có thể đánh giá phát biểu.
+4. Một nhóm dùng tập kiểm định 24 tháng để chọn trong mười mô hình ứng viên
+rồi báo cáo RMSE kiểm định của mô hình được chọn. Vì sao con số này lạc
+quan quá mức, và nên thiết kế lại nghiên cứu như thế nào?
+AS3179 Mô hình thống kê | Bài 12 59/71
+
+===== Trang 66 =====
+Bài tập 10: lý thuyết đánh giá dự báo
+Mức 3: Lý thuyết
+1. Chứng minh Định lý 6(a) cho cả hai mất mát, nêu điều kiện mômen, và cho ví
+dụ về một phân phối lệch có trung bình và trung vị khác nhau hơn nửa độ lệch
+chuẩn. Đồng thời chỉ ra rằng khoảng cách không bao giờ vượt quá một độ
+lệch chuẩn.
+2. Chứng minh Định lý 6(c): chỉ ra |e|/y ≤ 1 cho mọi dự báo thấp của một y
+nhưng nó không bị chặn đối với dự báo cao, và giải thích chiều của độ chệch
+tạo ra.
+3. Chứng minh Định lý 6(b): MASE là bất biến theo thang đo, và MASE < 1 có
+nghĩa phương pháp tốt hơn dự báo naive mùa vụ một bước trong mẫu. Vì sao
+MASE được ưu tiên hơn MAPE cho nhu cầu gián đoạn?
+4. Suy ra thống kê Diebold–Mariano từ Định lý 1 của Bài 11, và giải thích vì sao
+mất mát h-bước cần phương sai HAC với các độ trễ đến h−1. Vì sao kiểm
+định có thể hỏng với hai mô hình lồng nhau được khớp trên cùng dữ liệu?
+AS3179 Mô hình thống kê | Bài 12 60/71
+
+===== Trang 67 =====
+Bài tập 11: rà soát dự báo từ đầu đến cuối
+Mức 3: Quy trình tích hợp
+Một nhóm bán lẻ có doanh số hằng tháng trong 8 năm. Họ lấy log toàn bộ chuỗi, xem ACF toàn
+chuỗi, chọn SARIMA(0,1,1)(0,1,1)12, tinh chỉnh Box–Cox λ trên cả 96 quan sát, báo cáo RMSE
+nhỏ nhất trong năm mô hình ứng viên trên 12 tháng cuối, rồi triển khai mô hình được chọn.
+1. Xác định ít nhất ba chỗ khiến RMSE được báo cáo lạc quan quá mức hoặc không phù hợp
+với quyết định triển khai.
+2. Thiết kế lại đánh giá sao cho phép biến đổi, bậc sai phân và bậc mô hình được chọn trung
+thực.
+3. Mô hình báo cáo dự báo trên thang logarit m = 5.50, sai số chuẩn s = 0.35 tại chân trời 6.
+Cho trung vị và trung bình dự báo trên thang doanh số, và giải thích đại lượng nào phù hợp
+với báo cáo sai số bình phương, đại lượng nào phù hợp với quyết định dựa trên mức dịch
+vụ/phân vị.
+4. RMSE kiểm định 12 tháng là 31 cho SARIMA và 34 cho naive mùa vụ. Hiệu mất mát có
+trung bình −130, với sai số chuẩn HAC của trung bình bằng 80. Diễn giải bằng chứng từ
+kiểm định Diebold–Mariano.
+AS3179 Mô hình thống kê | Bài 12 61/71
+
+===== Trang 68 =====
+6. Tính toán trong R và Python
+
+===== Trang 69 =====
+Nile: ARIMA(0,1,1), làm trơn và kiểm định nghiệm đơn vị
+R (hàm cơ sở arima)
+y <- as.numeric(Nile) # n = 100
+fit <- arima(y, order = c(0, 1, 1))
+fit # theta, se, s2, aic
+Box.test(resid(fit), lag = 12,
+type = "Ljung", fitdf = 1)
+p <- predict(fit, n.ahead = 10)
+cbind(p$pred, p$pred - 1.96 * p$se,
+p$pred + 1.96 * p$se)[c(1, 10), ]
+a <- 1 + coef(fit)[1] # alpha = 0.267
+l <- y[1] # làm trơn
+for (t in 2:length(y))
+l <- a * y[t] + (1 - a) * l
+c(ses = l, arima = p$pred[1])
+th <- coef(fit)[1]; s2 <- fit$sigma2
+c(eps = -th * s2, eta = (1 + th)^2 * s2)
+Python (statsmodels)
+import numpy as np, statsmodels.api as sm
+from statsmodels.tsa.stattools import adfuller
+from statsmodels.tsa.stattools import kpss
+from statsmodels.tsa.arima.model import ARIMA
+ds = sm.datasets.get_rdataset("Nile").data
+y = ds["value"].values.astype(float)
+for r in ("c", "ct"): # H0: nghiệm đơn vị
+a = adfuller(y, regression=r)
+print(r, round(a[0], 3), round(a[1], 4))
+print("KPSS", kpss(y, nlags="auto")[0])
+f = ARIMA(y, order=(0, 1, 1), trend="n").fit()
+print(f.summary().tables[1])
+g = f.get_forecast(10)
+m = g.predicted_mean
+s = np.sqrt(g.var_pred_mean)
+q = np.c_[m, m - 1.96 * s, m + 1.96 * s]
+print(q[[0, 9]].round(0))
+Kết quả kỳ vọng: ˆθ = −0.733 (SE 0.114), ˆσ2 = 20600, AIC = 1269.1, QLB(12) = 13.7 với 11 bậc tự do
+(p = 0.25); dự báo 798, khoảng (517,1080) tại h = 1 và (438,1159) tại h = 10; đệ quy làm trơn với α = 1 + ˆθ
+tái tạo nó, và ˆσ2 ε = 15099, ˆσ2 η = 1469. Python: ADF −4.05 và −4.79, KPSS 0.87. sai số chuẩn của ˆθ là 0.114
+trong R (thông tin quan sát được của hợp lý chính xác) nhưng 0.074 trong statsmodels, vì phép khớp không
+gian trạng thái mặc định dùng sai số chuẩn tích ngoài của gradient; cov_type=’approx’ tái tạo giá trị của R.
+AS3179 Mô hình thống kê | Bài 12 62/71
+
+===== Trang 70 =====
+Dữ liệu airline: nhận dạng, khớp và dự báo
+R
+y <- log(AirPassengers) # n = 144
+tr <- window(y, end = c(1958, 12)) # n = 120
+round(c(sd(tr), sd(diff(tr)),
+sd(diff(tr, 12)),
+sd(diff(diff(tr, 12)))), 4)
+acf(diff(diff(tr, 12)), lag.max = 25)
+air <- function(z) arima(z,
+order = c(0, 1, 1),
+seasonal = list(order = c(0, 1, 1),
+period = 12))
+fit <- air(tr) # theta, Theta, aic
+fit
+Box.test(resid(fit), lag = 24,
+type = "Ljung", fitdf = 2)
+p <- predict(fit, n.ahead = 24)
+round(cbind(exp(p$pred), # trung vị
+exp(p$pred + p$se^2 / 2), # trung bình
+exp(p$pred - 1.96 * p$se),
+exp(p$pred + 1.96 * p$se))[c(1, 24), ], 1)
+Python (statsmodels)
+import numpy as np, statsmodels.api as sm
+from statsmodels.tsa.stattools import acf
+from statsmodels.tsa.statespace.sarimax \
+import SARIMAX
+ds = sm.datasets.get_rdataset("AirPassengers")
+ap = ds.data["value"].values.astype(float)
+y = np.log(ap); tr = y[:120]
+d12 = tr[12:] - tr[:-12]; dd = np.diff(d12)
+print(acf(dd, nlags=13)[[1, 11, 12, 13]])
+mod = SARIMAX(tr, order=(0, 1, 1), trend="n",
+seasonal_order=(0, 1, 1, 12))
+f = mod.fit(disp=0)
+print(f.summary().tables[1], f.aic)
+g = f.get_forecast(24)
+m = g.predicted_mean
+s = np.sqrt(g.var_pred_mean)
+q = np.c_[np.exp(m), np.exp(m + s**2 / 2),
+np.exp(m - 1.96 * s),
+np.exp(m + 1.96 * s)]
+print(q[[0, 23]].round(1))
+Kết quả kỳ vọng: độ lệch chuẩn 0.392, 0.106, 0.066, 0.046; ACF của ∇∇12 tại các độ trễ 1,11,12,13 xấp xỉ
+−0.33, 0.08, −0.41, 0.18; ˆθ = −0.342, ˆΘ = −0.541, ˆσ2 = 0.00140, AIC = −389.0, QLB(24) = 20.3 với 22 bậc
+tự do; Tháng 1 1959 trung vị 348.6, trung bình 348.8, khoảng (324,375); Tháng 12 1960 388.1, 392.8,
+(286,526).
+AS3179 Mô hình thống kê | Bài 12 63/71
+
+===== Trang 71 =====
+Đánh giá: mốc chuẩn và thước đo độ chính xác
+R
+y <- as.numeric(AirPassengers); ly <- log(y)
+tr <- ly[1:120]; yt <- y[121:144]
+Q <- mean(abs(y[13:120] - y[1:108])) # MASE
+air <- function(z) arima(z,
+order = c(0, 1, 1),
+seasonal = list(order = c(0, 1, 1),
+period = 12))
+fc <- exp(predict(air(tr), n.ahead = 24)$pred)
+sn <- rep(y[109:120], 2) # naive mùa vụ
+dr <- y[120] + (1:24) * (y[120]-y[1])/119
+acc <- function(f) {
+e <- yt - f
+c(RMSE = sqrt(mean(e^2)),
+MAE = mean(abs(e)),
+MAPE = 100 * mean(abs(e / yt)),
+MASE = mean(abs(e)) / Q)
+}
+round(rbind(air = acc(fc), sn = acc(sn),
+drift = acc(dr),
+naive = acc(rep(y[120], 24))), 2)
+Python
+import numpy as np, statsmodels.api as sm
+from statsmodels.tsa.statespace.sarimax \
+import SARIMAX
+ds = sm.datasets.get_rdataset("AirPassengers")
+ap = ds.data["value"].values.astype(float)
+ly = np.log(ap); yt = ap[120:]
+Q = np.abs(ap[12:120] - ap[:108]).mean()
+def air(z):
+m = SARIMAX(z, order=(0, 1, 1), trend="n",
+seasonal_order=(0, 1, 1, 12))
+return m.fit(disp=0)
+g = air(ly[:120]).get_forecast(24)
+fc = np.exp(g.predicted_mean)
+sn = np.r_[ap[108:120], ap[108:120]]
+d0 = ap[119] - ap[0]
+dr = ap[119] + np.arange(1, 25) * d0 / 119
+def acc(e):
+return [np.sqrt((e**2).mean()),
+np.abs(e).mean(),
+100 * np.abs(e / yt).mean(),
+np.abs(e).mean() / Q]
+for f in (fc, sn, dr, np.repeat(ap[119], 24)):
+print(np.round(acc(yt - f), 2))
+Kết quả kỳ vọng, trên 24 tập kiểm định giữ lại tháng (RMSE, MAE, MAPE, MASE): airline 43.2, 39.5, 8.5%,
+1.38; naive mùa vụ 77.0, 71.3, 15.5%, 2.49; trôi 115.7, 91.6, 18.4%, 3.21; naive 137.3, 115.3, 23.6%, 4.03.
+AS3179 Mô hình thống kê | Bài 12 64/71
+
+===== Trang 72 =====
+Đánh giá: gốc cuốn chiếu (rolling origin) và
+Diebold–Mariano
+R (tiếp)
+ea <- es <- numeric(0) # gốc cuốn chiếu (rolling origin)
+for (t in 120:143) {
+f <- predict(air(ly[1:t]), n.ahead = 1)
+ea <- c(ea, y[t + 1] - exp(f$pred[1]))
+es <- c(es, y[t + 1] - y[t + 1 - 12])
+}
+c(airline = sqrt(mean(ea^2)),
+snaive = sqrt(mean(es^2)))
+d <- ea^2 - es^2 # Diebold-Mariano
+DM <- mean(d) / sqrt(var(d) / length(d))
+c(DM = DM,
+p = 2 * pt(-abs(DM), length(d) - 1))
+Python (tiếp)
+from scipy import stats
+ea, es = [], [] # gốc cuốn chiếu (rolling origin)
+for t in range(120, 144):
+h = air(ly[:t]).get_forecast(1)
+f1 = np.exp(h.predicted_mean[0])
+ea.append(ap[t] - f1)
+es.append(ap[t] - ap[t - 12])
+ea = np.array(ea); es = np.array(es)
+print(np.sqrt((ea**2).mean()),
+np.sqrt((es**2).mean()))
+d = ea**2 - es**2 # Diebold-Mariano
+v = d.var(ddof=1) / len(d)
+dm = d.mean() / np.sqrt(v)
+print(dm, 2 * stats.t.sf(abs(dm), len(d) - 1))
+Kết quả kỳ vọng: RMSE một bước theo gốc cuốn chiếu (rolling origin) bằng 15.3 cho mô hình airline so với
+50.0 cho naive mùa vụ, với DM = −7.49 và p < 10−6. statsmodels có thể in ConvergenceWarning ở một lần
+khớp lại, nhưng điều này không làm thay đổi các con số.
+AS3179 Mô hình thống kê | Bài 12 65/71
+
+===== Trang 73 =====
+Tổng kết
+
+===== Trang 74 =====
+Checklist báo cáo cho dự báo ARIMA
+1. Vẽ đồ thị;
+tách một khối
+kiểm định
+2. Biến đổi
+(log, Box–Cox)
+3. Chọn d, D:
+đồ thị, ACF,
+kiểm định
+4. Xác định
+(p, q), (P, Q);
+khớp bằng ML
+5. Phần dư
+trắng? Vượt
+mốc chuẩn?
+không phù hợp: chỉnh lại
+Báo cáo
+▶ biến đổi và các bậc d,D, kèm bằng chứng và kiểm tra sai phân quá mức;
+▶ đã được khớp mô hình với sai số chuẩn và ˆσ2, và xác nhận mô hình nhân quả và khả nghịch,
+không có triệt tiêu gần đúng;
+▶ chẩn đoán phần dư: ACF phần dư, QLB(H) với H −p −q −P −Q df, và ACF của bình
+phương phần dư;
+▶ dự báo với khoảng, nêu rõ dự báo điểm là trung bình hay trung vị nếu đã chuyển ngược phép
+biến đổi;
+▶ độ chính xác so với một mốc chuẩn, tại chân trời có ý nghĩa, trên gốc cuốn chiếu (rolling
+origin), với lý do chọn thước đo được chọn.
+AS3179 Mô hình thống kê | Bài 12 66/71
+
+===== Trang 75 =====
+Kiểm tra khái niệm: tìm lỗi
+Mức 2: Diễn giải
+Một sinh viên viết:
+1. “Kiểm định ADF không bác bỏ, nên chuỗi có nghiệm đơn vị.”
+2. “Tôi lấy sai phân hai lần cho chắc, vì một sai phân rõ ràng chưa đủ để đồ thị phẳng.”
+3. “Với 11 biến giả mùa vụ, AIC thấp hơn mô hình airline 35 đơn vị, nên mô hình biến giả tốt
+hơn.”
+4. “Khoảng dự báo của tôi ngừng mở rộng sau khoảng mười bước, điều này cho thấy
+ARIMA(0,1,1) dự báo chính xác ở chân trời xa.”
+5. “Tôi lấy mũ dự báo trên thang log, nên đây là số hành khách kỳ vọng.”
+6. “MASE của tôi là 1.4, nên mô hình của tôi kém hơn dự báo naive mùa vụ trên tập kiểm
+định.”
+Xác định và sửa từng sai sót.
+AS3179 Mô hình thống kê | Bài 12 67/71
+
+===== Trang 76 =====
+Tóm tắt các đối tượng chính hôm nay
+Đối tượng Ý nghĩa
+I(d), nghiệm đơn vị ∇d Y dừng với phương sai dài hạn thuộc (0,∞); ϕ(1) = 0
+sai phân quá mức ρ(1) →−1 2, ˆθ→−1, phương sai dài hạn bằng 0; làm phương sai sai
+số của dự báo naive tăng gấp đôi
+ADF, KPSS ∇Yt = α + βYt−1 +
+∑
+ai ∇Yt−i , β = −ϕ(1); 5% điểm −2.86,
+không −1.645; KPSS đảo giả thuyết không
+ARIMA(p,d,q) ϕ(B)∇d Yt = c + θ(B)εt ; trôi µW = c/ϕ(1)
+ảnh hưởng vĩnh viễn θ(1)/ϕ(1) khi d ≥ 1; 1 cho bước ngẫu nhiên, 1 + θ cho
+ARIMA(0,1,1) ; tắt dần nếu d = 0
+ARIMA(0,1,1) làm trơn mũ đơn (simple exponential smoothing) với α = 1 + θ; mô
+hình mức cục bộ
+hàm dự báo µW hd /d! + pd−1(h)+ các hạng tắt dần: dạng được cố định bởi d và
+trôi
+Var en(h) σ2 ∑ j<h Ψ2 j ; hσ2 (RW), σ2{1 + (h−1)α2}, →γ(0) nếu d = 0
+chuyển ngược em là trung vị, em+s2/2 là trung bình; khoảng được chuyển đổi chính
+xác
+SARIMA, mô hình airline Φ(Bs )ϕ(B)∇d ∇D s Yt = Θ(Bs )θ(B)εt ; ACF chỉ tại 1,s −1,s,s + 1
+đánh giá mốc chuẩn, MAE/RMSE/MASE, gốc cuốn chiếu (rolling origin),
+Diebold–Mariano
+AS3179 Mô hình thống kê | Bài 12 68/71
+
+===== Trang 77 =====
+Điều cần nhớ sau khối chuỗi thời gian
+Công thức chính
+Var en(h) = σ2
+h−1∑
+j=0
+Ψ2 j ; RW : hσ2; ARIMA(0,1,1) : σ2{1 + (h−1)α2}, α = 1 + θ;
+ADF : ∇Yt = α + βYt−1 +
+∑
+i ai ∇Yt−i + εt , β = −ϕ(1), τ0.05 = −2.86;
+airline : ρ(1) = θ 1+θ2 , ρ(s) = Θ 1+Θ2 , ρ(s ±1) = ρ(1)ρ(s); EeZ = em+s2/2; MASE = MAE Q .
+Ba thói quen
+Biến đổi trước khi lấy sai phân, và lấy sai phân càng ít càng tốt. Không bao giờ so sánh AIC
+giữa các mô hình có d, D hoặc phép biến đổi khác nhau. Không bao giờ báo cáo độ chính
+xác nếu không nêu chân trời dự báo, mốc chuẩn và thiết kế gốc cuốn chiếu (rolling origin).
+Hướng tiếp theo: mô hình không gian trạng thái và bộ lọc Kalman (mô hình mức cục bộ
+trong Ví dụ 2.2 là điểm vào), làm trơn mũ và ETS, dự báo phi tuyến và học máy, điều hòa
+phân cấp và dự báo xác suất. Mọi nội dung trong bài này vẫn là nền tảng.
+AS3179 Mô hình thống kê | Bài 12 69/71
+
+===== Trang 78 =====
+Tài liệu đọc thêm và tham khảo
+
+===== Trang 79 =====
+Tài liệu đọc thêm và tham khảo
+Tài liệu chính
+▶ Rigdon–Fricker–Montgomery, Introduction to Probability and Statistics for Data
+Science with R: Ch. 16 (phương pháp chuỗi thời gian), các mục về ARIMA và dự báo.
+▶ Hyndman–Athanasopoulos, Forecasting: Principles and Practice, ấn bản thứ 3
+(FPP3): Ch. 5 (hộp công cụ dự báo và độ chính xác), Ch. 8 (làm trơn mũ), Ch. 9
+(ARIMA và ARIMA mùa vụ).
+▶ Thulin, Modern Statistics with R: các mục về chuỗi thời gian và dự báo.
+▶ Brockwell–Davis, Introduction to Time Series and Forecasting, ấn bản thứ 3 (2016):
+Ch. 6 (mô hình không dừng và mùa vụ) và Ch. 9 (xây dựng mô hình và dự báo).
+▶ Shumway–Stoffer, Time Series Analysis and Its Applications, ấn bản thứ 4 (2017):
+Ch. 3, các mục về ARIMA, mùa vụ ARIMA và dự báo.
+▶ Box, Jenkins, Reinsel và Ljung, Time Series Analysis: Forecasting and Control, ấn bản
+thứ 5 (2015): nguồn gốc của mô hình airline.
+AS3179 Mô hình thống kê | Bài 12 70/71
+
+===== Trang 80 =====
+Đọc thêm: các bài báo gốc và ứng dụng hiện đại
+Các bài báo và sách nền tảng cho bài này
+Box và Jenkins (1970), Time Series Analysis: Forecasting and Control. Muth (1960), JASA 55 (tính
+tối ưu của làm trơn mũ). Dickey–Fuller (1979), JASA 74; Said và Dickey (1984), Biometrika 71;
+Phillips–Perron (1988), Biometrika 75. Kwiatkowski–Phillips–Schmidt–Shin (1992), J. Econometrics
+54 (KPSS). Perron (1989), Econometrica 57 (điểm gãy và nghiệm đơn vị). Engle và Granger (1987),
+Econometrica 55; Johansen (1991), Econometrica 59 (cointegration). Harvey (1989), Forecasting,
+Structural Time Series Models and the Kalman Filter; Durbin và Koopman (2012), Time Series
+Analysis by State Space Methods, ấn bản thứ 2. Cleveland, Cleveland, McRae và Terpenning
+(1990), J. Official Statist. 6 (STL). De Livera, Hyndman và Snyder (2011), JASA 106 (TBATS).
+Taylor và Letham (2018), The American Statistician 72 (Prophet). Bates–Granger (1969), Oper.
+Res. Quarterly 20 (kết hợp). Diebold–Mariano (1995), J. Bus. Econ. Statist. 13; Harvey, Leybourne
+và Newbold (1997), Int. J. Forecasting. 13; Clark và West (2007), J. Econometrics 138. Hyndman
+và Koehler (2006), Int. J. Forecasting. 22 (MASE). Makridakis, Spiliotis và Assimakopoulos (2020,
+2022), Int. J. Forecasting. 36 và 38 (M4, M5). Wickramasuriya, Athanasopoulos và Hyndman
+(2019), JASA 114 (điều hòa MinT). Xu và Xie (2021), ICML (khoảng conformal cho chuỗi thời
+gian).
+AS3179 Mô hình thống kê | Bài 12 71/71
