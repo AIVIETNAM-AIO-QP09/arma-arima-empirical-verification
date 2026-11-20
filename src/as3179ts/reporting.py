@@ -167,7 +167,8 @@ def to_latex(df: pd.DataFrame, name: str, caption: str, fmt: dict | None = None,
         else:
             spec += "r" if numeric[j] else ("c" if pd.api.types.is_bool_dtype(d.iloc[:, j]) else "l")
     header = " & ".join(tex(c) for c in d.columns) + r" \\"
-    body = "\n".join(" & ".join(tex(x) for x in row) + r" \\" for row in cells)
+    end = r" \\[12pt]" if long_text else r" \\"   # bảng có cột chữ dài: thêm khoảng cách giữa các hàng
+    body = "\n".join(" & ".join(tex(x) for x in row) + end for row in cells)
     size = r"\scriptsize" if ncol >= 9 else r"\small"
     notes = rf"\par\vspace{{2pt}}{{\footnotesize\textit{{Ghi chú:}} {tex(note)}}}" if note else ""
     return (f"\\begin{{table}}[H]\n\\centering{size}\n\\caption{{{tex(caption)}}}\\label{{tab:{name}}}\n"
