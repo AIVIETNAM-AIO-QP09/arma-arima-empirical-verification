@@ -22,13 +22,13 @@ for ten in ("HU", "LY", "DR"):
 \tp{Kết quả tính toán} Bảng~\ref{tab:tab_b11_01_stationarity} tổng hợp các chỉ số trượt, hệ số $\hat\rho(1)$ và giá trị $p$ của kiểm định Ljung--Box cho từng chuỗi.
 \input{\tabdir/tab_b11_01_stationarity.tex}
 \tp{Phân tích và diễn giải}
-\bodl{HU.} Trung bình trượt dao động mạnh, bằng 52\% độ lệch chuẩn của chuỗi, và phương sai trượt thay đổi nhiều với tỷ lệ lớn nhất trên nhỏ nhất là $7.6$. Thêm vào đó $\hat\rho(1)=0.83$ và Ljung--Box bác bỏ nhiễu trắng với $p<0.0001$. HU vì vậy không dừng quanh một mức hằng số.
+\bodl{HU.} Trung bình trượt dao động mạnh, bằng 52\% độ lệch chuẩn của chuỗi, và phương sai trượt thay đổi nhiều với tỷ lệ lớn nhất trên nhỏ nhất là $7.6$. Thêm vào đó $\hat\rho(1)=0.83$ và Ljung--Box bác bỏ nhiễu trắng với $p<0.0001$. Các chỉ số này phù hợp với một chuỗi không dừng quanh mức hằng số, nhưng một chuỗi AR(1) dừng với $\phi$ khoảng $0.8$ cũng có thể cho chúng. Bằng chứng chắc hơn nằm ở \ndlk{4.1(c)}: hệ số dốc xu thế vẫn khác $0$ ở mức $5\%$ ngay cả khi sai số được mô hình hóa bằng AR(2), với $t=-2.65$. Vì vậy HU được coi là dừng quanh một xu thế giảm chứ không quanh một mức hằng số, và các nội dung sau dùng HU đã khử xu thế.
 
 \bodl{LY.} Trung bình trượt ổn định hơn nhiều, chỉ bằng 23\% độ lệch chuẩn, nên chuỗi gần dừng về mức; nhưng $\hat\rho(1)=0.79$ và $p<0.0001$ cho thấy chuỗi dừng mà không phải nhiễu trắng.
 
-\bodl{DR.} $\hat\rho(1)\approx0$ và Ljung--Box không bác bỏ nhiễu trắng với $p=0.78$. Tuy nhiên bình phương suất sinh lợi vẫn tự tương quan rất rõ với $p<0.0001$, và phương sai trượt thay đổi gấp $5.9$ lần: đây là nhiễu trắng nhưng không iid, vì biến động tụ thành cụm.
+\bodl{DR.} $\hat\rho(1)\approx0$ và Ljung--Box không bác bỏ nhiễu trắng với $p=0.78$. Tuy nhiên bình phương suất sinh lợi vẫn tự tương quan rất rõ với $p<0.0001$, và phương sai trượt thay đổi gấp $5.9$ lần: chuỗi phù hợp với nhiễu trắng ở $10$ độ trễ đầu nhưng rõ ràng không iid, vì biến động tụ thành cụm.
 
-\tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: ba chuỗi minh họa đúng ba tình huống, gồm không dừng ở HU, dừng nhưng không phải nhiễu trắng ở LY, và nhiễu trắng nhưng không iid ở DR. Các chỉ số trượt chỉ mang tính tham khảo chứ chưa phải kiểm định chính thức về tính dừng.
+\tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: ba chuỗi minh họa đúng ba tình huống, gồm không dừng quanh mức hằng số ở HU, dừng nhưng không phải nhiễu trắng ở LY, và phù hợp với nhiễu trắng nhưng không iid ở DR. Các chỉ số trượt chỉ mang tính tham khảo chứ chưa phải kiểm định chính thức về tính dừng.
 
 \noidung{Tính chất của tự hiệp phương sai}
 \tp{Nội dung lý thuyết cần kiểm chứng} Kết quả \ndlk{2.1.1(b)} nói rằng tự hiệp phương sai thỏa $|\rho(h)|\le1$ và xác định không âm, và với ước lượng mẫu điều này chỉ được bảo đảm khi dùng mẫu số $n$ thay vì $n-h$.
@@ -51,7 +51,7 @@ for ten in ("HU", "LY", "DR"):
 
 \noidung{Trung bình mẫu của chuỗi phụ thuộc}
 \tp{Nội dung lý thuyết cần kiểm chứng} Kết quả \ndlk{2.1.1(c)} nói rằng khi các quan sát tự tương quan thì $\Var\bar Y\approx\gamma(0)\tau/n$ với $\tau=1+2\sum_{h\ge1}\rho(h)$, nên sai số chuẩn giả định độc lập quá thấp khi $\tau>1$.
-\tp{Cách triển khai} Nội dung này dùng cả dữ liệu thực lẫn mô phỏng, và áp dụng cho HU. LY không dùng được vì ACF dao động làm công thức ước lượng $\tau$ cho phương sai âm, còn DR có $\tau\approx1$ nên hiệu ứng cần kiểm chứng gần như không xuất hiện. Mô phỏng dùng AR(1) với $\phi=0.6$, $n=100$ và $B=2000$ để so độ phủ của khoảng tin cậy $95\%$ theo cách ngây thơ $\bar y\pm1.96\,s/\sqrt n$ với cách hiệu chỉnh $\bar y\pm1.96\,s\sqrt{\tau/n}$, trong đó $\tau=4$. Trên dữ liệu HU, ta ước lượng $\tau$ từ ACF mẫu rồi so sai số chuẩn của trung bình, cũng như của hệ số dốc xu thế, giữa bình phương tối thiểu và cực đại hợp lý với sai số AR(2).
+\tp{Cách triển khai} Nội dung này dùng cả dữ liệu thực lẫn mô phỏng, và áp dụng cho HU, LY và DR. Trên dữ liệu thực, $\tau$ được ước lượng bằng tổng Bartlett cắt cụt ở $K$ độ trễ; ước lượng này luôn không âm nên dùng được cho cả ba chuỗi. DR là đối chứng: chuỗi gần như không tự tương quan nên lý thuyết dự đoán $\tau\approx1$ và hiệu chỉnh gần như không đổi gì. Mô phỏng dùng AR(1) với $\phi=0.6$, $n=100$ và $B=2000$ để so độ phủ của khoảng tin cậy $95\%$ theo cách ngây thơ $\bar y\pm1.96\,s/\sqrt n$ với cách hiệu chỉnh $\bar y\pm1.96\,s\sqrt{\tau/n}$, trong đó $\tau=4$. Trên dữ liệu HU, ta ước lượng $\tau$ từ ACF mẫu rồi so sai số chuẩn của trung bình, cũng như của hệ số dốc xu thế, giữa bình phương tối thiểu và cực đại hợp lý với sai số AR(2).
 \tp{Mã lệnh Python}
 \begin{codeblock}
 tau = (1 + phi) / (1 - phi)                                    # = 4 voi phi = 0.6
@@ -69,13 +69,13 @@ ml = ARIMA(Y["HU"], exog=X_HU, order=(2, 0, 0)).fit(cov_type="oim")
 \input{\tabdir/tab_b11_03_coverage.tex}
 \input{\tabdir/tab_b11_03_mean_se.tex}
 \input{\tabdir/tab_b11_03_slope_se.tex}
-\tp{Phân tích và diễn giải} Mô phỏng cho thấy hiệu ứng lý thuyết rõ ràng: khoảng ngây thơ chỉ phủ trung bình thật $64.7\%$ số lần thay vì $95\%$, còn khoảng hiệu chỉnh phủ $94.4\%$, lệch khỏi $95\%$ chưa tới $1.2$ lần sai số Monte Carlo là $0.005$. Trên HU, sai số chuẩn của trung bình tăng từ $0.133$ lên $0.233$ khi hiệu chỉnh bằng $\hat\tau=3.09$, tương ứng cỡ mẫu hiệu dụng chỉ khoảng $32$ thay vì $98$. Độ lớn của $\hat\tau$ phụ thuộc cách ước lượng, chẳng hạn công thức AR(1) cho $10.9$, nhưng mọi cách đều cho $\tau>1$. Với hệ số dốc xu thế, hai ước lượng gần nhau, là $-0.0242$ và $-0.0216$ ft/năm, nhưng sai số chuẩn tăng gấp đôi từ $0.0040$ lên $0.0081$, nên $t$ giảm từ $-6.0$ xuống $-2.65$: hệ số dốc vẫn có ý nghĩa ở mức $5\%$, song bằng chứng yếu hơn nhiều.
+\tp{Phân tích và diễn giải} Mô phỏng cho thấy hiệu ứng lý thuyết rõ ràng: khoảng ngây thơ chỉ phủ trung bình thật $64.7\%$ số lần thay vì $95\%$, còn khoảng hiệu chỉnh phủ $94.4\%$, lệch khỏi $95\%$ chưa tới $1.2$ lần sai số Monte Carlo là $0.005$. Trên HU, sai số chuẩn của trung bình tăng từ $0.133$ lên $0.233$ khi hiệu chỉnh bằng $\hat\tau=3.09$, tương ứng cỡ mẫu hiệu dụng chỉ khoảng $32$ thay vì $98$. Độ lớn của $\hat\tau$ phụ thuộc cách ước lượng, chẳng hạn công thức AR(1) cho $10.9$, nhưng mọi cách đều cho $\tau>1$; ngoài ra HU có xu thế nên con số $32$ chỉ là mức tham khảo. Với LY, $\hat\tau=2.36$ nâng sai số chuẩn từ $0.052$ lên $0.080$, tương ứng cỡ mẫu hiệu dụng khoảng $48$ thay vì $114$. Riêng cột ``SE theo công thức đầy đủ'' của LY bị trống: cách cộng $\hat\gamma(h)$ với trọng số $(1-h/n)$ rồi cắt ở $h\le n/4$ không bảo đảm xác định dương, nên với ACF dao động mạnh tổng này âm, còn ước lượng Bartlett thì không gặp vấn đề đó. Với DR, $\hat\tau=0.92$, sai số chuẩn gần như không đổi ($0.0239$ so với $0.0229$), đúng như lý thuyết dự đoán cho chuỗi không tự tương quan. Với hệ số dốc xu thế, hai ước lượng gần nhau, là $-0.0242$ và $-0.0216$ ft/năm, nhưng sai số chuẩn tăng gấp đôi từ $0.0040$ lên $0.0081$, nên $t$ giảm từ $-6.0$ xuống $-2.65$: hệ số dốc vẫn có ý nghĩa ở mức $5\%$, song bằng chứng yếu hơn nhiều.
 
-\tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: mô phỏng khớp trong dung sai, và dữ liệu thực xác nhận sai số chuẩn giả định iid quá lạc quan. Độ lớn của hiệu chỉnh phụ thuộc cách ước lượng $\tau$, nên kết luận định tính chắc hơn kết luận định lượng.
+\tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: mô phỏng khớp trong dung sai, dữ liệu thực xác nhận sai số chuẩn giả định iid quá lạc quan ở HU và LY, và DR cho đúng $\tau\approx1$ như dự đoán. Độ lớn của hiệu chỉnh phụ thuộc cách ước lượng $\tau$, nên kết luận định tính chắc hơn kết luận định lượng.
 
 \noidung{Quá trình tuyến tính}
 \tp{Nội dung lý thuyết cần kiểm chứng} Kết quả \ndlk{2.1.1(d)} nói rằng mô hình ARMA nhân quả là quá trình tuyến tính $Y_t=\mu+\sum_{j\ge0}\psi_j\varepsilon_{t-j}$ với $\gamma(h)=\sigma^2\sum_j\psi_j\psi_{j+h}$.
-\tp{Cách triển khai} Nội dung này dùng dữ liệu thực của HU, đã khử xu thế, và của LY. DR không dùng vì gần nhiễu trắng nên $\psi=(1,0,0,\dots)$ và không có cấu trúc để kiểm tra. Ta khớp AR(2) bằng cực đại hợp lý, tính $\psi_j$ và ACF lý thuyết bằng công thức tự cài đặt rồi so với \texttt{statsmodels} và với ACF mẫu.
+\tp{Cách triển khai} Nội dung này dùng dữ liệu thực của HU, đã khử xu thế, của LY và của DR. Với DR, mô hình được chọn ở \mucnd{4.3(d)} chỉ có trung bình, nên lý thuyết cho $\psi=(1,0,0,\dots)$ và $\gamma(h)=0$ với mọi $h\ge1$; ta đối chiếu điều này với ACF mẫu. Với HU và LY, ta khớp AR(2) bằng cực đại hợp lý, tính $\psi_j$ và ACF lý thuyết bằng công thức tự cài đặt rồi so với \texttt{statsmodels} và với ACF mẫu.
 \tp{Mã lệnh Python}
 \begin{codeblock}
 res = fit_arma(ten, (2, 0, 0)); phi = res.arparams           # AR(2) bang ML
@@ -85,17 +85,18 @@ rho = R.theoretical_acf(phi, [], 20)
 chenh = max(np.abs(psi - psi_tv).max(), np.abs(rho - arma_acf(np.r_[1, -phi], [1], 21)).max())
 overlay_theory(ax, range(1, 21), rho[1:], "ACF ly thuyet AR(2)")     # chong len ACF mau
 \end{codeblock}
-\tp{Kết quả tính toán} Hình~\ref{fig:fig_b11_05_acf_theory} đặt ACF lý thuyết của AR(2) lên ACF mẫu của hai chuỗi.
+\tp{Kết quả tính toán} Bảng~\ref{tab:tab_b11_05_psi_acf} cho hệ số, trọng số $\psi_j$ và sai khác với thư viện, còn Hình~\ref{fig:fig_b11_05_acf_theory} đặt ACF lý thuyết của AR(2) lên ACF mẫu của HU và LY.
+\input{\tabdir/tab_b11_05_psi_acf.tex}
 \figx{fig_b11_05_acf_theory}{ACF mẫu, vẽ bằng que, và ACF lý thuyết của AR(2) khớp bằng cực đại hợp lý, vẽ bằng đường}
-\tp{Phân tích và diễn giải} Các giá trị tự cài đặt trùng \texttt{statsmodels}, với chênh lệch $0$ ở $\psi$ và $10^{-16}$ ở ACF. HU có $\hat\phi=(1.005,-0.291)$ nên $\psi=(1,1.005,0.718,0.429,\dots)$ giảm dần, và ACF lý thuyết bám sát ACF mẫu trong 10 độ trễ đầu. LY có $\hat\phi=(1.378,-0.740)$ nên $\psi=(1,1.378,1.158,0.576,\dots)$; ACF lý thuyết tái hiện dạng sóng của ACF mẫu nhưng biên độ nhỏ hơn rõ rệt, vì ở độ trễ 9 và 10 ACF mẫu đạt khoảng $0.55$ đến $0.6$ còn ACF lý thuyết chỉ khoảng $0.2$. Nói cách khác, AR(2) bắt được chu kỳ nhưng chưa bắt hết độ bền của nó, điều sẽ được xét lại ở \muc{4.3}.
+\tp{Phân tích và diễn giải} Các giá trị tự cài đặt trùng \texttt{statsmodels}, với chênh lệch $0$ ở $\psi$ và $10^{-16}$ ở ACF. HU có $\hat\phi=(1.005,-0.291)$ nên $\psi=(1,1.005,0.718,0.429,\dots)$ giảm dần, và ACF lý thuyết bám sát ACF mẫu trong 10 độ trễ đầu. LY có $\hat\phi=(1.378,-0.740)$ nên $\psi=(1,1.378,1.158,0.576,\dots)$; ACF lý thuyết tái hiện dạng sóng của ACF mẫu nhưng biên độ nhỏ hơn rõ rệt, vì ở độ trễ 9 và 10 ACF mẫu đạt khoảng $0.55$ đến $0.6$ còn ACF lý thuyết chỉ khoảng $0.2$. Nói cách khác, AR(2) bắt được chu kỳ nhưng chưa bắt hết độ bền của nó, điều sẽ được xét lại ở \muc{4.3}. Với DR, ACF mẫu đúng như $\gamma(h)=0$ mà $\psi=(1,0,0,\dots)$ dự đoán: chỉ $2$ trong $20$ độ trễ vượt dải $\pm0.0455$, gần mức $1$ độ trễ do ngẫu nhiên (Bảng~\ref{tab:tab_b11_04_acf_ljungbox}).
 
-\tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: công thức quá trình tuyến tính được tính đúng và cho ACF có dạng đúng với dữ liệu. Việc AR(2) chưa khớp hết biên độ của LY là hạn chế của mô hình chứ không phải của lý thuyết.
+\tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: công thức quá trình tuyến tính được tính đúng và cho ACF có dạng đúng với dữ liệu ở cả ba chuỗi. Việc AR(2) chưa khớp hết biên độ của LY là hạn chế của mô hình chứ không phải của lý thuyết.
 
 \subsection{Mô hình ARMA}
 
 \noidung{Mô hình AR(1)}
 \tp{Nội dung lý thuyết cần kiểm chứng} Kết quả \ndlk{2.1.2(a)} nói rằng AR(1) nhân quả khi $|\phi|<1$, có $\gamma(0)=\sigma^2/(1-\phi^2)$ và $\rho(h)=\phi^{|h|}$, và sai số bình phương trung bình dự báo $h$ bước bằng $\sigma^2(1-\phi^{2h})/(1-\phi^2)$.
-\tp{Cách triển khai} Nội dung này dùng dữ liệu thực của HU cùng một mô phỏng. LY không dùng vì AR(1) không mô tả được dao động chu kỳ, còn DR vì $\hat\phi\approx0$. Ta khớp AR(1) có xu thế cho HU, so ACF mẫu của phần dư khử xu thế với $\hat\phi^h$, so công thức sai số dự báo với \texttt{statsmodels}, rồi mô phỏng với $n=98$ và $B=2000$ để kiểm tra $\gamma(0)$ và $\rho(1)$.
+\tp{Cách triển khai} Nội dung này dùng cả dữ liệu thực lẫn mô phỏng, và áp dụng cho HU, LY và DR. Ta khớp AR(1) có xu thế cho HU và AR(1) cho LY, so ACF mẫu (của phần dư khử xu thế với HU) với $\hat\phi^h$; với DR, AR(1) theo Yule--Walker có $\hat\phi=\hat\rho(1)$. Với HU, ta còn so công thức sai số dự báo với \texttt{statsmodels}, rồi mô phỏng với $n=98$ và $B=2000$ để kiểm tra $\gamma(0)$ và $\rho(1)$.
 \tp{Mã lệnh Python}
 \begin{codeblock}
 res = fit_arma("HU", (1, 0, 0)); phi, s2 = res.arparams[0], sig2(res)
@@ -107,19 +108,21 @@ for _ in range(2000):
     y = S.simulate_ar1(phi, 98, rng, sigma=np.sqrt(s2))
     g0.append(A.sample_autocov(y, 0)[0]); r1.append(A.sample_acf(y, 1)[1])
 \end{codeblock}
-\tp{Kết quả tính toán} Bảng~\ref{tab:tab_b11_06_ar1_acf} so ACF mẫu với $\hat\phi^h$, còn Bảng~\ref{tab:tab_b11_06_ar1_simulation} cho kết quả mô phỏng.
+\tp{Kết quả tính toán} Bảng~\ref{tab:tab_b11_06_ar1_acf} và Bảng~\ref{tab:tab_b11_06_ly_ar1} so ACF mẫu với $\hat\phi^h$ của HU và LY, Bảng~\ref{tab:tab_b11_06_ar1_forecast_mse} so công thức sai số dự báo với thư viện, còn Bảng~\ref{tab:tab_b11_06_ar1_simulation} cho kết quả mô phỏng.
 \input{\tabdir/tab_b11_06_ar1_acf.tex}
+\input{\tabdir/tab_b11_06_ly_ar1.tex}
+\input{\tabdir/tab_b11_06_ar1_forecast_mse.tex}
 \input{\tabdir/tab_b11_06_ar1_simulation.tex}
-\tp{Phân tích và diễn giải} Công thức sai số dự báo trùng \texttt{statsmodels} ở mọi chân trời, bắt đầu từ $0.4965$ ở $h=1$ và tăng dần về giới hạn $\gamma(0)=1.286$. Tuy nhiên ACF mẫu của phần dư giảm nhanh hơn $\hat\phi^h$: ở độ trễ 2 là $0.46$ so với $0.61$, ở độ trễ 4 là $0.14$ so với $0.38$, nên AR(1) không mô tả tốt HU, như AIC tốt hơn của AR(2) ở \muc{4.3} cũng cho thấy. Mô phỏng cho thấy các thống kê mẫu chệch xuống so với giá trị lý thuyết, với $\hat\gamma(0)$ trung bình $1.176$ so với $1.286$ và $\hat\rho(1)$ trung bình $0.738$ so với $0.784$. Đây là độ chệch quen thuộc của ước lượng mẫu khi $n=98$ chứ không phải sai sót của công thức cho giá trị tổng thể.
+\tp{Phân tích và diễn giải} Công thức sai số dự báo trùng \texttt{statsmodels} ở mọi chân trời, bắt đầu từ $0.4965$ ở $h=1$ và tăng dần về giới hạn $\gamma(0)=1.286$. Tuy nhiên ACF mẫu của phần dư giảm nhanh hơn $\hat\phi^h$: ở độ trễ 2 là $0.46$ so với $0.61$, ở độ trễ 4 là $0.14$ so với $0.38$, nên AR(1) không mô tả tốt HU, như AIC tốt hơn của AR(2) ở \muc{4.3} cũng cho thấy. Với LY, AR(1) cho $\hat\phi=0.792$ và khớp ACF mẫu ở độ trễ 1 ($0.785$), nhưng ACF mẫu đổi dấu từ độ trễ 3 và xuống $-0.62$ ở độ trễ 5, trong khi $\hat\phi^h$ luôn dương và giảm đều. Đúng như lý thuyết, AR(1) với $\phi>0$ không thể tạo ra dao động, nên LY không phải AR(1). Với DR, $\hat\phi=\hat\rho(1)=-0.0004$ nên $\hat\phi^h\approx0$ ở mọi $h\ge1$, khớp ACF mẫu gần như nằm trọn trong dải ở \ndlk{4.3(a)}. Mô phỏng cho thấy các thống kê mẫu chệch xuống so với giá trị tiệm cận, với $\hat\gamma(0)$ trung bình $1.176$ so với $1.286$ và $\hat\rho(1)$ trung bình $0.738$ so với $0.784$. Độ chệch này tính được: với $n=98$, $\E\hat\gamma(0)=\gamma(0)-\Var\bar Y=1.182$ đúng chính xác, và $\E\hat\rho(1)\approx\phi-(1+4\phi)/n=0.741$. Mô phỏng chỉ lệch $0.8$ và $2.3$ MCSE khỏi hai giá trị này, trong dung sai $3$ MCSE.
 
-\tp{Nhận xét} Kết quả \textbf{phù hợp một phần} với lý thuyết. Các công thức về $\gamma(0)$, $\rho(h)$ và sai số dự báo đúng và khớp thư viện, còn phần chưa khớp nằm ở dữ liệu: ACF mẫu của HU giảm nhanh hơn $\hat\phi^h$, và ước lượng mẫu nhỏ bị chệch.
+\tp{Nhận xét} Kết quả \textbf{phù hợp một phần} với lý thuyết. Các công thức về $\gamma(0)$, $\rho(h)$ và sai số dự báo đúng và khớp thư viện, và mô phỏng khớp kỳ vọng mẫu hữu hạn. Phần chưa khớp nằm ở dữ liệu: ACF mẫu của HU giảm nhanh hơn $\hat\phi^h$ và ACF của LY dao động, tức AR(1) không đủ cho hai chuỗi này; DR khớp đúng trường hợp $\phi\approx0$.
 
 \noidung{Mô hình AR(p) và hệ Yule--Walker}
 \tp{Nội dung lý thuyết cần kiểm chứng} Kết quả \ndlk{2.1.2(b)} nói rằng AR$(p)$ nhân quả khi mọi nghiệm của $\phi(z)$ nằm ngoài vòng tròn đơn vị và các hệ số thỏa hệ Yule--Walker $\Gamma_p\boldsymbol\phi=\boldsymbol\gamma_p$; khi dùng mẫu số $n$, mô hình khớp bằng Yule--Walker luôn nhân quả.
-\tp{Cách triển khai} Nội dung này dùng dữ liệu thực của LY và HU, còn DR không dùng vì $\hat\phi\approx0$. Ta tự giải hệ Yule--Walker cho LY với $p=2$ và $p=11$ và cho HU với $p=2$, rồi so với \texttt{statsmodels}, kiểm tra phần dư của hệ phương trình và môđun nhỏ nhất của các nghiệm.
+\tp{Cách triển khai} Nội dung này dùng dữ liệu thực của LY, HU và DR. Ta tự giải hệ Yule--Walker cho LY với $p=2$ và $p=11$, cho HU và DR với $p=2$, rồi so với \texttt{statsmodels}, kiểm tra phần dư của hệ phương trình và môđun nhỏ nhất của các nghiệm.
 \tp{Mã lệnh Python}
 \begin{codeblock}
-for ten, p in (("LY", 2), ("LY", 11), ("HU", 2)):
+for ten, p in (("LY", 2), ("LY", 11), ("HU", 2), ("DR", 2)):
     y = Z[ten]
     phi, s2 = R.yule_walker_manual(y, p)                    # giai Gamma phi = gamma
     phi_tv, _ = yule_walker(y, order=p, method="mle")       # statsmodels
@@ -128,13 +131,13 @@ for ten, p in (("LY", 2), ("LY", 11), ("HU", 2)):
 \end{codeblock}
 \tp{Kết quả tính toán} Bảng~\ref{tab:tab_b11_07_yule_walker} cho nghiệm tự giải, độ chênh với thư viện và môđun nghiệm.
 \input{\tabdir/tab_b11_07_yule_walker.tex}
-\tp{Phân tích và diễn giải} Nghiệm tự giải trùng thư viện, với chênh lệch cỡ $10^{-14}$ hoặc nhỏ hơn, và thỏa hệ phương trình đến sai số máy. Cả ba mô hình đều nhân quả: môđun nghiệm nhỏ nhất là $1.178$ ở AR(2) của LY, $1.016$ ở AR(11) của LY, rất sát vòng tròn đơn vị nhưng vẫn nằm ngoài, và $1.905$ ở AR(2) của HU.
+\tp{Phân tích và diễn giải} Nghiệm tự giải trùng thư viện, với chênh lệch cỡ $10^{-14}$ hoặc nhỏ hơn, và thỏa hệ phương trình đến sai số máy. Cả bốn mô hình đều nhân quả: môđun nghiệm nhỏ nhất là $1.178$ ở AR(2) của LY, $1.016$ ở AR(11) của LY, rất sát vòng tròn đơn vị nhưng vẫn nằm ngoài, $1.905$ ở AR(2) của HU và $6.12$ ở AR(2) của DR. Với DR, $\hat\phi=(-0.0004,-0.027)$, gần như bằng $0$, nên nghiệm nằm rất xa vòng tròn đơn vị: chuỗi hầu như không có cấu trúc AR.
 
-\tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: hệ Yule--Walker được giải đúng và cả ba mô hình đều nhân quả như lý thuyết bảo đảm. Môđun $1.016$ của AR(11) cho thấy mô hình bậc cao có thể suýt chạm biên.
+\tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: hệ Yule--Walker được giải đúng và cả bốn mô hình đều nhân quả như lý thuyết bảo đảm. Môđun $1.016$ của AR(11) cho thấy mô hình bậc cao có thể suýt chạm biên.
 
 \noidung{Mô hình AR(2)}
 \tp{Nội dung lý thuyết cần kiểm chứng} Kết quả \ndlk{2.1.2(c)} nói rằng AR(2) nhân quả khi $(\phi_1,\phi_2)$ nằm trong một tam giác, và khi $\phi_1^2+4\phi_2<0$ thì nghiệm phức nên ACF dao động tắt dần với chu kỳ $2\pi/\omega$.
-\tp{Cách triển khai} Nội dung này dùng dữ liệu thực của LY. HU không dùng vì ACF giảm nhanh về gần $0$ mà không dao động rõ, nên kết quả của HU chỉ được đưa vào bảng để so sánh, còn DR vì gần nhiễu trắng. Với $\hat\phi$ của LY từ Yule--Walker, ta kiểm tra ba bất đẳng thức của tam giác, loại nghiệm, môđun nghiệm và chu kỳ tính theo hai công thức là $2\pi/\omega$ và $2\pi/|\arg z|$.
+\tp{Cách triển khai} Với DR, ta khớp thêm AR(2) và xét cả môđun nghiệm lẫn mức ý nghĩa của các hệ số. Với $\hat\phi$ của LY từ Yule--Walker và của HU từ cực đại hợp lý có xu thế, ta kiểm tra ba bất đẳng thức của tam giác, loại nghiệm, môđun nghiệm và chu kỳ tính theo hai công thức là $2\pi/\omega$ và $2\pi/|\arg z|$.
 \tp{Mã lệnh Python}
 \begin{codeblock}
 p1, p2 = R.yule_walker_manual(Y["LY"], 2)[0]
@@ -146,13 +149,15 @@ chu_ky_2 = 2 * np.pi / abs(np.angle(z[0]))         # tu argument cua nghiem
 \end{codeblock}
 \tp{Kết quả tính toán} Bảng~\ref{tab:tab_b11_08_ar2_triangle} cho vị trí trong tam giác nhân quả, loại nghiệm và chu kỳ.
 \input{\tabdir/tab_b11_08_ar2_triangle.tex}
-\tp{Phân tích và diễn giải} Điểm $(1.35,-0.72)$ của LY nằm trong tam giác nhân quả và trong vùng nghiệm phức vì $\phi_1^2+4\phi_2=-1.06<0$, với môđun nghiệm $1.178$. Hai công thức cho cùng chu kỳ $9.66$ năm, khớp với ACF mẫu, vốn đạt cực đại thứ hai gần độ trễ 10 với giá trị khoảng $0.6$ và cực tiểu quanh độ trễ 5.
+\tp{Phân tích và diễn giải} Điểm $(1.35,-0.72)$ của LY nằm trong tam giác nhân quả và trong vùng nghiệm phức vì $\phi_1^2+4\phi_2=-1.06<0$, với môđun nghiệm $1.178$. Hai công thức cho cùng chu kỳ $9.66$ năm, khớp với ACF mẫu, vốn đạt cực đại thứ hai gần độ trễ 10 với giá trị khoảng $0.6$ và cực tiểu quanh độ trễ 5. HU cũng có nghiệm phức, vì $\hat\phi_1^2+4\hat\phi_2=-0.16<0$, với chu kỳ $16.8$ năm, nhưng $r=\sqrt{-\hat\phi_2}=0.54$ nên biên độ dao động chỉ còn khoảng $0.54^{16.8}\approx3\times10^{-5}$ sau một chu kỳ. Đây đúng là trường hợp lý thuyết ở \ndlk{2.1.2(c)} cho phép: có nghiệm phức nhưng dao động tắt quá nhanh để thấy trên ACF, và giải thích vì sao ACF của HU giảm nhanh về $0$ mà không đổi dấu rõ.
 
-\tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: chỉ từ hai tham số $\hat\phi_1$ và $\hat\phi_2$ ta suy ra đúng chu kỳ $9.66$ năm quan sát trên ACF, khẳng định cặp nghiệm phức của AR(2) tạo ra dao động chu kỳ.
+Hai nghiệm AR của DR có môđun 6.11, tương ứng biên độ chỉ còn 0.164 sau mỗi bước. Chu kỳ hình thức là 4.00 phiên, nhưng các hệ số có $p=0.981$ và $0.088$. Dữ liệu chỉ ủng hộ điều kiện nhân quả, chưa cho thấy chu kỳ bốn phiên.
+
+\tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: chỉ từ hai tham số $\hat\phi_1$ và $\hat\phi_2$ ta suy ra đúng chu kỳ $9.66$ năm quan sát trên ACF, khẳng định cặp nghiệm phức của AR(2) tạo ra dao động chu kỳ. HU cho thấy mặt còn lại của cùng kết quả: khi $r$ nhỏ, nghiệm phức vẫn có nhưng dao động tắt gần như ngay lập tức.
 
 \noidung{Mô hình MA(q)}
 \tp{Nội dung lý thuyết cần kiểm chứng} Kết quả \ndlk{2.1.2(d)} nói rằng ACF của MA$(q)$ bị cắt cụt sau độ trễ $q$, MA(1) có $|\rho(1)|\le\tfrac12$, và hai mô hình $(\theta,\sigma^2)$ và $(1/\theta,\theta^2\sigma^2)$ có cùng tự hiệp phương sai, trong đó chỉ mô hình với $|\theta|<1$ khả nghịch.
-\tp{Cách triển khai} Nội dung này dùng cả dữ liệu thực lẫn mô phỏng, và áp dụng cho DR và HU. LY không dùng vì ACF dạng sóng không hợp với MA hữu hạn. Trên dữ liệu thực, ta khớp MA(1), tính $\rho(1)$, kiểm tra khả nghịch và so hai tham số hóa. Mô phỏng lấy $\hat\theta$ của MA(2) khớp trên HU làm mô hình thật, với $n=98$ và $B=2000$, để kiểm tra tính cắt cụt và dải Bartlett.
+\tp{Cách triển khai} Ta khớp MA(1) cho cả ba chuỗi và so ACF ở các độ trễ sau bậc mô hình với dải Bartlett. Trên dữ liệu thực, ta khớp MA(1), tính $\rho(1)$, kiểm tra khả nghịch và so hai tham số hóa. Mô phỏng lấy $\hat\theta$ của MA(2) khớp trên HU làm mô hình thật, với $n=98$ và $B=2000$, để kiểm tra tính cắt cụt và dải Bartlett.
 \tp{Mã lệnh Python}
 \begin{codeblock}
 res = fit_arma("HU", (0, 0, 1)); th, s2 = res.maparams[0], sig2(res)
@@ -168,11 +173,13 @@ vuot = (np.abs(R_hat[:, 1:]) > A.bartlett_band(98, R.theoretical_acf([], th2, 8)
 \input{\tabdir/tab_b11_09_ma2_simulation.tex}
 \tp{Phân tích và diễn giải} Với DR, $\hat\theta\approx-0.0005$ với sai số chuẩn $0.018$, tức không khác $0$, và $\rho(1)$ trùng $\hat\rho(1)$ mẫu, nên chuỗi không có cấu trúc MA, hợp với việc nó gần nhiễu trắng. Với HU, $\hat\theta=0.782$ khả nghịch và $\rho(1)=0.485$ sát biên $0.5$; hai tham số hóa cho cùng tự hiệp phương sai, với $\gamma(0)=0.9688$ và $\gamma(1)=0.4702$. Tuy nhiên $\hat\rho(1)$ mẫu của HU là $0.76>0.5$, nên MA(1) không phù hợp với HU, và AIC $237.2$ kém hẳn AR(2). Mô phỏng MA(2) xác nhận tính cắt cụt: trung bình $\hat\rho(1)=0.635$ và $\hat\rho(2)=0.183$ gần $0.655$ và $0.212$, còn ở $h>2$ chỉ khoảng $-0.03$. Dải iid bị vượt $14$ đến $15\%$ số lần ở $h>2$, nhưng dải Bartlett chỉ bị vượt $3$ đến $5\%$, đúng như công thức Bartlett dự đoán.
 
+Với LY, MA(1) cho $\hat\theta=0.908$ và $\rho(1)=0.498$, trong khi ACF mẫu tại các độ trễ 1, 2 và 10 là 0.785, 0.340 và 0.606. Hai độ trễ sau vượt dải Bartlett $\pm0.224$. MA(1) không mô tả được dao động của LY.
+
 \tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: tính cắt cụt, giới hạn $|\rho(1)|\le\tfrac12$, tính tương đương của hai tham số hóa và vai trò của dải Bartlett đều được xác nhận. MA(1) không khớp được HU vì $\hat\rho(1)>0.5$, đó là hạn chế của mô hình chứ không mâu thuẫn với lý thuyết.
 
 \noidung{Mô hình ARMA(p, q)}
 \tp{Nội dung lý thuyết cần kiểm chứng} Kết quả \ndlk{2.1.2(e)} nói rằng ARMA nhân quả khi $\phi(z)\ne0$ và khả nghịch khi $\theta(z)\ne0$ với $|z|\le1$, ARMA(1,1) có $\gamma(0)$ và $\rho(1)$ cho bởi công thức đóng, và khi $\phi$ và $\theta$ có nghiệm chung thì mô hình thừa tham số và không nhận dạng được.
-\tp{Cách triển khai} Nội dung này dùng dữ liệu thực của HU và LY. DR không cần mô hình hóa vì gần nhiễu trắng, nhưng ta dùng nó, cùng một chuỗi nhiễu trắng mô phỏng với $n=200$, để minh họa hiện tượng thừa tham số. Ta khớp ARMA(1,1), kiểm tra nhân quả, khả nghịch và khoảng cách giữa nghiệm AR và nghiệm MA, rồi so các công thức đóng với tính toán tổng quát.
+\tp{Cách triển khai} Nội dung này dùng cả dữ liệu thực lẫn mô phỏng, và áp dụng cho HU, LY và DR. Với HU và LY, ARMA(1,1) là một mô hình hợp lý; với DR, vốn gần nhiễu trắng, khớp ARMA(1,1) là cố ý dùng mô hình thừa tham số để kiểm tra điều kiện ``không có nghiệm chung'', và một chuỗi nhiễu trắng mô phỏng với $n=200$ dùng làm đối chứng. Ta khớp ARMA(1,1), kiểm tra nhân quả, khả nghịch và khoảng cách giữa nghiệm AR và nghiệm MA, rồi so các công thức đóng với tính toán tổng quát.
 \tp{Mã lệnh Python}
 \begin{codeblock}
 res = fit_arma(ten, (1, 0, 1)); ph, th, s2 = res.arparams[0], res.maparams[0], sig2(res)
@@ -208,7 +215,7 @@ ks = stats.kstest(Q, "chi2", args=(10,))                 # so voi chi binh phuon
 \tp{Kết quả tính toán} Bảng~\ref{tab:tab_b11_04_acf_ljungbox} cho kết quả trên dữ liệu thực và Bảng~\ref{tab:tab_b11_04_simulation} cho mô phỏng.
 \input{\tabdir/tab_b11_04_acf_ljungbox.tex}
 \input{\tabdir/tab_b11_04_simulation.tex}
-\tp{Phân tích và diễn giải} HU có $9$ trong $20$ độ trễ vượt dải $\pm0.198$ và $Q_{LB}(10)=189.9$, LY có $16$ độ trễ vượt dải $\pm0.184$ và $Q_{LB}(10)=286.0$; cả hai có $p<0.0001$ nên bác bỏ mạnh giả thuyết không tự tương quan. DR chỉ có $2$ độ trễ vượt dải $\pm0.0455$, gần mức $1$ độ trễ do ngẫu nhiên, và $Q_{LB}(10)=6.37$ với $p=0.78$, tức không bác bỏ nhiễu trắng; nhưng với bình phương suất sinh lợi thì $9$ độ trễ vượt dải và $Q_{LB}(10)=110.7$ với $p<0.0001$. Giá trị tự cài đặt trùng thư viện ở mọi chuỗi. Mô phỏng nhiễu iid cho tỷ lệ vượt dải $4.35\%$ so với $5\%$ lý thuyết, trung bình $Q_{LB}$ là $10.08$ so với $10$, phương sai $22.4$ so với $20$, và kiểm định Kolmogorov--Smirnov so với $\chi^2_{10}$ cho $p=0.47$. Tỷ lệ bác bỏ ở mức $5\%$ là $6.15\%$, cao hơn khoảng $2.3$ lần sai số Monte Carlo $0.005$, tức hơi tự do nhưng vẫn trong dung sai $3$ MCSE.
+\tp{Phân tích và diễn giải} HU có $9$ trong $20$ độ trễ vượt dải $\pm0.198$ và $Q_{LB}(10)=189.9$, LY có $16$ độ trễ vượt dải $\pm0.184$ và $Q_{LB}(10)=286.0$; cả hai có $p<0.0001$ nên bác bỏ mạnh giả thuyết không tự tương quan. DR chỉ có $2$ độ trễ vượt dải $\pm0.0455$, gần mức $1$ độ trễ do ngẫu nhiên, và $Q_{LB}(10)=6.37$ với $p=0.78$, tức không bác bỏ nhiễu trắng; nhưng với bình phương suất sinh lợi thì $9$ độ trễ vượt dải và $Q_{LB}(10)=110.7$ với $p<0.0001$. Giá trị tự cài đặt trùng thư viện ở mọi chuỗi. Mô phỏng nhiễu iid cho tỷ lệ vượt dải $4.35\%$, thấp hơn mức tiệm cận $5\%$ khoảng $6$ MCSE nhưng trùng mức mẫu hữu hạn $4.36\%$, tính từ $\E\hat\rho(h)\approx-1/n$ và $\Var\hat\rho(h)\approx(n-h)/\{n(n+2)\}$ với $n=200$: ở mẫu hữu hạn, dải $\pm1.96/\sqrt n$ hơi rộng nên ít bị vượt hơn $5\%$. Trung bình $Q_{LB}$ là $10.08$ so với $10$, lệch $0.7$ MCSE, phương sai $22.4$ so với $20$, và kiểm định Kolmogorov--Smirnov so với $\chi^2_{10}$ cho $p=0.47$. Tỷ lệ bác bỏ ở mức $5\%$ là $6.15\%$, cao hơn khoảng $2.3$ lần sai số Monte Carlo $0.005$, tức hơi tự do nhưng vẫn trong dung sai $3$ MCSE.
 
 \tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: mô phỏng khớp phân phối lý thuyết trong dung sai, và trên dữ liệu thực các công cụ phân biệt đúng chuỗi có cấu trúc là HU và LY với chuỗi gần nhiễu trắng là DR. Dải iid chỉ đúng với nhiễu iid, vì DR không tự tương quan nhưng bình phương của nó thì có.
 
@@ -226,13 +233,13 @@ kt2 = a[2] - (rho[2] - rho[1] ** 2) / (1 - rho[1] ** 2)       # cong thuc alpha(
 \end{codeblock}
 \tp{Kết quả tính toán} Bảng~\ref{tab:tab_b11_11_pacf} cho sai khác với thư viện, các độ trễ vượt dải và bậc AR gợi ý.
 \input{\tabdir/tab_b11_11_pacf.tex}
-\tp{Phân tích và diễn giải} Đệ quy tự cài đặt trùng \texttt{statsmodels} đến $10^{-16}$ và hai công thức đầu đúng chính xác. HU và LY có PACF mạnh ở độ trễ 1 và 2, với $\hat\alpha(2)\approx-0.7$ ở LY, tức dạng AR(2); HU chỉ còn độ trễ 10 vượt dải nhẹ, còn LY có thêm các độ trễ 4, 7, 10 và 11 với biên độ nhỏ hơn, trong đó độ trễ 11 khoảng $-0.3$, cho thấy cấu trúc phức tạp hơn AR(2). DR chỉ có hai độ trễ là 11 và 17 vượt dải một chút, không có dạng cắt cụt nào, hợp với nhiễu trắng.
+\tp{Phân tích và diễn giải} Đệ quy tự cài đặt trùng \texttt{statsmodels} đến $10^{-15}$ và hai công thức đầu đúng chính xác. HU và LY có PACF mạnh ở độ trễ 1 và 2, với $\hat\alpha(2)\approx-0.7$ ở LY, tức dạng AR(2); HU chỉ còn độ trễ 10 vượt dải nhẹ, còn LY có thêm các độ trễ 4, 7, 10 và 11 với biên độ nhỏ hơn, trong đó độ trễ 11 khoảng $-0.3$, cho thấy cấu trúc phức tạp hơn AR(2). DR chỉ có hai độ trễ là 11 và 17 vượt dải một chút, không có dạng cắt cụt nào, hợp với nhiễu trắng.
 
 \tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: đệ quy đúng ở độ chính xác máy và hình dạng PACF khớp tính chất cắt cụt, với HU và LY gợi ý AR(2) còn DR không có cấu trúc. Các độ trễ vượt dải rải rác ở xa đúng với mức ngẫu nhiên $5\%$ nên không nên coi là bằng chứng của bậc cao.
 
 \noidung{Ước lượng tham số}
 \tp{Nội dung lý thuyết cần kiểm chứng} Kết quả \ndlk{2.1.3(c)} nói rằng với AR$(p)$ nhân quả và nhiễu iid, ước lượng Yule--Walker, bình phương tối thiểu và cực đại hợp lý có cùng phân phối tiệm cận $N(\boldsymbol\phi,\sigma^2\Gamma_p^{-1}/n)$.
-\tp{Cách triển khai} Nội dung này dùng cả dữ liệu thực lẫn mô phỏng, và áp dụng cho LY và HU; DR không có tham số AR đáng kể. Ta khớp AR(2) bằng ba phương pháp rồi so ước lượng cùng sai số chuẩn. Mô phỏng AR(2) với $\hat\phi$ của LY, $n=114$ và $B=2000$, để so độ lệch chuẩn mẫu của Yule--Walker và bình phương tối thiểu với giá trị tiệm cận.
+\tp{Cách triển khai} Nội dung này dùng cả dữ liệu thực lẫn mô phỏng, và áp dụng cho LY, HU và DR; với DR các hệ số AR gần $0$, nên đây là phép kiểm tra trên trường hợp $\phi\approx0$, khi lý thuyết cho sai số chuẩn tiệm cận $\approx1/\sqrt n$. Ta khớp AR(2) bằng ba phương pháp rồi so ước lượng cùng sai số chuẩn. Mô phỏng AR(2) với $\hat\phi$ của LY, $n=114$ và $B=2000$, để so độ lệch chuẩn mẫu của Yule--Walker và bình phương tối thiểu với giá trị tiệm cận.
 \tp{Mã lệnh Python}
 \begin{codeblock}
 phi_yw, s2_yw = R.yule_walker_manual(y, 2)                  # Yule-Walker
@@ -248,13 +255,13 @@ for _ in range(B):                                          # mo phong AR(2), n 
 \tp{Kết quả tính toán} Bảng~\ref{tab:tab_b11_12_estimators} so ba phương pháp trên dữ liệu thực và Bảng~\ref{tab:tab_b11_12_simulation} cho kết quả mô phỏng.
 \input{\tabdir/tab_b11_12_estimators.tex}
 \input{\tabdir/tab_b11_12_simulation.tex}
-\tp{Phân tích và diễn giải} LY cho ba ước lượng gần nhau, với $\hat\phi_1$ từ $1.350$ đến $1.384$, chênh khoảng nửa sai số chuẩn $\approx0.06$, và $\hat\phi_2$ từ $-0.720$ đến $-0.748$; HU cũng vậy, với $\hat\phi_1$ từ $0.971$ đến $1.005$ và sai số chuẩn $\approx0.097$. Mô phỏng cho độ lệch chuẩn mẫu từ $0.064$ đến $0.073$, gần giá trị tiệm cận $0.065$ và lệch nhiều nhất khoảng $13\%$ ở Yule--Walker với $\hat\phi_1$. Yule--Walker còn chệch rõ hơn OLS: trung bình $\hat\phi_1$ là $1.299$ so với giá trị thật $1.35$, tức chệch $-0.05$, còn OLS cho $1.334$, chệch $-0.016$.
+\tp{Phân tích và diễn giải} LY cho ba ước lượng gần nhau, với $\hat\phi_1$ từ $1.350$ đến $1.384$, chênh khoảng nửa sai số chuẩn $\approx0.06$, và $\hat\phi_2$ từ $-0.720$ đến $-0.748$; HU cũng vậy, với $\hat\phi_1$ từ $0.971$ đến $1.005$ và sai số chuẩn $\approx0.097$; ở HU, Yule--Walker và OLS chạy trên phần dư đã khử xu thế, tức ước lượng hai bước, còn cực đại hợp lý ước lượng xu thế và AR(2) đồng thời, nên ba phương pháp không ước lượng đúng cùng một mô hình và một phần chênh lệch đến từ đó. Với DR, ba phương pháp cho $\hat\phi_1$ từ $-0.0007$ đến $-0.0004$, chênh nhau chưa tới $0.02$ sai số chuẩn, và sai số chuẩn $0.0232$ trùng giá trị tiệm cận $1/\sqrt{1859}=0.0232$. Mô phỏng cho độ lệch chuẩn mẫu từ $0.064$ đến $0.073$, gần giá trị tiệm cận $0.065$ và lệch nhiều nhất khoảng $13\%$ ở Yule--Walker với $\hat\phi_1$. Yule--Walker còn chệch rõ hơn OLS: trung bình $\hat\phi_1$ là $1.299$ so với giá trị thật $1.35$, tức chệch $-0.05$, còn OLS cho $1.334$, chệch $-0.016$.
 
-\tp{Nhận xét} Kết quả \textbf{phù hợp một phần} với lý thuyết. Ba phương pháp cho ước lượng và sai số chuẩn gần nhau đúng như lý thuyết tiệm cận, nhưng ở $n=114$ Yule--Walker có độ chệch đáng kể mà lý thuyết tiệm cận không phản ánh, nên khi mẫu nhỏ, OLS hoặc cực đại hợp lý đáng tin hơn.
+\tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết ở HU và DR, và \textbf{phù hợp một phần} ở LY; theo quy tắc gộp ở \muc{7.1}, nội dung này được xếp phù hợp. Ba phương pháp cho ước lượng và sai số chuẩn gần nhau đúng như lý thuyết tiệm cận, nhưng ở LY với $n=114$ Yule--Walker có độ chệch đáng kể mà lý thuyết tiệm cận không phản ánh, nên khi mẫu nhỏ, OLS hoặc cực đại hợp lý đáng tin hơn.
 
 \noidung{Lựa chọn bậc}
 \tp{Nội dung lý thuyết cần kiểm chứng} Kết quả \ndlk{2.1.3(d)} nói rằng AIC $=-2\hat\ell+2k$ và BIC $=-2\hat\ell+k\log n$ so sánh các mô hình khớp trên cùng dữ liệu, trong đó BIC phạt nặng hơn nên chọn mô hình gọn hơn và hai tiêu chuẩn có thể chọn bậc khác nhau.
-\tp{Cách triển khai} Nội dung này dùng dữ liệu thực của LY và HU. DR không dùng vì AIC và BIC đều chọn ARMA$(0,0)$, tức chỉ có trung bình, với AIC $5388.8$ và BIC $5399.9$ thấp hơn mọi $p,q\le2$ khác, nên không có cấu trúc để chọn bậc. Với LY, ta khớp AR$(p)$ cho $p=1,\dots,14$, chọn theo AIC và BIC, rồi đánh giá dự báo một bước cuốn chiếu giai đoạn 1915--1934 với $20$ gốc, khớp lại mỗi năm, cho AR(2), AR(11) và trung bình quá khứ. Với HU, ta so sáu mô hình sai số ARMA trong hồi quy xu thế.
+\tp{Cách triển khai} Nội dung này dùng dữ liệu thực của LY, HU và DR. Với LY, ta khớp AR$(p)$ cho $p=1,\dots,14$, chọn theo AIC và BIC như Ví dụ 5.2 của Bài 11, rồi đánh giá dự báo một bước cuốn chiếu giai đoạn 1915--1934 với $20$ gốc, khớp lại mỗi năm, cho AR(2), AR(11), AR$(p)$ chọn lại theo AIC tại mỗi gốc và trung bình quá khứ. Vì bậc 11 được chọn trên toàn bộ chuỗi, gồm cả giai đoạn đánh giá, ta chọn bậc thêm một lần chỉ trên 1821--1914 để kiểm tra rò rỉ. Với HU, ta so sáu mô hình sai số ARMA trong hồi quy xu thế. Với DR, ta khớp lưới ARMA$(p,q)$ với $p,q\le2$.
 \tp{Mã lệnh Python}
 \begin{codeblock}
 fits = {p: ARIMA(Y["LY"], order=(p, 0, 0)).fit() for p in range(1, 15)}
@@ -265,13 +272,14 @@ for ten, ff in cac_mo_hinh.items():           # AR(2), AR(11), trung binh qua kh
     a, f = E.rolling_origin_forecast(Y["LY"], ff, t0, 1)
     ket_qua.append({"mo_hinh": ten, "RMSE": E.rmse(a, f), "MAE": E.mae(a, f)})
 \end{codeblock}
-\tp{Kết quả tính toán} Hình~\ref{fig:fig_b11_13_ic_ly} vẽ AIC và BIC của LY theo bậc, Bảng~\ref{tab:tab_b11_13_ly_rolling} cho sai số dự báo cuốn chiếu của LY và Bảng~\ref{tab:tab_b11_13_hu_models} so các mô hình của HU.
+\tp{Kết quả tính toán} Hình~\ref{fig:fig_b11_13_ic_ly} vẽ AIC và BIC của LY theo bậc, Bảng~\ref{tab:tab_b11_13_ly_rolling} cho sai số dự báo cuốn chiếu của LY, Bảng~\ref{tab:tab_b11_13_hu_models} so các mô hình của HU và Bảng~\ref{tab:tab_b11_13_dr_grid} cho lưới của DR.
 \figx{fig_b11_13_ic_ly}{LY: AIC và BIC, trừ giá trị nhỏ nhất, theo bậc AR; dấu sao đánh dấu bậc được chọn}
 \input{\tabdir/tab_b11_13_ly_rolling.tex}
 \input{\tabdir/tab_b11_13_hu_models.tex}
-\tp{Phân tích và diễn giải} Với LY, AIC chọn $p=11$ với AIC $-24.0$, còn BIC chọn $p=2$ với BIC $5.9$, đúng xu hướng BIC chọn mô hình gọn hơn; cả hai đều khác xa $p=1$ với AIC $84.1$. Về dự báo một bước, AR(11) cho sai số nhỏ nhất, RMSE $0.203$ và MAE $0.152$, tốt hơn AR(2) với $0.234$ và $0.189$, và hơn hẳn trung bình quá khứ với RMSE $0.544$; như vậy bậc AIC chọn cũng dự báo ngoài mẫu tốt hơn, nhưng chỉ dựa trên $20$ gốc nên không nên khái quát. Với HU, AR(2) và ARMA(1,1) cùng đạt AIC $212.4$ và BIC $225.3$, tốt nhất trong sáu mô hình; AR(3), AR(1) và MA(2) kém hơn với AIC $214.0$, $218.5$ và $219.8$, còn MA(1) kém nhất với $237.2$. Phần dư của AR(2) và ARMA(1,1) giống nhiễu trắng, với $p=0.86$ và $0.88$ ở $Q_{LB}(10)$, còn MA(1) bị bác bỏ với $p=0.0002$.
+\input{\tabdir/tab_b11_13_dr_grid.tex}
+\tp{Phân tích và diễn giải} Với LY, AIC chọn $p=11$ với AIC $-24.0$, còn BIC chọn $p=2$ với BIC $5.9$, đúng xu hướng BIC chọn mô hình gọn hơn; cả hai đều khác xa $p=1$ với AIC $84.1$. Về dự báo một bước, AR(11) cho sai số nhỏ nhất, RMSE $0.203$ và MAE $0.152$, tốt hơn AR(2) với $0.234$ và $0.189$, và hơn hẳn trung bình quá khứ với RMSE $0.544$. Tuy nhiên bậc 11 được chọn trên toàn bộ 1821--1934, gồm cả giai đoạn đánh giá, điều \ndlk{2.3.3(b)} dặn tránh, nên so sánh này hơi lạc quan cho AR(11). Khi chỉ dùng 1821--1914, AIC chọn $p=12$ và BIC vẫn chọn $p=2$; khi chọn lại bậc theo AIC tại mỗi gốc, RMSE là $0.209$ và MAE $0.165$, kém AR(11) cố định một chút nhưng vẫn tốt hơn rõ AR(2). Như vậy lợi thế của bậc cao vẫn đứng vững khi bỏ rò rỉ, dù chỉ dựa trên $20$ gốc nên không nên khái quát. Với HU, AR(2) và ARMA(1,1) cùng đạt AIC $212.4$ và BIC $225.3$, tốt nhất trong sáu mô hình; AR(3), AR(1) và MA(2) kém hơn với AIC $214.0$, $218.5$ và $219.8$, còn MA(1) kém nhất với $237.2$. Phần dư của AR(2) và ARMA(1,1) giống nhiễu trắng, với $p=0.86$ và $0.88$ ở $Q_{LB}(10)$, còn MA(1) bị bác bỏ với $p=0.0002$. Với DR, AIC và BIC cùng chọn ARMA$(0,0)$, tức chỉ có trung bình, với AIC $5388.8$ và BIC $5399.9$ thấp hơn mọi lựa chọn $p,q\le2$ khác, đúng với một chuỗi gần nhiễu trắng; khoảng cách tới mô hình tốt thứ hai là $2.0$ theo AIC nhưng $7.5$ theo BIC, vì BIC phạt mỗi tham số nặng hơn.
 
-\tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: hai tiêu chuẩn cho kết quả đúng như lý thuyết mô tả, vì BIC gọn hơn AIC khi hai tiêu chuẩn khác nhau, như $p=2$ so với $11$ ở LY, và bậc được chọn không phải bậc ``thật''. Ở HU, hai mô hình tương đương cho thấy AIC và BIC chỉ phân biệt được khi có khác biệt đáng kể.
+\tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: hai tiêu chuẩn cho kết quả đúng như lý thuyết mô tả, vì BIC gọn hơn AIC khi hai tiêu chuẩn khác nhau, như $p=2$ so với $11$ ở LY, và bậc được chọn không phải bậc ``thật''. Ở HU, hai mô hình tương đương cho thấy AIC và BIC chỉ phân biệt được khi có khác biệt đáng kể, còn ở DR cả hai tiêu chuẩn cùng chọn đúng mô hình không có cấu trúc.
 
 \noidung{Chẩn đoán phần dư}
 \tp{Nội dung lý thuyết cần kiểm chứng} Kết quả \ndlk{2.1.3(e)} nói rằng nếu mô hình ARMA phù hợp thì phần dư giống nhiễu trắng: ACF nằm trong dải, $Q_{LB}(H)$ so với $\chi^2_{H-p-q}$ không bác bỏ, và ACF của bình phương phần dư không có cấu trúc.
@@ -284,8 +292,9 @@ q_tv, p_tv = lb(e, H, df)                         # so voi thu vien
 q2, p2 = A.ljung_box_manual(e ** 2, H, 0)         # phan du binh phuong: H bac tu do
 kt = R.causal_invertible_check(res.arparams, res.maparams)
 \end{codeblock}
-\tp{Kết quả tính toán} Bảng~\ref{tab:tab_b11_14_residual_diagnostics} tổng hợp các kiểm định phần dư của bốn mô hình.
+\tp{Kết quả tính toán} Bảng~\ref{tab:tab_b11_14_residual_diagnostics} tổng hợp các kiểm định phần dư của bốn mô hình, còn Hình~\ref{fig:fig_b11_14_residual_acf} vẽ ACF của phần dư và của phần dư bình phương.
 \input{\tabdir/tab_b11_14_residual_diagnostics.tex}
-\tp{Phân tích và diễn giải} Với HU, AR(2) có xu thế cho $Q_{LB}(10)=3.95$ với $p=0.86$ và phần dư bình phương có $p=0.17$: phần dư giống nhiễu trắng và không còn dấu hiệu phương sai thay đổi. Với LY, AR(2) bị bác bỏ vì $Q_{LB}(20)=35.2$ với $p=0.009$, còn AR(11) đạt với $Q_{LB}(20)=7.18$ và $p=0.62$, khớp nhận xét ở \mucnd{4.1(d)} rằng AR(2) bắt được chu kỳ nhưng chưa đủ. Với DR, mô hình chỉ có trung bình cho phần dư là nhiễu trắng với $p=0.78$, nhưng phần dư bình phương còn tự tương quan mạnh với $Q_{LB}(10)=108.7$ và $p<0.0001$: mô hình cho trung bình là đủ, còn mô hình cho phương sai thì chưa, và cần các mô hình ngoài phạm vi báo cáo như GARCH.
+\figx{fig_b11_14_residual_acf}{ACF của phần dư (cột trái) và của phần dư bình phương (cột phải): (a) HU, AR(2) có xu thế; (b) LY, AR(2); (c) LY, AR(11); (d) DR, chỉ có trung bình}
+\tp{Phân tích và diễn giải} Với HU, AR(2) có xu thế cho $Q_{LB}(10)=3.95$ với $p=0.86$ và phần dư bình phương có $p=0.17$: phần dư phù hợp với nhiễu trắng, và ngoài một gai ở độ trễ 9 của phần dư bình phương thì chưa thấy dấu hiệu phương sai thay đổi. Với LY, AR(2) bị bác bỏ vì $Q_{LB}(20)=35.2$ với $p=0.009$, còn AR(11) đạt với $Q_{LB}(20)=7.18$ và $p=0.62$, khớp nhận xét ở \mucnd{4.1(d)} rằng AR(2) bắt được chu kỳ nhưng chưa đủ. Với DR, mô hình chỉ có trung bình cho phần dư là nhiễu trắng với $p=0.78$, nhưng phần dư bình phương còn tự tương quan mạnh với $Q_{LB}(10)=108.7$ và $p<0.0001$. Con số này khác $110.7$ ở \ndlk{4.3(a)} vì ở đó là bình phương suất sinh lợi chưa trừ trung bình, còn ở đây là bình phương phần dư sau khi trừ trung bình. Như vậy chưa phát hiện tự tương quan còn lại trong trung bình ở $10$ độ trễ đầu, nhưng phương sai thì chưa được mô hình hóa, và cần các mô hình ngoài phạm vi báo cáo như GARCH. Hình~\ref{fig:fig_b11_14_residual_acf} cho thấy cùng các kết luận đó qua ACF của phần dư và của phần dư bình phương.
 
 \tp{Nhận xét} Kết quả \textbf{phù hợp} với lý thuyết: bộ công cụ chẩn đoán làm đúng việc lý thuyết mô tả, vì xác nhận HU, phát hiện AR(2) chưa đủ cho LY và phát hiện cụm biến động còn lại ở DR dù phần dư không tự tương quan. Các giá trị tự cài đặt trùng thư viện, với chênh lệch tối đa $10^{-15}$.

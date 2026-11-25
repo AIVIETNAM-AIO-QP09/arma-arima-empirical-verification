@@ -4,7 +4,7 @@
 \begin{adjustbox}{max width=\linewidth}
 \begin{tabular}{|l|l|l|l|r|l|r|c|r|}
 \toprule
-bộ & Chuỗi & Kiểm định & Hồi quy & Thống kê & p-value & Tới hạn 5\% & Bác bỏ H$_{0}$ (5\%) & độ trễ \\
+Bộ & Chuỗi & Kiểm định & Hồi quy & Thống kê & p-value & Tới hạn 5\% & Bác bỏ H$_{0}$ (5\%) & Độ trễ \\
 \midrule
 NI & y & ADF & hằng số & -4.049 & 0.0012 & -2.892 & Có & 1 \\
 NI & y & ADF & hằng số + xu thế & -4.791 & 0.0005 & -3.456 & Có & 1 \\
@@ -26,5 +26,5 @@ DP & $\nabla$y & ADF & hằng số & -43.06 & $<10^{-4}$ & -2.863 & Có & 0 \\
 DP & $\nabla$y & KPSS & hằng số & 0.4372 & 0.061 & 0.463 & Không & 9 \\
 \bottomrule
 \end{tabular}
-\end{adjustbox}\par\vspace{2pt}{\footnotesize\textit{Ghi chú:} p-value của KPSS được nội suy từ bảng nên bị chặn trong $[0.01,0.10]$; "$\le0.01$" và "$\ge0.10$" nghĩa là ngoài khoảng bảng. Cột độ trễ: số hạng $\nabla Y_{t-i}$ của ADF (chọn theo AIC) hoặc độ trễ Newey--West của KPSS (`nlags='auto'`).}
+\end{adjustbox}\par\vspace{2pt}{\footnotesize\textit{Ghi chú:} p-value của KPSS được nội suy từ bảng nên bị chặn trong $[0.01,0.10]$; ``$\le0.01$'' và ``$\ge0.10$'' nghĩa là ngoài khoảng bảng. Cột độ trễ: số hạng $\nabla Y_{t-i}$ của ADF (chọn theo AIC) hoặc độ trễ Newey--West của KPSS (\texttt{nlags='auto'}).}
 \end{table}

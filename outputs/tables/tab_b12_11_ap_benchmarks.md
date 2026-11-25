@@ -3,9 +3,10 @@
 | Phương pháp | RMSE | MAE | MAPE (%) | MASE |
 |---|---|---|---|---|
 | airline | 43.18 | 39.44 | 8.515 | 1.38 |
+| airline (trung bình) | 40.63 | 37.14 | 8.025 | 1.3 |
 | naive mùa vụ | 76.99 | 71.25 | 15.52 | 2.494 |
 | trôi | 115.7 | 91.62 | 18.41 | 3.206 |
 | naive | 137.3 | 115.2 | 23.58 | 4.033 |
 | trung bình | 219.4 | 206.3 | 44.23 | 7.221 |
 
-*Ghi chú:* MASE chia cho MAE của naive mùa vụ ($s=12$) trong mẫu huấn luyện.
+*Ghi chú:* MASE chia cho MAE của naive mùa vụ ($s=12$) trong mẫu huấn luyện. ``airline'' là trung vị $e^{m}$, ``airline (trung bình)'' là $e^{m+s^2/2}$.

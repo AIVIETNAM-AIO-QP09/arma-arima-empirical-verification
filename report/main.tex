@@ -2,8 +2,9 @@
 % Biên dịch: pdfLaTeX hai lượt: VS Code (LaTeX Workshop, tự biên dịch khi lưu), hoặc python scripts/04_build_report.py, hoặc Overleaf (pdfLaTeX).
 % Khối mã: \begin{codeblock} ... \end{codeblock} (chỉ ký tự ASCII và chữ Việt, không dùng chữ Hy Lạp trong mã).
 % Lời cảm ơn, lời nói đầu, danh mục ký hiệu: front/; các chương: chapters/; tài liệu tham khảo, phụ lục: back/. Chương 4, 5, 6 có hình/bảng chèn tự động từ outputs/.
-\documentclass[11pt]{article}
-\usepackage[includeheadfoot,textheight=24.6cm,textwidth=18.5cm,headheight=28pt]{geometry}
+\documentclass[11pt,a4paper]{article}
+\usepackage[a4paper,includeheadfoot,textheight=26.2cm,textwidth=18cm,headheight=28pt]{geometry}
+\setlength{\emergencystretch}{2em}  % chỉ dùng khi một đoạn không ngắt dòng được, tránh dòng tràn lề
 \usepackage[vietnamese]{babel}
 \usepackage{amsmath,amssymb}
 \usepackage{xcolor,fancyhdr,indentfirst,array,graphicx,setspace,titlesec,tikz,float,booktabs,longtable,tabularx,adjustbox,caption,enumitem,needspace,placeins,xurl}
@@ -16,6 +17,7 @@
 
 % --- đường dẫn hình/bảng (script 06 đổi ../figures, ../tables thành figures, tables cho Overleaf) ---
 \newcommand{\figdir}{../outputs/figures}
+\newcommand{\notebookdir}{..}
 \newcommand{\tabdir}{../outputs/tables}
 
 % --- ký hiệu và macro dùng chung ---
@@ -59,6 +61,7 @@
 \titleformat{\section}{\normalfont\fontsize{13}{16}\selectfont\bfseries}{CHƯƠNG \thesection.}{0.6em}{\hypertarget{ch:\thesection}{}}
 \titleformat{name=\section,numberless}{\normalfont\fontsize{13}{16}\selectfont\bfseries}{}{0pt}{}
 \titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{0.6em}{\hypertarget{mc:\thesubsection}{}}
+\titleformat{name=\subsection,numberless}{\normalfont\large\bfseries}{}{0pt}{}
 \titleformat{\subsubsection}{\normalfont\normalsize\bfseries\itshape}{\thesubsubsection}{0.6em}{\hypertarget{mc:\thesubsubsection}{}}
 \titlespacing*{\section}{0pt}{0pt}{14pt}
 \titlespacing*{\subsection}{0pt}{14pt}{6pt}
@@ -99,14 +102,16 @@
 \begin{document}
 
 % ================= TRANG BÌA =================
-% Toàn bộ nội dung bìa nằm trong một khung adjustbox tự co lại nếu cao hơn trang, nên không bao giờ tràn sang trang sau.
+% Khung viền và khối nội dung cùng lấy tâm trang giấy A4 làm mốc.
 \AddToHookNext{shipout/background}{
 	\begin{tikzpicture}[remember picture,overlay]
 		\node at (current page.center) {\includegraphics[width=19.4cm]{assets/khung_bia.png}};
 	\end{tikzpicture}
 }
+\hypersetup{pageanchor=false}
 \thispagestyle{empty}
-\begin{adjustbox}{max totalsize={\textwidth}{\textheight},center}
+\noindent\begin{tikzpicture}[remember picture,overlay]
+\node[inner sep=0pt,outer sep=0pt] at (current page.center) {%
 \begin{minipage}{16.4cm}
 \centering
 \textbf{\large ĐẠI HỌC QUỐC GIA THÀNH PHỐ HỒ CHÍ MINH\\
@@ -132,7 +137,6 @@
 	\textbf{Học kỳ:} & 261 \\
 	\textbf{Lớp:} & L01 \\
 	\textbf{Nhóm:} & 7 \\
-	\textbf{Cặp bài giảng:} & Bài 11 và Bài 12 \\
 	\textbf{Giảng viên:} & TS. Nguyễn Tiến Dũng \\
 \end{tabular}
 
@@ -156,13 +160,15 @@
 	\hline
 \end{tabular}
 
-\vspace{0.6cm}
+\vspace{0.9cm}
 \large\textbf{\textit{Thành phố Hồ Chí Minh, tháng 11 năm 2026}}
-\end{minipage}
-\end{adjustbox}
+\end{minipage}%
+};
+\end{tikzpicture}\par
 \newpage
 
 % ================= ĐẦU/CHÂN TRANG VÀ MỤC LỤC =================
+\hypersetup{pageanchor=true}
 \pagestyle{fancy}
 \renewcommand{\footrulewidth}{1pt}
 \fancyhead{}

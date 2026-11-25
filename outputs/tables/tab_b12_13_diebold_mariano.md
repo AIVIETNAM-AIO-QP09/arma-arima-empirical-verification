@@ -1,6 +1,6 @@
 **Kiểm định Diebold–Mariano trên sai số 1 bước của gốc cuốn chiếu**
 
-| so sánh | Hàm mất mát | số gốc m | DM | p (t_{m−1}) |
+| So sánh | Hàm mất mát | Số gốc m | DM | p (t_{m−1}) |
 |---|---|---|---|---|
 | AP: airline − naive mùa vụ | bình phương | 24 | -7.491 | <0.0001 |
 | AP: airline − naive mùa vụ | tuyệt đối | 24 | -8.785 | <0.0001 |

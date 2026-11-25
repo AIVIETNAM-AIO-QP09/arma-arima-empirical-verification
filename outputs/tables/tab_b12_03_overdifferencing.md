@@ -1,6 +1,6 @@
 **Sai phân thừa: $\hat\rho(1)$, phương sai dài hạn và $\hat\theta$ MA(1)**
 
-| bộ | Chuỗi | n | sd | ρ̂(1) | Phương sai dài hạn Bartlett | θ̂ MA(1) | SE(θ̂) |
+| Bộ | Chuỗi | n | sd | ρ̂(1) | Phương sai dài hạn Bartlett | θ̂ MA(1) | SE(θ̂) |
 |---|---|---|---|---|---|---|---|
 | NI | ∇y | 99 | 168.1 | -0.402 | 10252 | -0.7646 | 0.0744 |
 | NI | ∇²y (quá mức) | 98 | 282.9 | -0.6264 | 15391 | -0.9988 | 2.096 |

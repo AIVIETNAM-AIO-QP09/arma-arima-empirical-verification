@@ -18,7 +18,8 @@ def main() -> None:
     if not shutil.which("pdflatex"):
         sys.exit("Chưa có pdflatex. Cài MiKTeX (winget install MiKTeX.MiKTeX) hoặc dùng Overleaf (scripts/06_make_overleaf_zip.py).")
     (REPORT_DIR / "build").mkdir(exist_ok=True)
-    cmd = ["pdflatex", "-interaction=nonstopmode", "-file-line-error", "-output-directory=build", "main.tex"]
+    subprocess.run([sys.executable, ROOT / "scripts/07_make_notebook.py"], check=True)
+    cmd = ["pdflatex", "-interaction=nonstopmode", "-halt-on-error", "-file-line-error", "-output-directory=build", "main.tex"]
     for _ in range(2):
         subprocess.run(cmd, cwd=REPORT_DIR, check=True)
     shutil.copy2(REPORT_DIR / "build" / "main.pdf", REPORT_DIR / PDF_NAME)

@@ -1,0 +1,22 @@
+\begin{table}[H]
+\centering\footnotesize
+\caption{Ước lượng Bartlett của phương sai dài hạn theo số độ trễ $K$, chuỗi sai phân một lần và sai phân thừa}\label{tab:tab_b12_03_bartlett_by_k}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{|l|r|r|r|r|}
+\toprule
+Bộ & K & Bartlett của $\nabla$y & Bartlett của $\nabla^{2}$y & Giá trị đóng $2(\hat\gamma_X(0)-\hat\gamma_X(K+1))/(K+1)$ \\
+\midrule
+NI & 3 & 10252 & 15391 & 15221 \\
+NI & 7 & 4664.9 & 5440.6 & 5378.6 \\
+NI & 15 & 2660.7 & 3234.5 & 3171.1 \\
+NI & 31 & 1574.4 & 1629.6 & 1580.6 \\
+NI & 63 & 718.6 & 833.8 & 799.3 \\
+DP & 3 & $1.026\times10^{-4}$ & $5.331\times10^{-5}$ & $5.301\times10^{-5}$ \\
+DP & 7 & $9.717\times10^{-5}$ & $2.719\times10^{-5}$ & $2.674\times10^{-5}$ \\
+DP & 15 & $9.885\times10^{-5}$ & $1.358\times10^{-5}$ & $1.313\times10^{-5}$ \\
+DP & 31 & $9.801\times10^{-5}$ & $6.9\times10^{-6}$ & $6.531\times10^{-6}$ \\
+DP & 63 & $1.006\times10^{-4}$ & $3.493\times10^{-6}$ & $3.196\times10^{-6}$ \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}\par\vspace{2pt}{\footnotesize\textit{Ghi chú:} $X=\nabla y$. Cột cuối là giá trị đóng của tổng Bartlett $K$ độ trễ của $\nabla X$ khi thay $\gamma_X$ bằng $\hat\gamma_X$; nó giảm như $1/(K+1)$.}
+\end{table}

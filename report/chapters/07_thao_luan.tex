@@ -2,11 +2,11 @@
 \clearpage
 \section[Thảo luận]{THẢO LUẬN}
 
-Chương này nhìn lại ba chương kiểm chứng. \Muc{7.1} xét lý thuyết đúng đến đâu, \muc{7.2} so kết quả giữa các bộ dữ liệu, \muc{7.3} chỉ ra đặc điểm dữ liệu ảnh hưởng nhiều nhất, \muc{7.4} bàn về mức độ thỏa mãn các giả thiết, và \muc{7.5} nêu những hạn chế.
+Chương này đối chiếu kết quả trên sáu chuỗi và xem xét các giả thiết ảnh hưởng đến độ tin cậy của dự báo.
 
 \subsection{Mức độ phù hợp}
 
-Bảng~\ref{tab:xeploai} xếp loại từng cặp nội dung và bộ dữ liệu theo thang đã nêu ở Bảng~\ref{tab:thangdo}, trong đó dấu ``--'' nghĩa là nội dung đó không áp dụng cho bộ dữ liệu ấy.
+Bảng~\ref{tab:xeploai} xếp loại từng cặp nội dung và bộ dữ liệu theo thang đã nêu ở Bảng~\ref{tab:thangdo}, trong đó dấu ``--'' chỉ các cặp thuộc bài giảng còn lại. Để xếp loại theo nội dung, một nội dung được tính là phù hợp khi số bộ dữ liệu xếp P nhiều hơn số bộ xếp M hoặc K; nếu số P không nhiều hơn thì nội dung đó được tính là phù hợp một phần.
 
 \begin{longtable}{|l|c|c|c|c|c|c|}
 \caption{Xếp loại mức độ phù hợp giữa thực nghiệm và lý thuyết}\label{tab:xeploai}\\
@@ -22,58 +22,58 @@ Bảng~\ref{tab:xeploai} xếp loại từng cặp nội dung và bộ dữ li�
 \endlastfoot
 \ndlk{4.1(a)} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & -- & -- & -- \\
 \ndlk{4.1(b)} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & -- & -- & -- \\
-\ndlk{4.1(c)} & \textcolor{green!45!black}{P} & -- & -- & -- & -- & -- \\
-\ndlk{4.1(d)} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & -- & -- & -- & -- \\
-\ndlk{4.2(a)} & \textcolor{orange!85!black}{M} & -- & -- & -- & -- & -- \\
-\ndlk{4.2(b)} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & -- & -- & -- & -- \\
-\ndlk{4.2(c)} & -- & \textcolor{green!45!black}{P} & -- & -- & -- & -- \\
-\ndlk{4.2(d)} & \textcolor{green!45!black}{P} & -- & \textcolor{green!45!black}{P} & -- & -- & -- \\
-\ndlk{4.2(e)} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & -- & -- & -- & -- \\
+\ndlk{4.1(c)} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & -- & -- & -- \\
+\ndlk{4.1(d)} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & -- & -- & -- \\
+\ndlk{4.2(a)} & \textcolor{orange!85!black}{M} & \textcolor{orange!85!black}{M} & \textcolor{green!45!black}{P} & -- & -- & -- \\
+\ndlk{4.2(b)} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & -- & -- & -- \\
+\ndlk{4.2(c)} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & \textcolor{orange!85!black}{M} & -- & -- & -- \\
+\ndlk{4.2(d)} & \textcolor{green!45!black}{P} & \textcolor{red!65!black}{K} & \textcolor{green!45!black}{P} & -- & -- & -- \\
+\ndlk{4.2(e)} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & -- & -- & -- \\
 \ndlk{4.3(a)} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & -- & -- & -- \\
 \ndlk{4.3(b)} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & -- & -- & -- \\
-\ndlk{4.3(c)} & \textcolor{green!45!black}{P} & \textcolor{orange!85!black}{M} & -- & -- & -- & -- \\
-\ndlk{4.3(d)} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & -- & -- & -- & -- \\
+\ndlk{4.3(c)} & \textcolor{green!45!black}{P} & \textcolor{orange!85!black}{M} & \textcolor{green!45!black}{P} & -- & -- & -- \\
+\ndlk{4.3(d)} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & -- & -- & -- \\
 \ndlk{4.3(e)} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & -- & -- & -- \\
 \ndlk{5.1(a)} & -- & -- & -- & \textcolor{orange!85!black}{M} & \textcolor{orange!85!black}{M} & \textcolor{green!45!black}{P} \\
-\ndlk{5.1(b)} & -- & -- & -- & -- & -- & \textcolor{green!45!black}{P} \\
-\ndlk{5.2(a)} & -- & -- & -- & \textcolor{green!45!black}{P} & -- & \textcolor{green!45!black}{P} \\
-\ndlk{5.2(b)} & -- & -- & -- & -- & \textcolor{green!45!black}{P} & -- \\
-\ndlk{5.3(a)} & -- & -- & -- & \textcolor{orange!85!black}{M} & -- & \textcolor{green!45!black}{P} \\
+\ndlk{5.1(b)} & -- & -- & -- & \textcolor{red!65!black}{K} & \textcolor{red!65!black}{K} & \textcolor{green!45!black}{P} \\
+\ndlk{5.2(a)} & -- & -- & -- & \textcolor{green!45!black}{P} & \textcolor{orange!85!black}{M} & \textcolor{green!45!black}{P} \\
+\ndlk{5.2(b)} & -- & -- & -- & \textcolor{orange!85!black}{M} & \textcolor{green!45!black}{P} & \textcolor{orange!85!black}{M} \\
+\ndlk{5.3(a)} & -- & -- & -- & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} \\
 \ndlk{5.3(b)} & -- & -- & -- & \textcolor{green!45!black}{P} & \textcolor{orange!85!black}{M} & \textcolor{green!45!black}{P} \\
-\ndlk{6.1(a)} & -- & -- & -- & \textcolor{green!45!black}{P} & -- & \textcolor{green!45!black}{P} \\
-\ndlk{6.1(b)} & -- & -- & -- & \textcolor{green!45!black}{P} & -- & -- \\
+\ndlk{6.1(a)} & -- & -- & -- & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} \\
+\ndlk{6.1(b)} & -- & -- & -- & \textcolor{green!45!black}{P} & \textcolor{orange!85!black}{M} & \textcolor{green!45!black}{P} \\
 \ndlk{6.2(a)} & -- & -- & -- & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} \\
-\ndlk{6.2(b)} & -- & -- & -- & -- & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} \\
+\ndlk{6.2(b)} & -- & -- & -- & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} \\
 \ndlk{6.3(a)} & -- & -- & -- & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} \\
 \ndlk{6.3(b)} & -- & -- & -- & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} \\
-\ndlk{6.3(c)} & -- & -- & -- & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & -- \\
+\ndlk{6.3(c)} & -- & -- & -- & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} \\
 \ndlk{6.3(d)} & -- & -- & -- & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} & \textcolor{green!45!black}{P} \\
 \end{longtable}
 
-{\footnotesize\textit{Chú thích:} P: phù hợp; M: phù hợp một phần; K: không phù hợp; --: không áp dụng.}
+{\footnotesize\textit{Chú thích:} P: phù hợp; M: phù hợp một phần; K: không phù hợp; --: bộ dữ liệu của bài giảng còn lại.}
 
-Trong $61$ cặp nội dung và bộ dữ liệu, $55$ cặp, tức $90\%$, phù hợp, $6$ cặp phù hợp một phần và không có cặp nào không phù hợp. Theo nội dung, $24$ trong $28$ nội dung phù hợp. Bốn nội dung còn lại phù hợp một phần là mô hình AR(1) và ước lượng tham số ở \chg{4}, cùng xu thế tất định và ngẫu nhiên và sai phân và sai phân quá mức ở \chg{5}. Kiểm định nghiệm đơn vị ở \ndlk{5.3(b)} cũng cho kết quả chung phù hợp, riêng AP chưa dứt khoát.
+Cả $28$ nội dung đều được xét trên ba bộ của bài giảng tương ứng. Trong $84$ cặp, $70$ phù hợp, $11$ phù hợp một phần và $3$ không phù hợp. Theo quy tắc gộp ở trên, $24/28$ nội dung có đa số bộ dữ liệu xếp P. Ba trường hợp xếp K là MA(1) trên LY ở \ndlk{4.2(d)} và bước ngẫu nhiên trên NI, AP ở \ndlk{5.1(b)}. Ở \ndlk{5.2(b)}, AP có mùa vụ rõ, còn NI và DP chỉ cho phép kiểm tra rồi loại chu kỳ ứng viên. Ở \ndlk{6.3(c)}, kiểm định DM trên DP chưa phân biệt được dự báo có trôi với naive ở mức $5\%$.
 
-Kết quả có hai mẫu hình chung. Thứ nhất, các kết quả mang tính công thức, như đẳng thức giữa các đại lượng, tính chất tự hiệp phương sai, phương sai sai số dự báo, trọng số $\Psi_k$ và quan hệ giữa ARIMA$(0,1,1)$ với làm trơn mũ, đều khớp đến độ chính xác máy. Thứ hai, những chỗ chưa khớp đều nằm ở kết quả phụ thuộc dữ liệu hoặc cỡ mẫu, gồm ước lượng ở mẫu nhỏ, việc một mô hình đơn giản như AR(1) có mô tả được HU hay không, và việc phân biệt các loại xu thế ở NI và AP. Nói cách khác, lý thuyết đúng, còn dữ liệu thực mới là chỗ gây ra khác biệt.
+Kết quả có hai mẫu hình chung. Thứ nhất, các kết quả mang tính công thức, như đẳng thức giữa các đại lượng, tính chất tự hiệp phương sai, phương sai sai số dự báo, trọng số $\Psi_k$ và quan hệ giữa ARIMA$(0,1,1)$ với làm trơn mũ, đều khớp với thư viện, phần lớn đến $10^{-10}$ hoặc nhỏ hơn. Thứ hai, những chỗ chưa khớp đều nằm ở kết quả phụ thuộc dữ liệu hoặc cỡ mẫu, gồm ước lượng ở mẫu nhỏ, việc một mô hình đơn giản như AR(1) có mô tả được HU và LY hay không, và việc phân biệt các loại xu thế ở NI và AP. Cần phân biệt ba loại bằng chứng: khớp thư viện cho thấy công thức được cài đặt đúng; mô phỏng cho thấy lý thuyết đúng trong thiết kế đã đặt; còn dữ liệu thực chỉ kiểm tra được một số hệ quả của giả thiết. Vì vậy các chỗ chưa khớp nên được hiểu là dữ liệu không thỏa mãn hoàn toàn giả thiết của lý thuyết, chứ không phải bằng chứng lý thuyết sai.
 
 \subsection{Khác biệt giữa các bộ dữ liệu}
 
 Hầu hết nội dung cho cùng kết luận trên mọi bộ dữ liệu áp dụng, nhưng một vài nội dung cho bức tranh khác nhau tùy chuỗi:
 \begin{itemize}[leftmargin=*,itemsep=2pt]
-\item \emph{Tính dừng và nhiễu trắng.} Như ở \ndlk{4.1(a)}, HU không dừng quanh một mức hằng số, LY dừng nhưng phụ thuộc mạnh, còn DR là nhiễu trắng nhưng không iid.
-\item \emph{Xây dựng mô hình ARMA.} Như ở \mucnd{4.3(e)}, phần dư của AR(2) là nhiễu trắng với HU và bị bác bỏ với LY, nơi AR(11) mới đủ; với DR, phần dư là nhiễu trắng nhưng bình phương của nó còn cấu trúc.
+\item \emph{Tính dừng và nhiễu trắng.} Như ở \ndlk{4.1(a)}, HU không dừng quanh một mức hằng số, LY dừng nhưng phụ thuộc mạnh, còn DR phù hợp với nhiễu trắng nhưng không iid.
+\item \emph{Xây dựng mô hình ARMA.} Như ở \mucnd{4.3(e)}, kiểm định Ljung--Box trên phần dư AR(2) chưa phát hiện tự tương quan ở HU nhưng bác bỏ ở LY. Với AR(11) của LY, kiểm định chưa phát hiện tự tương quan ở các độ trễ đã xét; với DR, phần dư phù hợp với nhiễu trắng nhưng bình phương của nó còn cấu trúc.
 \item \emph{Phân loại xu thế và nghiệm đơn vị.} Như ở \ndlk{5.1(a)} và \ndlk{5.3(b)}, DP là ví dụ sạch của xu thế ngẫu nhiên, NI cho ``cùng bác bỏ'' vì đổi mức, còn AP chưa dứt khoát vì mùa vụ và xu thế đan xen.
-\item \emph{Giá trị của mô hình dự báo.} Như ở \mucnd{6.3(a)}, airline vượt xa mọi mốc chuẩn ở AP, còn ở NI và DP, ARIMA không hơn naive hay trôi một cách có ý nghĩa; ở NI thứ hạng còn đảo theo chân trời khi đánh giá cuốn chiếu.
+\item \emph{Giá trị của mô hình dự báo.} Ở AP, airline có RMSE thấp hơn bốn mốc chuẩn đơn giản. Với NI, ARIMA giảm RMSE một bước cuốn chiếu khoảng $17\%$ so với naive, nhưng kiểm định DM cho $p=0.101$ theo mất mát bình phương. Với DP, RMSE một bước của trôi và naive gần nhau trên $360$ ngày ($1.435\%$ và $1.439\%$).
 \end{itemize}
-Lý do chung là cấu trúc của từng chuỗi. Chuỗi có cấu trúc rõ, như mùa vụ của AP hay chu kỳ của LY, cho mô hình cái để học, còn chuỗi gần bước ngẫu nhiên như DP thì mô hình phức tạp không hơn được mô hình đơn giản.
+Lý do chung là cấu trúc của từng chuỗi. Chuỗi có cấu trúc rõ, như mùa vụ của AP hay chu kỳ của LY, cho mô hình cái để học, còn chuỗi gần bước ngẫu nhiên như DP thì thêm hệ số AR hầu như không cải thiện RMSE một bước trong giai đoạn đánh giá.
 
 \subsection{Ảnh hưởng của đặc điểm dữ liệu}
 
-Năm đặc điểm tác động nhiều nhất:
+Các kết quả khác nhau theo năm đặc điểm của chuỗi.
 \begin{itemize}[leftmargin=*,itemsep=2pt]
-\item \emph{Xu thế.} Xu thế làm sai số chuẩn giả định iid quá lạc quan: ở HU, $t$ của hệ số dốc giảm từ $-6.0$ xuống $-2.65$ khi tính đến tự tương quan, như ở \ndlk{4.1(c)}. Ở DP, xu thế ngẫu nhiên khiến trừ xu thế vô ích còn sai phân hiệu quả, như ở \ndlk{5.1(a)}, và dẫn đến hồi quy giả mạo khi ghép hai chuỗi như vậy, như ở \ndlk{5.1(b)}.
-\item \emph{Đổi mức.} Lần đổi mức của NI quanh 1899 làm ADF và KPSS cùng bác bỏ, như ở \ndlk{5.3(b)}, đưa $\hat\rho(1)$ của sai phân xuống $-0.40$, gần dấu hiệu sai phân thừa, và khiến trung bình mở rộng thắng ARIMA từ chân trời $h=2$, như ở \ndlk{6.3(b)}. Mô hình $d=1$ vì vậy không nhất thiết hợp với chuỗi chỉ đổi mức một lần.
-\item \emph{Mùa vụ.} ACF của sai phân bậc một của AP vẫn lớn ở độ trễ 12 và 24, và ADF vẫn không bác bỏ sau sai phân thường, như ở \ndlk{5.1(a)} và \ndlk{5.3(b)}. Chỉ với sai phân mùa vụ và mô hình airline, ACF mới khớp lý thuyết ở các độ trễ 1, 11, 12 và 13, như ở \ndlk{5.2(b)}.
+\item \emph{Xu thế.} Ở HU, $t$ của hệ số dốc giảm từ $-6.0$ xuống $-2.65$ khi sai số được mô hình hóa bằng AR(2), như ở \ndlk{4.1(c)}: chính tự tương quan của sai số quanh xu thế, chứ không phải bản thân xu thế, làm sai số chuẩn giả định iid quá lạc quan. Ở DP, xu thế ngẫu nhiên khiến trừ xu thế vô ích còn sai phân hiệu quả, như ở \ndlk{5.1(a)}, và dẫn đến hồi quy giả mạo khi ghép hai chuỗi như vậy, như ở \ndlk{5.1(b)}.
+\item \emph{Đổi mức.} NI đổi mức quanh 1899. ADF và KPSS cùng bác bỏ trên chuỗi gốc, còn sai phân có $\hat\rho(1)=-0.40$ (\ndlk{5.3(b)} và \ndlk{5.3(a)}). Ở các chân trời $2$, $3$ và $5$ năm, trung bình mở rộng có RMSE thấp hơn ARIMA (\ndlk{6.3(b)}). Mô hình $d=1$ vì vậy không nhất thiết hợp với chuỗi chỉ đổi mức một lần.
+\item \emph{Mùa vụ.} ACF của sai phân bậc một của AP vẫn lớn ở độ trễ 12 và 24, và ADF vẫn không bác bỏ sau sai phân thường, như ở \ndlk{5.1(a)} và \ndlk{5.3(b)}. ACF sau hai phép sai phân có dạng mà mô hình airline dự đoán ở các độ trễ 1, 11, 12 và 13. Bảng~\ref{tab:tab_b12_10_seasonality_models} cũng cho thấy có thể mô tả mùa vụ bằng biến giả tháng hoặc các hạng Fourier.
 \item \emph{Cụm biến động.} Phần dư bình phương của DR còn tự tương quan rất mạnh, với $p<0.0001$ ở \ndlk{4.3(e)}, và của DP với $p=5.6\times10^{-8}$ ở \ndlk{6.3(d)}. Điều này không làm sai các kết quả về trung bình, nhưng làm kém tin cậy các kết quả dựa trên phương sai không đổi, như dải $\pm1.96/\sqrt n$ và khoảng dự báo.
 \item \emph{Dữ liệu ngắn.} Với $n$ từ $98$ đến $114$, ước lượng chệch rõ so với giá trị tiệm cận, chẳng hạn Yule--Walker chệch $-0.05$ ở \ndlk{4.3(c)} và các thống kê mẫu của AR(1) ở \ndlk{4.2(a)}. Đánh giá cuốn chiếu ở NI chỉ có $20$ gốc nên kết luận không chắc chắn.
 \end{itemize}
@@ -82,18 +82,18 @@ Năm đặc điểm tác động nhiều nhất:
 
 \begin{itemize}[leftmargin=*,itemsep=2pt]
 \item \emph{Tính dừng.} Giả thiết này không thỏa với HU vì xu thế giảm, NI vì đổi mức, và AP và DP, nên các công cụ cho chuỗi dừng như ACF và ARMA chỉ áp dụng sau khi khử xu thế hoặc sai phân.
-\item \emph{Nhiễu iid.} Giả thiết này xấp xỉ thỏa với phần dư của AR(2) ở HU và của mô hình ở NI, nhưng không thỏa với DR vì cụm biến động, và với phần dư AR(2) của LY vì còn tự tương quan. Vì vậy các dải tin cậy và khoảng dự báo dựa trên nhiễu iid chỉ đáng tin có điều kiện.
-\item \emph{Nhân quả và khả nghịch.} Giả thiết này thỏa ở mọi mô hình đã khớp, nhưng hai mô hình sát biên là AR(11) của LY với môđun nghiệm nhỏ nhất $1.016$ và airline với môđun nghiệm MA là $1.05$.
+\item \emph{Nhiễu iid.} Với phần dư của AR(2) ở HU và của mô hình ở NI, kiểm định Ljung--Box của phần dư và của phần dư bình phương chưa phát hiện vi phạm; với AP, phần dư bình phương ở ranh giới với $p=0.066$, hoặc $p=0.11$ nếu bỏ hẳn $13$ phần dư khởi tạo. Giả thiết không thỏa với DR vì cụm biến động, và với phần dư AR(2) của LY vì còn tự tương quan. Vì vậy các dải tin cậy và khoảng dự báo dựa trên nhiễu iid chỉ đáng tin có điều kiện.
+\item \emph{Nhân quả và khả nghịch.} Ở AR(11) của LY, nghiệm AR gần vòng tròn đơn vị nhất có môđun $1.016$. Hai mô hình MA(1) minh họa sai phân thừa tại Bảng~\ref{tab:tab_b12_03_overdifferencing} cũng sát biên khả nghịch, với môđun nghiệm $1/|\hat\theta|$ xấp xỉ $1.0012$ ở NI và $1.0014$ ở DP. Môđun $1.05$ của nghiệm MA mùa vụ trong mô hình airline không phải dấu hiệu sát biên: nghiệm của $1+\Theta z^{12}$ có $|z|=|\Theta|^{-1/12}$, căn bậc $12$ kéo mọi giá trị về gần $1$, trong khi $|\hat\Theta|=0.541$ còn cách biên $1$ khoảng $4.6$ sai số chuẩn.
 \item \emph{Mô hình đúng bậc.} Giả thiết này chỉ gần đúng: AIC và BIC chọn bậc khác nhau ở LY, lần lượt là $11$ và $2$, và AR(2) chưa đủ cho chu kỳ của LY.
-\item \emph{Sai số chuẩn.} Các mô phỏng dùng nhiễu chuẩn, còn trên dữ liệu thực nhóm chưa kiểm tra riêng tính chuẩn, nên khoảng dự báo dựa trên phân phối chuẩn ở \ndlk{6.2(a)} chưa được xác nhận về giả thiết này. Độ phủ mô phỏng thấp hơn $95\%$ một chút, từ $93.4\%$ đến $94.7\%$, là do tham số phải ước lượng chứ không phải do giả thiết chuẩn.
+\item \emph{Tính chuẩn của sai số.} Các mô phỏng dùng nhiễu chuẩn, còn trên dữ liệu thực nhóm chưa kiểm tra riêng tính chuẩn, nên khoảng dự báo dựa trên phân phối chuẩn ở \ndlk{6.2(a)} chưa được xác nhận về giả thiết này. Độ phủ mô phỏng thấp hơn $95\%$ một chút, từ $93.4\%$ đến $94.7\%$, dù mô phỏng dùng đúng nhiễu chuẩn, nên phù hợp với giải thích là do tham số phải ước lượng; nhóm chưa chạy mô phỏng đối chứng với tham số đã biết để khẳng định chắc chắn.
 \end{itemize}
 
 \subsection{Hạn chế}
 
 \begin{itemize}[leftmargin=*,itemsep=2pt]
 \item \emph{Cỡ mẫu và số gốc.} Ba trong sáu bộ dữ liệu chỉ có từ $98$ đến $114$ quan sát, và đánh giá cuốn chiếu ở NI chỉ có $20$ gốc, nên các so sánh ở đó có độ bất định lớn.
-\item \emph{Thiết kế mô phỏng.} Với $B$ từ $1000$ đến $2000$, sai số Monte Carlo cỡ $0.005$ đến $0.007$, và mô phỏng dùng mô hình đã khớp làm ``sự thật'' nên phụ thuộc vào mô hình đó. Ngưỡng xếp loại do nhóm đặt, gồm $3$ MCSE và mức $5\%$, nên việc phân biệt ``phù hợp'' với ``phù hợp một phần'' ở ranh giới còn chủ quan.
+\item \emph{Thiết kế mô phỏng.} Với $B$ từ $1000$ đến $5000$, sai số Monte Carlo của tỷ lệ gần $0.95$ khoảng $0.003$ đến $0.007$, và lớn hơn khi tỷ lệ gần $0.5$, và mô phỏng dùng mô hình đã khớp làm ``sự thật'' nên phụ thuộc vào mô hình đó. Ngưỡng xếp loại do nhóm đặt, gồm $3$ MCSE và mức $5\%$, nên việc phân biệt ``phù hợp'' với ``phù hợp một phần'' ở ranh giới còn chủ quan.
 \item \emph{Phần mềm và tối ưu số.} Cùng một đại lượng có thể khác nhau tùy cách tính: sai số chuẩn của hệ số ARIMA phụ thuộc cách ước lượng ma trận thông tin, AIC không so được giữa các cách sai phân khác nhau, và ước lượng cực đại hợp lý phụ thuộc thuật toán tối ưu. Nhóm đã nêu cách tính khi báo cáo, nhưng sai khác nhỏ giữa các thư viện vẫn có thể xảy ra.
 \item \emph{Phạm vi.} Báo cáo chỉ có sáu bộ dữ liệu, trong đó DR và DP đều lấy từ một chỉ số DAX. GARCH, kiểm định nghiệm đơn vị mùa vụ và kiểm tra tính chuẩn nằm ngoài phạm vi, và đồng tích hợp chỉ được xét ngắn như phần mở rộng.
-\item \emph{Phương sai dài hạn.} Ở sai phân thừa, như ở \ndlk{5.3(a)}, ước lượng phương sai dài hạn không giảm về $0$ như lý thuyết mà còn tăng ở NI. Nhóm cho rằng nguyên nhân là số độ trễ cắt cụt nhỏ nhưng chưa kiểm tra bằng các $K$ khác.
+\item \emph{Phương sai dài hạn.} Khi sai phân thừa, ước lượng Bartlett còn xa $0$ ở $K=3$ (NI) và $K=7$ (DP). Cần xét nhiều giá trị $K$ cùng với $\hat\rho(1)$ và $\hat\theta$ (\ndlk{5.3(a)}).
 \end{itemize}

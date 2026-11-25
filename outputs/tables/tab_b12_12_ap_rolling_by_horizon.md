@@ -1,6 +1,6 @@
 **AP: RMSE gốc cuốn chiếu theo chân trời $h=1,\dots,12$**
 
-| Chân trời h (tháng) | Airline | Naive mùa vụ | số gốc |
+| Chân trời h (tháng) | Airline | Naive mùa vụ | Số gốc |
 |---|---|---|---|
 | 1 | 15.33 | 41.98 | 36 |
 | 2 | 17.14 | 42.36 | 35 |

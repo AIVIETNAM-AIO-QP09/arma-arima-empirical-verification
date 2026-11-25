@@ -1,6 +1,6 @@
 **Chẩn đoán phần dư của các mô hình được chọn**
 
-| bộ | mô hình | k | AIC | BIC | σ̂² | Min\|z\| AR | Nhân quả | H | df | Q_LB phần dư | p | \|tay − thư viện\| | Q_LB phần dư² | p (phần dư²) |
+| Bộ | Mô hình | k | AIC | BIC | σ̂² | min\|z\| AR | Nhân quả | H | Df | Q_LB phần dư | p | \|tay − thư viện\| | Q_LB phần dư² | p (phần dư²) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | HU | AR(2) + xu thế | 5 | 212.4 | 225.3 | 0.4566 | 1.853 | Có | 10 | 8 | 3.945 | 0.8621 | 0 | 13.97 | 0.1745 |
 | LY | AR(2) | 4 | -5.009 | 5.935 | 0.0511 | 1.163 | Có | 20 | 18 | 35.18 | 0.0090 | 0 | 16.74 | 0.6699 |

@@ -299,7 +299,7 @@ với $\phi$, $\theta$ không có nghiệm trong $|z|\le1$ và không có nghi�
 Với dữ liệu có chu kỳ lặp lại, ta gọi $s$ là số quan sát trong một chu kỳ, bằng 12 với dữ liệu tháng và 4 với dữ liệu quý.
 \begin{kq}
 \begin{enumerate}[label=(\roman*),leftmargin=*,itemsep=1pt]
-\item \emph{Sai phân mùa vụ} $\nabla_s=1-B^s$, tức $\nabla_sY_t=Y_t-Y_{t-s}$. Ta có $\nabla_s=(1-B)(1+B+\dots+B^{s-1})$, nên $\nabla_s$ loại bỏ cả mẫu mùa vụ cố định ($m_t=m_{t-s}$) lẫn xu thế tuyến tính.
+\item \emph{Sai phân mùa vụ} $\nabla_s=1-B^s$, tức $\nabla_sY_t=Y_t-Y_{t-s}$. Ta có $\nabla_s=(1-B)(1+B+\dots+B^{s-1})$, nên $\nabla_s$ loại bỏ mẫu mùa vụ cố định ($m_t=m_{t-s}$) và biến xu thế tuyến tính $a+bt$ thành hằng số $sb$; cần thêm một lần $\nabla$ nữa thì hằng số này mới về $0$, và đó là lý do mô hình với $d=D=1$ không cần hệ số chặn.
 \item \emph{SARIMA$(p,d,q)(P,D,Q)_s$:} $\Phi(B^s)\,\phi(B)\,\nabla^d\nabla_s^DY_t=c+\Theta(B^s)\,\theta(B)\,\varepsilon_t$, với $\Phi(z)=1-\Phi_1z-\dots-\Phi_Pz^P$, $\Theta(z)=1+\Theta_1z+\dots+\Theta_Qz^Q$ và cả bốn đa thức đều có nghiệm nằm ngoài vòng tròn đơn vị.
 \item \emph{Mô hình airline} SARIMA$(0,1,1)(0,1,1)_s$: $\nabla\nabla_sY_t=(1+\theta B)(1+\Theta B^s)\varepsilon_t$. Với $s\ge3$, chuỗi $W_t=\nabla\nabla_sY_t=\varepsilon_t+\theta\varepsilon_{t-1}+\Theta\varepsilon_{t-s}+\theta\Theta\varepsilon_{t-s-1}$ là MA$(s+1)$ với $\gamma(0)=\sigma^2(1+\theta^2)(1+\Theta^2)$ và các tự tương quan chỉ khác không tại bốn độ trễ:
 \[
@@ -333,12 +333,12 @@ Sai phân thừa làm dự báo kém đi gấp đôi, sai phân thiếu có th�
 Ngoài đồ thị và ACF, quyết định lấy sai phân nên dựa trên kiểm định. Xét $Y_t=\phi Y_{t-1}+\varepsilon_t$ với $\varepsilon_t$ iid $(0,\sigma^2)$, $Y_0=0$, kiểm định $H_0:\phi=1$ với đối thuyết $|\phi|<1$.
 \begin{kq}
 \begin{enumerate}[label=(\roman*),leftmargin=*,itemsep=1pt]
-\item \emph{Dickey--Fuller} \tlk{8}: dưới $H_0$, thống kê $t$ là $\tau=(\hat\phi-1)/\mathrm{SE}(\hat\phi)$ hội tụ về $\bigl\{W(1)^2-1\bigr\}\big/\bigl\{2\bigl(\int_0^1W^2\bigr)^{1/2}\bigr\}$, với $W$ là chuyển động Brown chuẩn. Phân phối giới hạn này không phải phân phối chuẩn: nó lệch trái và nằm lệch về phía âm. Khi mô hình có hệ số chặn, hoặc hệ số chặn kèm xu thế, $W$ được thay bằng bản đã trừ trung bình hoặc đã khử xu thế. Giá trị tới hạn 5\% là $-1.95$ khi không có hệ số chặn, $-2.86$ khi có hệ số chặn và $-3.41$ khi có cả chặn lẫn xu thế.
+\item \emph{Dickey--Fuller} \tlk{8}: dưới $H_0$, thống kê $t$ là $\tau=(\hat\phi-1)/\mathrm{SE}(\hat\phi)$ hội tụ về $\bigl\{W(1)^2-1\bigr\}\big/\bigl\{2\bigl(\int_0^1W^2\bigr)^{1/2}\bigr\}$, với $W$ là chuyển động Brown chuẩn. Phân phối giới hạn này không phải phân phối chuẩn: nó không đối xứng quanh $0$ và dịch hẳn về phía âm. Khi mô hình có hệ số chặn, hoặc hệ số chặn kèm xu thế, $W$ được thay bằng bản đã trừ trung bình hoặc đã khử xu thế. Giá trị tới hạn 5\% là $-1.95$ khi không có hệ số chặn, $-2.86$ khi có hệ số chặn và $-3.41$ khi có cả chặn lẫn xu thế.
 \item \emph{Dickey--Fuller mở rộng, viết tắt ADF:} với AR$(p)$, viết $\nabla Y_t=\alpha+\beta Y_{t-1}+\sum_{i=1}^{p-1}a_i\nabla Y_{t-i}+\varepsilon_t$ với $\beta=-\phi(1)$. Giả thuyết không là $\beta=0$; thống kê $t$ của $\hat\beta$ có cùng giới hạn và giá trị tới hạn như ở (i).
 \item \emph{KPSS} \tlk{9}: giả thuyết không được đảo lại, $H_0$ là chuỗi dừng quanh một mức hoặc quanh một xu thế. Bác bỏ $H_0$ khi $\eta=n^{-2}\sum_tS_t^2/\hat v$ lớn, trong đó $S_t$ là các tổng riêng của phần dư và $\hat v$ là phương sai dài hạn của chúng.
 \end{enumerate}
 \end{kq}
-Điểm cần chú ý là phân phối giới hạn không chuẩn: dùng giá trị tới hạn $-1.645$ của phân phối chuẩn sẽ bác bỏ nghiệm đơn vị sai với tần suất cao hơn nhiều mức danh nghĩa. Vì giả thuyết không của ADF và KPSS ngược nhau nên đọc chúng cùng nhau: ADF bác bỏ và KPSS không bác bỏ thì ủng hộ $I(0)$, ngược lại ủng hộ $I(1)$, còn cùng bác bỏ hoặc cùng không bác bỏ thì dữ liệu không khớp khuôn mẫu nào, thường do điểm gãy như dịch mức. ADF không bác bỏ cũng chưa chứng minh có nghiệm đơn vị, vì kiểm định yếu khi $\phi$ gần $1$ hoặc $n$ nhỏ.
+Điểm cần chú ý là phân phối giới hạn không chuẩn: dùng giá trị tới hạn $-1.645$ của phân phối chuẩn sẽ bác bỏ nghiệm đơn vị sai với tần suất cao hơn nhiều mức danh nghĩa. Vì giả thuyết không của ADF và KPSS ngược nhau nên đọc chúng cùng nhau: ADF bác bỏ và KPSS không bác bỏ thì ủng hộ $I(0)$, ngược lại ủng hộ $I(1)$, còn khi hai kiểm định cho kết quả cùng chiều thì dữ liệu không khớp khuôn mẫu nào: cùng bác bỏ thường do điểm gãy như dịch mức, còn cùng không bác bỏ thường do mẫu ngắn hoặc kiểm định thiếu công suất. ADF không bác bỏ cũng chưa chứng minh có nghiệm đơn vị, vì kiểm định yếu khi $\phi$ gần $1$ hoặc $n$ nhỏ.
 
 \kiemchung{5.3(b)}
 
@@ -432,7 +432,7 @@ Cho $y_1,\dots,y_n$ là dữ liệu huấn luyện, $y_{n+1},\dots,y_{n+m}$ là 
 với $Q=\frac1{n-s}\sum_{t=s+1}^{n}|y_t-y_{t-s}|$ là MAE một bước của phương pháp naive mùa vụ trên mẫu huấn luyện ($s=1$ nếu không có mùa vụ).
 \end{enumerate}
 \end{kq}
-Một mô hình phức tạp chỉ có ý nghĩa khi vượt được các mốc chuẩn đơn giản. Về các thước đo \tlk{11}: MASE không phụ thuộc đơn vị, vẫn tính được khi có $y_i=0$, và $\mathrm{MASE}<1$ nghĩa là tốt hơn naive mùa vụ một bước trong mẫu huấn luyện. MAPE bất đối xứng vì dự báo thấp có $|e_i|/y_{n+i}\le1$ còn dự báo cao không bị chặn, nên cực tiểu hóa MAPE kéo dự báo xuống thấp, và MAPE không xác định khi $y_{n+i}=0$. Một con số như ``RMSE $=42$'' chỉ có nghĩa khi nêu rõ chân trời, giai đoạn, mốc chuẩn và thang đo.
+MASE độc lập với đơn vị đo. Khi $Q>0$, $\mathrm{MASE}<1$ nghĩa là MAE trên tập đánh giá thấp hơn MAE một bước của naive mùa vụ trong tập huấn luyện. MAPE không xác định nếu có $y_{n+i}=0$ và có thể ưu tiên dự báo thấp đối với dữ liệu dương \tlk{11}. Khi nêu RMSE, cần ghi chân trời, giai đoạn, mốc chuẩn và thang đo.
 \kiemchung{6.3(a)}
 
 \noidung{Gốc cuốn chiếu}
@@ -446,14 +446,14 @@ Có hai quy tắc đi kèm. Thứ nhất, không chia ngẫu nhiên dữ liệu 
 \begin{kq}
 \begin{enumerate}[label=(\roman*),leftmargin=*,itemsep=1pt]
 \item \emph{Thước đo nhắm đến đại lượng nào.} Nếu $\E Y^2<\infty$ thì $\arg\min_c\E(Y-c)^2=\E Y$; nếu $\E|Y|<\infty$ thì $\arg\min_c\E|Y-c|$ là một trung vị của $Y$. Do đó RMSE hướng đến trung bình của phân phối dự báo, còn MAE hướng đến trung vị; trên dữ liệu lệch, hai thước đo này khác nhau và có thể xếp hạng các phương pháp khác nhau.
-\item \emph{Kiểm định Diebold--Mariano} \tlk{10}: với hàm mất mát $L$, đặt $d_t=L(e_{1t})-L(e_{2t})$. Nếu $d_t$ dừng với trung bình $0$ dưới giả thuyết hai phương pháp chính xác như nhau thì $DM=\bar d\big/\sqrt{\hat v/m}\xrightarrow{d}N(0,1)$, trong đó $\hat v$ ước lượng $\sum_k\gamma_d(k)$, tức phương sai dài hạn như ở \ndlk{2.1.1(c)}.
+\item \emph{Kiểm định Diebold--Mariano} \tlk{10}: với hàm mất mát $L$, đặt $d_t=L(e_{1t})-L(e_{2t})$. Dưới giả thuyết hai phương pháp có cùng mất mát kỳ vọng, $\E d_t=0$. Nếu $d_t$ dừng, thỏa định lý giới hạn trung tâm và có phương sai dài hạn dương, thì $DM=\bar d\big/\sqrt{\hat v/m}\xrightarrow{d}N(0,1)$, trong đó $\hat v$ ước lượng $\sum_k\gamma_d(k)$, tức phương sai dài hạn như ở \ndlk{2.1.1(c)}.
 \end{enumerate}
 \end{kq}
-Việc chọn thước đo không chỉ là hình thức, vì nó quyết định đại lượng được tối ưu. Kiểm định Diebold--Mariano cần phương sai dài hạn vì các $d_t$ liên tiếp thường tự tương quan: sai số dự báo $h$ bước là MA$(h-1)$ nên $\gamma_d(k)=0$ khi $k\ge h$. Với dự báo một bước thường dùng phân phối $t$ với $m-1$ bậc tự do; kiểm định có thể không đáng tin khi hai mô hình lồng nhau và khớp trên cùng dữ liệu.
+Phương sai dài hạn tính đến tự tương quan của hiệu mất mát, vốn phụ thuộc vào cả hai phương pháp dự báo. Với dự báo một bước, bài thực hành dùng phân phối $t_{m-1}$ để tính $p$. Xấp xỉ này cần thận trọng khi so sánh hai mô hình lồng nhau.
 \kiemchung{6.3(c)}
 
 \noidung{Quy trình báo cáo dự báo}
-Từ các kết quả ở \muc{2.1}, \muc{2.2} và \muc{2.3}, quy trình xây dựng và báo cáo một mô hình dự báo ARIMA có thể rút gọn thành năm bước; khi mô hình chưa phù hợp, ta quay lại các bước trước.
+Quy trình gồm năm bước. Nếu chẩn đoán phát hiện cấu trúc còn sót trong phần dư, nhóm xem lại phép biến đổi và bậc mô hình.
 \begin{enumerate}[label=\textbf{Bước \arabic*.},leftmargin=2.2cm,itemsep=1pt]
 \item \emph{Quan sát và chia dữ liệu:} vẽ đồ thị để xem xu thế, mùa vụ, đổi mức, biến động; tách một khối kiểm định ở cuối chuỗi.
 \item \emph{Biến đổi:} lấy logarit hoặc Box--Cox khi biên độ dao động tăng theo mức; biến đổi trước khi sai phân.
@@ -461,5 +461,5 @@ Từ các kết quả ở \muc{2.1}, \muc{2.2} và \muc{2.3}, quy trình xây d�
 \item \emph{Xác định và khớp:} chọn $(p,q)$ và $(P,Q)$ từ ACF, PACF, so sánh bằng AIC hoặc BIC, chỉ giữa các mô hình cùng $d$, $D$ và cùng phép biến đổi, khớp bằng cực đại hợp lý; xác nhận mô hình nhân quả, khả nghịch và không có triệt tiêu nghiệm gần đúng.
 \item \emph{Kiểm tra và dự báo:} xem phần dư có giống nhiễu trắng không (ACF của phần dư, $Q_{LB}(H)$ với $H-p-q-P-Q$ bậc tự do, ACF của bình phương phần dư); sau đó dự báo kèm khoảng và so với mốc chuẩn.
 \end{enumerate}
-Báo cáo đầy đủ nêu: phép biến đổi và các bậc $d$, $D$ kèm bằng chứng; mô hình đã khớp với sai số chuẩn và $\hat\sigma^2$; chẩn đoán phần dư; dự báo kèm khoảng, nói rõ là trung bình hay trung vị nếu đã chuyển ngược phép biến đổi; và độ chính xác so với mốc chuẩn, tại chân trời có ý nghĩa, trên gốc cuốn chiếu, kèm lý do chọn thước đo.
+Khi báo cáo, ghi rõ căn cứ chọn $d,D$, sai số chuẩn của tham số, $\hat\sigma^2$ và chẩn đoán phần dư. Với dự báo đổi ngược thang đo, nêu rõ trung bình hay trung vị. Ghi thước đo, mốc chuẩn và chân trời của từng phép so sánh cuốn chiếu.
 \kiemchung{6.3(d)}

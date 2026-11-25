@@ -1,5 +1,5 @@
 \begin{table}[H]
-\centering\small
+\centering\footnotesize
 \caption{Sai số chuẩn của trung bình mẫu: giả định iid và có xét phụ thuộc}\label{tab:tab_b11_03_mean_se}
 \begin{adjustbox}{max width=\linewidth}
 \begin{tabular}{|l|r|r|r|}
@@ -12,9 +12,9 @@ SE iid & 0.1332 & 0.0523 & 0.0239 \\
 $\hat{\tau}$ (Bartlett) & 3.087 & 2.361 & 0.9163 \\
 SE hiệu chỉnh & 0.2328 & 0.08 & 0.0229 \\
 $\hat{\tau}$ (AR(1)) & 10.9 & 8.308 & 0.9991 \\
-SE theo Định lý 1(a), h $\le$ n/4 & 0.4064 & – & 0.0247 \\
+SE theo công thức đầy đủ, h $\le$ n/4 & 0.4064 & – & 0.0247 \\
 $n_{\mathrm{eff}}$ = n/$\hat{\tau}$ (Bartlett) & 31.75 & 48.28 & 2028.8 \\
 \bottomrule
 \end{tabular}
-\end{adjustbox}\par\vspace{2pt}{\footnotesize\textit{Ghi chú:} $\hat\tau$ Bartlett cắt cụt ở $K=\lfloor4(n/100)^{2/9}\rfloor$; công thức đầy đủ của $\Var\bar Y$ thay $\hat\gamma$ chỉ dùng độ trễ $h\le n/4$; dấu – nghĩa là công thức plug-in cho phương sai âm (ACF dao động, LY), không dùng được.}
+\end{adjustbox}\par\vspace{2pt}{\footnotesize\textit{Ghi chú:} $\hat\tau$ Bartlett cắt cụt ở $K=\lfloor4(n/100)^{2/9}\rfloor$; $\hat\tau$ Bartlett luôn không âm nên dùng được cho cả ba bộ. Cột ``SE theo công thức đầy đủ'' dùng công thức đầy đủ của $\Var\bar Y$ thay $\hat\gamma$, chỉ dùng độ trễ $h\le n/4$; cắt cụt trọng số $(1-h/n)$ làm mất tính xác định dương, nên với ACF dao động (LY) tổng này âm và được ghi dấu –.}
 \end{table}

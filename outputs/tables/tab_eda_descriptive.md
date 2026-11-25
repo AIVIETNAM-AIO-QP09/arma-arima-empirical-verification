@@ -1,6 +1,6 @@
 **Thống kê mô tả của biến được mô hình hóa trong sáu bộ dữ liệu**
 
-| Bộ dữ liệu | Biến | n | từ | Đến | Trung bình | SD | Min | Max | độ lệch | Kurtosis dư |
+| Bộ dữ liệu | Biến | n | Từ | Đến | Trung bình | SD | min | max | Độ lệch | Kurtosis dư |
 |---|---|---|---|---|---|---|---|---|---|---|
 | HU | level_ft | 98 | 1875 | 1972 | 579 | 1.318 | 576 | 581.9 | -0.1398 | -0.5008 |
 | LY | log10_count | 114 | 1821 | 1934 | 2.904 | 0.5584 | 1.591 | 3.845 | -0.362 | -0.7336 |

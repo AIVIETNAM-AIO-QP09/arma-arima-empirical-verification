@@ -3,6 +3,7 @@ pandas
 scipy
 statsmodels>=0.14
 matplotlib
+pillow
 jupyter
 ipykernel
 nbconvert

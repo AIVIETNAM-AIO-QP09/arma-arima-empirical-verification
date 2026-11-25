@@ -1,14 +1,14 @@
 \begin{table}[H]
-\centering\small
+\centering\footnotesize
 \caption{PACF mẫu: Durbin–Levinson tự cài đặt so với statsmodels, độ trễ vượt dải và bậc AR gợi ý}\label{tab:tab_b11_11_pacf}
 \begin{adjustbox}{max width=\linewidth}
 \begin{tabular}{|l|r|r|r|r|l|r|}
 \toprule
-Bộ dữ liệu & $\hat{\alpha}$(1) = $\hat{\rho}$(1) & $\hat{\alpha}$(2) – ($\hat{\rho}_{2}$–$\hat{\rho}_{1}^{2}$)/(1–$\hat{\rho}_{1}^{2}$) & Max\textbar{}PACF tay – pacf()\textbar{} & Dải $\pm$ & độ trễ vượt dải (h$\le$20) & Bậc AR gợi ý (lag cuối vượt dải $\le$ 12) \\
+Bộ dữ liệu & $\hat{\alpha}$(1) – $\hat{\rho}$(1) & $\hat{\alpha}$(2) – ($\hat{\rho}_{2}$–$\hat{\rho}_{1}^{2}$)/(1–$\hat{\rho}_{1}^{2}$) & max\textbar{}PACF tay – pacf()\textbar{} & Dải $\pm$ & Độ trễ vượt dải (h$\le$20) & Bậc AR gợi ý (số độ trễ vượt dải liên tiếp từ h = 1) \\
 \midrule
-HU (khử xu thế) & 0 & 0 & $1.665\times10^{-16}$ & 0.198 & [1, 2, 10] & 10 \\
-LY & 0 & 0 & $2.706\times10^{-15}$ & 0.1836 & [1, 2, 4, 7, 10, 11] & 11 \\
-DR & 0 & 0 & $6.939\times10^{-18}$ & 0.0455 & [11, 17] & 11 \\
+HU (khử xu thế) & 0 & 0 & $1.665\times10^{-16}$ & 0.198 & [1, 2, 10] & 2 \\
+LY & 0 & 0 & $2.706\times10^{-15}$ & 0.1836 & [1, 2, 4, 7, 10, 11] & 2 \\
+DR & 0 & 0 & $6.939\times10^{-18}$ & 0.0455 & [11, 17] & 0 \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}

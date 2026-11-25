@@ -16,10 +16,10 @@ Mục tiêu chung là kiểm chứng bằng Python các kết quả lý thuyết
 \end{enumerate}
 
 \subsection{Phạm vi}
-Nhóm chọn cặp Bài giảng 11 và 12. Bài 11, \textit{Chuỗi thời gian I: Phụ thuộc và mô hình ARMA}, được kiểm chứng ở \chg{4} trên ba bộ dữ liệu HU, LY và DR. Bài 12, \textit{Chuỗi thời gian II: ARIMA và dự báo}, được kiểm chứng ở \chg{5} và \chn{6} trên ba bộ dữ liệu NI, AP và DP. Sáu bộ dữ liệu này đều lấy từ R và được mô tả cùng nguồn gốc ở Bảng~\ref{tab:dulieu}. Chúng được ký hiệu theo Danh mục ký hiệu và chữ viết tắt ở đầu báo cáo, và các phần sau chỉ gọi bằng các ký hiệu ấy. Hai ký hiệu DR và DP cùng chỉ số DAX nhưng ở hai dạng khác nhau, vì suất sinh lợi là dạng dừng còn log giá là dạng không dừng của cùng một chuỗi.
+Nhóm chọn cặp Bài giảng 11 và 12 của học phần AS3179 \tlk{14,15}. Bài 11, \textit{Chuỗi thời gian I: Phụ thuộc và mô hình ARMA}, được kiểm chứng ở \chg{4} trên ba bộ dữ liệu HU, LY và DR. Bài 12, \textit{Chuỗi thời gian II: ARIMA và dự báo}, được kiểm chứng ở \chg{5} và \chn{6} trên ba bộ dữ liệu NI, AP và DP. Sáu bộ dữ liệu này đều lấy từ R và được mô tả cùng nguồn gốc ở Bảng~\ref{tab:dulieu}. Chúng được ký hiệu theo Danh mục ký hiệu và chữ viết tắt ở đầu báo cáo, và các phần sau chỉ gọi bằng các ký hiệu ấy. Hai ký hiệu DR và DP cùng chỉ số DAX nhưng ở hai dạng khác nhau, vì suất sinh lợi là dạng dừng còn log giá là dạng không dừng của cùng một chuỗi.
 Về phương pháp, báo cáo dùng mô hình ARMA, ARIMA và ARIMA mùa vụ cùng các công cụ đi kèm là tự tương quan, kiểm định Ljung--Box, kiểm định nghiệm đơn vị và kiểm định Diebold--Mariano. Các mô hình như GARCH, Prophet hay học máy nằm ngoài phạm vi, dù có những chuỗi, điển hình là DR, mang đặc điểm mà các mô hình đó xử lý tốt hơn.
 
-Nội dung kiểm chứng gồm 28 kết quả lý thuyết, được liệt kê cùng ký hiệu bộ dữ liệu áp dụng trong Bảng~\ref{tab:danhmuc}. Trong số đó, 20 kết quả được kiểm chứng bằng dữ liệu thực, 7 bằng cả dữ liệu thực lẫn mô phỏng và 1 chỉ bằng mô phỏng.
+Nội dung kiểm chứng gồm 28 kết quả lý thuyết, được liệt kê cùng ký hiệu bộ dữ liệu áp dụng trong Bảng~\ref{tab:danhmuc}. Trong số đó, 18 kết quả được kiểm chứng bằng dữ liệu thực, 10 bằng cả dữ liệu thực lẫn mô phỏng.
 
 {\footnotesize
 \begin{longtable}{|p{2.2cm}|p{6.6cm}|p{5.2cm}|p{2.2cm}|}
@@ -36,31 +36,31 @@ Nội dung kiểm chứng gồm 28 kết quả lý thuyết, được liệt kê
 \endlastfoot
 \ndlk{4.1(a)} & Tính dừng và nhiễu trắng & HU, LY, DR & Dữ liệu thực \\
 \ndlk{4.1(b)} & Tính chất của tự hiệp phương sai & HU, LY, DR & Dữ liệu thực \\
-\ndlk{4.1(c)} & Trung bình mẫu của chuỗi phụ thuộc & HU & Cả hai \\
-\ndlk{4.1(d)} & Quá trình tuyến tính & HU, LY & Dữ liệu thực \\
-\ndlk{4.2(a)} & Mô hình AR(1) & HU & Dữ liệu thực \\
-\ndlk{4.2(b)} & Mô hình AR(p) và hệ Yule–Walker & LY, HU & Dữ liệu thực \\
-\ndlk{4.2(c)} & Mô hình AR(2) & LY & Dữ liệu thực \\
-\ndlk{4.2(d)} & Mô hình MA(q) & DR, HU & Cả hai \\
-\ndlk{4.2(e)} & Mô hình ARMA(p, q) & HU, LY & Dữ liệu thực \\
+\ndlk{4.1(c)} & Trung bình mẫu của chuỗi phụ thuộc & HU, LY, DR & Cả hai \\
+\ndlk{4.1(d)} & Quá trình tuyến tính & HU, LY, DR & Dữ liệu thực \\
+\ndlk{4.2(a)} & Mô hình AR(1) & HU, LY, DR & Cả hai \\
+\ndlk{4.2(b)} & Mô hình AR(p) và hệ Yule–Walker & LY, HU, DR & Dữ liệu thực \\
+\ndlk{4.2(c)} & Mô hình AR(2) & HU, LY, DR & Dữ liệu thực \\
+\ndlk{4.2(d)} & Mô hình MA(q) & HU, LY, DR & Cả hai \\
+\ndlk{4.2(e)} & Mô hình ARMA(p, q) & HU, LY, DR & Cả hai \\
 \ndlk{4.3(a)} & Tự tương quan và kiểm định Ljung–Box & HU, LY, DR & Cả hai \\
 \ndlk{4.3(b)} & Tự tương quan riêng phần & HU, LY, DR & Dữ liệu thực \\
-\ndlk{4.3(c)} & Ước lượng tham số & LY, HU & Cả hai \\
-\ndlk{4.3(d)} & Lựa chọn bậc & LY, HU & Dữ liệu thực \\
+\ndlk{4.3(c)} & Ước lượng tham số & LY, HU, DR & Cả hai \\
+\ndlk{4.3(d)} & Lựa chọn bậc & LY, HU, DR & Dữ liệu thực \\
 \ndlk{4.3(e)} & Chẩn đoán phần dư & HU, LY, DR & Dữ liệu thực \\
 \ndlk{5.1(a)} & Xu thế tất định và ngẫu nhiên & NI, AP, DP & Dữ liệu thực \\
-\ndlk{5.1(b)} & Bước ngẫu nhiên & DP & Mô phỏng \\
-\ndlk{5.2(a)} & Mô hình ARIMA và độ trôi & NI, DP & Dữ liệu thực \\
-\ndlk{5.2(b)} & Mô hình ARIMA mùa vụ & AP & Dữ liệu thực \\
-\ndlk{5.3(a)} & Sai phân và sai phân quá mức & NI, DP & Cả hai \\
+\ndlk{5.1(b)} & Bước ngẫu nhiên & NI, AP, DP & Cả hai \\
+\ndlk{5.2(a)} & Mô hình ARIMA và độ trôi & NI, AP, DP & Dữ liệu thực \\
+\ndlk{5.2(b)} & Mô hình ARIMA mùa vụ & NI, AP, DP & Dữ liệu thực \\
+\ndlk{5.3(a)} & Sai phân và sai phân quá mức & NI, AP, DP & Cả hai \\
 \ndlk{5.3(b)} & Kiểm định nghiệm đơn vị & NI, AP, DP & Cả hai \\
-\ndlk{6.1(a)} & Ảnh hưởng vĩnh viễn của cú sốc & NI, DP & Dữ liệu thực \\
-\ndlk{6.1(b)} & Làm trơn mũ và mô hình mức cục bộ & NI & Dữ liệu thực \\
+\ndlk{6.1(a)} & Ảnh hưởng vĩnh viễn của cú sốc & NI, AP, DP & Dữ liệu thực \\
+\ndlk{6.1(b)} & Làm trơn mũ và mô hình mức cục bộ & NI, AP, DP & Dữ liệu thực \\
 \ndlk{6.2(a)} & Dự báo tối ưu và khoảng dự báo & NI, AP, DP & Cả hai \\
-\ndlk{6.2(b)} & Dự báo trên thang logarit & AP, DP & Dữ liệu thực \\
+\ndlk{6.2(b)} & Dự báo trên thang logarit & NI, AP, DP & Dữ liệu thực \\
 \ndlk{6.3(a)} & Mốc chuẩn và thước đo sai số & NI, AP, DP & Dữ liệu thực \\
 \ndlk{6.3(b)} & Gốc cuốn chiếu & NI, AP, DP & Dữ liệu thực \\
-\ndlk{6.3(c)} & Hàm mất mát và kiểm định Diebold–Mariano & AP, NI & Dữ liệu thực \\
+\ndlk{6.3(c)} & Hàm mất mát và kiểm định Diebold–Mariano & NI, AP, DP & Dữ liệu thực \\
 \ndlk{6.3(d)} & Quy trình báo cáo dự báo & NI, AP, DP & Dữ liệu thực \\
 \end{longtable}}
 

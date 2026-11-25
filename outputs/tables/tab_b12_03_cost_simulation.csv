@@ -1,4 +1,4 @@
-﻿Đại lượng,giá trị mô phỏng,lý thuyết
-trung bình ρ̂(1) của ∇ε (nhiễu trắng),-0.49712184596801373,-0.5
-Var(Yₙ₊₁ − Yₙ) khi Y là nhiễu trắng (σ² = 1),2.005369102924466,2.0
-"Var(Yₙ₊₁ − Ȳₙ) khi Y là bước ngẫu nhiên, n = 100",33.707299124946786,33.835
+﻿Đại lượng,giá trị mô phỏng,lý thuyết,MCSE
+trung bình ρ̂(1) của ∇ε (nhiễu trắng),-0.49712184596801373,-0.5,0.0011006497351251751
+Var(Yₙ₊₁ − Yₙ) khi Y là nhiễu trắng (σ² = 1),2.005369102924466,2.0,0.04011139339840618
+"Var(Yₙ₊₁ − Ȳₙ) khi Y là bước ngẫu nhiên, n = 100",33.707299124946786,33.835,0.674213407211061

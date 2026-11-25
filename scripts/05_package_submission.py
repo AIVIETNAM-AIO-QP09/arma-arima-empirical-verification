@@ -1,55 +1,55 @@
-"""Tạo submission/: báo cáo .tex + .pdf, mã nguồn (.py/.ipynb), dữ liệu raw + processed, và CHỈ figures.zip cho hình rời.
-
-Các mục 1–4 của đặc tả KHÔNG được nén; chỉ hình ảnh rời mới nằm trong ZIP. Các bảng của báo cáo (tables/*.tex) là mã LaTeX nên để rời,
-còn hình PNG nằm trong figures.zip (giải nén vào thư mục figures/ cạnh main.tex để biên dịch lại).
-"""
+"""Tạo các tệp nộp LMS, chỉ nén các hình và tài sản đồ họa."""
+from pathlib import Path
+import re
 import shutil
-import sys
+import tempfile
 import zipfile
 
 from as3179ts.config import FIG_DIR, ROOT, TABLE_DIR
 
-OUT = ROOT / "submission"
 REPORT = ROOT / "report"
-PDF = REPORT / "build" / "main.pdf"
-TEX_DIRS = ("front", "chapters", "back")
+OUT = ROOT / "submission"
+PDF_NAME = "BaoCao_AS3179_Nhom7.pdf"
+BOOK = "AS3179_Nhom7.ipynb"
 
 
-def copy_tree(src, dst, suffixes=None):
-    for f in src.rglob("*"):
-        if f.is_file() and "__pycache__" not in f.parts and (suffixes is None or f.suffix in suffixes) and f.name != ".gitkeep":
-            (dst / f.relative_to(src)).parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(f, dst / f.relative_to(src))
+def single_tex():
+    """Chèn chương và bảng vào một tệp nguồn; giữ đường dẫn ảnh trong figures.zip."""
+    pattern = re.compile(r"(?m)^[ \t]*\\input\{([^}]+)\}[ \t]*$")
+
+    def expand(match):
+        name = match.group(1)
+        if name.startswith(r"\tabdir/"):
+            path = TABLE_DIR / name.split("/", 1)[1]
+        else:
+            path = (REPORT / name).with_suffix(".tex")
+        return pattern.sub(expand, path.read_text(encoding="utf8").rstrip())
+
+    source = pattern.sub(expand, (REPORT / "main.tex").read_text(encoding="utf8"))
+    return source.replace("{../outputs/figures}", "{figures}").replace(
+        r"\newcommand{\notebookdir}{..}", r"\newcommand{\notebookdir}{.}")
 
 
-def main() -> None:
-    sys.stdout.reconfigure(encoding="utf-8")
-    if not PDF.exists():
-        sys.exit(f"Chưa có {PDF}; chạy scripts/04_build_report.py (hoặc biên dịch trên Overleaf rồi đặt PDF vào đó) trước.")
-    if OUT.exists():
-        shutil.rmtree(OUT)
-    OUT.mkdir()
-    # 1. .tex: main.tex + front/ chapters/ back/ (đường dẫn hình/bảng đổi về cùng thư mục) + assets/ (logo, nền bìa)
-    files = [REPORT / "main.tex"] + [f for d in TEX_DIRS for f in sorted((REPORT / d).glob("*.tex"))]
-    for f in files:
-        dst = OUT / f.relative_to(REPORT)
-        dst.parent.mkdir(parents=True, exist_ok=True)
-        text = f.read_text(encoding="utf-8").replace("{../outputs/figures}", "{figures}").replace("{../outputs/tables}", "{tables}")
-        dst.write_text(text, encoding="utf-8")
-    copy_tree(REPORT / "assets", OUT / "assets")
-    (OUT / "tables").mkdir()
-    for f in TABLE_DIR.glob("tab_*.tex"):
-        shutil.copy2(f, OUT / "tables" / f.name)
-    shutil.copy2(PDF, OUT / "report.pdf")                   # 2. .pdf
-    for name in ("src", "scripts", "notebooks", "tests"):   # 3. .py / .ipynb
-        copy_tree(ROOT / name, OUT / "code" / name, {".py", ".ipynb"})
-    for f in ("run_all.py", "pyproject.toml", "requirements.txt", "requirements-lock.txt", "README.md"):
-        shutil.copy2(ROOT / f, OUT / "code" / f)
-    copy_tree(ROOT / "data", OUT / "data")                  # 4. dữ liệu gốc + đã làm sạch (+ DATA_SOURCES.md)
-    with zipfile.ZipFile(OUT / "figures.zip", "w", zipfile.ZIP_DEFLATED) as z:  # 5. hình rời
-        for f in sorted(FIG_DIR.glob("*.png")):
-            z.write(f, f"figures/{f.name}")
-    print("Đã tạo", OUT)
+def main():
+    # Chuẩn bị đầy đủ ở thư mục tạm trước khi thay bất kỳ tệp đầu ra nào.
+    OUT.mkdir(exist_ok=True)
+    (REPORT / "build").mkdir(exist_ok=True)
+    with tempfile.TemporaryDirectory(dir=ROOT / "report/build") as tmp:
+        stage = Path(tmp)
+        (stage / "main.tex").write_text(single_tex(), encoding="utf8")
+        for src in (REPORT / PDF_NAME, ROOT / BOOK, *sorted((ROOT / "data/raw").glob("*.csv")),
+                    *sorted((ROOT / "data/processed").glob("*.csv"))):
+            shutil.copy2(src, stage / src.name)
+        with zipfile.ZipFile(stage / "figures.zip", "w", zipfile.ZIP_DEFLATED) as archive:
+            for folder, label in ((FIG_DIR, "figures"), (REPORT / "assets", "assets")):
+                for src in sorted(folder.glob("*.png")):
+                    archive.write(src, f"{label}/{src.name}")
+        extra = {p.name for p in OUT.iterdir()} - {p.name for p in stage.iterdir()}
+        if extra:
+            raise ValueError(f"Tệp ngoài gói LMS hiện tại trong {OUT}: {sorted(extra)}")
+        for path in stage.iterdir():
+            path.replace(OUT / path.name)
+    print(OUT)
 
 
 if __name__ == "__main__":

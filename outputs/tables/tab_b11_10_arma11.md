@@ -1,6 +1,6 @@
 **ARMA(1,1) khớp bằng ML: nghiệm AR/MA, công thức đóng và cài đặt tổng quát**
 
-| Bộ dữ liệu | φ̂ | θ̂ | σ̂² | Nhân quả | Khả nghịch | Min\|z\| AR | Min\|z\| MA | Khoảng cách nghiệm AR–MA | Max\|ψ tổng quát − công thức đóng\| | γ(0) công thức đóng | γ(0) = σ²Σψ² | ρ(1) công thức đóng | ρ(1) = γ(1)/γ(0) | AIC |
+| Bộ dữ liệu | φ̂ | θ̂ | σ̂² | Nhân quả | Khả nghịch | min\|z\| AR | min\|z\| MA | Khoảng cách nghiệm AR–MA | max\|ψ tổng quát − công thức đóng\| | γ(0) công thức đóng | γ(0) = σ²Σψ² | ρ(1) công thức đóng | ρ(1) = γ(1)/γ(0) | AIC |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | HU | 0.6526 | 0.3566 | 0.4566 | Có | Có | 1.532 | 2.804 | 4.336 | 5.551e-17 | 1.267 | 1.267 | 0.7812 | 0.7812 | 212.4 |
 | LY | 0.6695 | 0.7153 | 0.0687 | Có | Có | 1.494 | 1.398 | 2.892 | 5.551e-17 | 0.3074 | 0.3074 | 0.8293 | 0.8293 | 28.29 |

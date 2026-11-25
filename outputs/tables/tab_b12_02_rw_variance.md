@@ -1,6 +1,6 @@
 **Bước ngẫu nhiên mô phỏng với $(\hat\delta,\hat\sigma)$ của DP: $\operatorname{Var}Y_t$ và $EY_t$**
 
-| t | t·σ̂² (lý thuyết) | Var mô phỏng | E Yₜ = δ̂t | Trung bình mô phỏng | tỷ số Var |
+| t | t·σ̂² (lý thuyết) | Var mô phỏng | E Yₜ = δ̂t | Trung bình mô phỏng | Tỷ số Var |
 |---|---|---|---|---|---|
 | 1 | 1.061e-4 | 1.129e-4 | 6.52e-4 | 7.104e-4 | 1.064 |
 | 10 | 0.0011 | 0.0011 | 0.0065 | 0.0075 | 1.004 |

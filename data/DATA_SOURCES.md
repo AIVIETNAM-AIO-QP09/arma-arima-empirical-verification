@@ -7,7 +7,7 @@ Tương đương trong Python: `statsmodels.datasets.get_rdataset("<Tên>")`.
 Chỉ 5 file CSV gốc (`LakeHuron`, `lynx`, `EuStockMarkets`, `Nile`, `AirPassengers`) vì DAX được dùng cho hai bộ (DR, DP). Các file gốc **không được sửa tay**; checksum SHA-256 ở `data/raw/checksums.txt`.
 Các cột SMI, CAC, FTSE của `EuStockMarkets` chỉ giữ trong file gốc (SMI chỉ dùng cho phần mở rộng ⋆ đồng tích hợp, nếu làm).
 
-Trích dẫn nguồn khoa học theo tài liệu R (`?LakeHuron`, `?lynx`, `?EuStockMarkets`, `?Nile`, `?AirPassengers`); nhóm cần đối chiếu lại nguyên văn trích dẫn trong tài liệu R trước khi đưa vào Mục 4.9.
+Trích dẫn nguồn khoa học theo tài liệu R (`?LakeHuron`, `?lynx`, `?EuStockMarkets`, `?Nile`, `?AirPassengers`), có hiệu chỉnh tên sách và lần xuất bản ở mục Tài liệu tham khảo của báo cáo.
 
 | Mã | Bài / ví dụ | Bộ (R) | Quan sát | Biến đáp ứng, đơn vị | n | Khoảng thời gian | File đã làm sạch |
 |---|---|---|---|---|---|---|---|

@@ -26,8 +26,9 @@ def main() -> None:
     used_figs = set(re.findall(r"\\figx\{([^}]+)\}", body))
     used_tabs = set(re.findall(r"\\tabdir/([A-Za-z0-9_]+)\.tex", body))
     with zipfile.ZipFile(OUT, "w", zipfile.ZIP_DEFLATED) as z:
+        z.write(ROOT / "AS3179_Nhom7.ipynb", "AS3179_Nhom7.ipynb")
         for name, text in texts.items():
-            z.writestr(name, text.replace("{../outputs/figures}", "{figures}").replace("{../outputs/tables}", "{tables}"))
+            z.writestr(name, text.replace(r"\newcommand{\notebookdir}{..}", r"\newcommand{\notebookdir}{.}").replace("{../outputs/figures}", "{figures}").replace("{../outputs/tables}", "{tables}"))
         for f in sorted((REPORT / "assets").glob("*")):
             z.write(f, f"assets/{f.name}")
         for n in sorted(used_tabs):

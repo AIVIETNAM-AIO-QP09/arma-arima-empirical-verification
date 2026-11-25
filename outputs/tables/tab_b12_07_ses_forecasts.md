@@ -1,6 +1,6 @@
-**NI: dự báo 1971 bằng bốn cách (ARIMA(0,1,1), đệ quy làm trơn tay, `SimpleExpSmoothing`)**
+**NI: dự báo 1971 bằng bốn cách (ARIMA(0,1,1), đệ quy làm trơn tay, `SimpleExpSmoothing` với $\alpha$ cố định và với $\hat\alpha$ tối ưu)**
 
-| Cách tính | dự báo 1971 |
+| Cách tính | Dự báo 1971 |
 |---|---|
 | ARIMA(0,1,1) | 798.5 |
 | đệ quy tay, α = 1+θ̂ = 0.2666 | 798.5 |

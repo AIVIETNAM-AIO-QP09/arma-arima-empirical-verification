@@ -1,2 +1,5 @@
 data/raw/* -text
+/AS3179_Nhom7.ipynb text eol=lf
+/submission/AS3179_Nhom7.ipynb text eol=lf
+/submission/*.csv -text whitespace=trailing-space,cr-at-eol
 *.pdf binary

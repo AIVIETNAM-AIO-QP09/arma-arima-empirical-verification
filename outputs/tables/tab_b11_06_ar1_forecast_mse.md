@@ -1,6 +1,6 @@
 **HU, AR(1): MSE dự báo $h$ bước, công thức $\sigma^2(1-\phi^{2h})/(1-\phi^2)$ và statsmodels**
 
-| Chân trời h | MSE tay σ²(1−φ^2h)/(1−φ²) | Var_pred_mean (statsmodels) | γ(0) giới hạn |
+| Chân trời h | MSE tay $\sigma^2(1-\phi^{2h})/(1-\phi^2)$ | MSE từ statsmodels | γ(0) giới hạn |
 |---|---|---|---|
 | 1 | 0.4965 | 0.4965 | 1.286 |
 | 2 | 0.8013 | 0.8013 | 1.286 |

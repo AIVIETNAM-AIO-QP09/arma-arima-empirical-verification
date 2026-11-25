@@ -1,16 +1,16 @@
 \begin{table}[H]
-\centering\small
+\centering\footnotesize
 \caption{DP: dự báo 1 bước trên 360 ngày với tham số cố định và khớp lại định kỳ}\label{tab:tab_b12_12_dp_rolling}
 \begin{adjustbox}{max width=\linewidth}
-\begin{tabular}{|>{\raggedright\arraybackslash}p{\dimexpr 0.720\linewidth-2\tabcolsep\relax}|r|r|}
+\begin{tabular}{|>{\raggedright\arraybackslash}p{\dimexpr 0.368\linewidth-2\tabcolsep\relax}|r|r|}
 \toprule
 Phương pháp & RMSE (\%) & MAE (\%) \\
 \midrule
-ARIMA(1,1,0) tham số cố định & 1.439 & 1.094 \\
-ARIMA(1,1,0) khớp lại mỗi 60 ngày & 1.44 & 1.096 \\
-trôi cố định ($\hat{\delta}$ của 1500 ngày đầu) & 1.435 & 1.092 \\
-trôi cập nhật mỗi 60 ngày & 1.435 & 1.092 \\
-naive & 1.439 & 1.094 \\
+ARIMA(1,1,0) tham số cố định & 1.439 & 1.094 \\[3pt]
+ARIMA(1,1,0) khớp lại mỗi 60 ngày & 1.44 & 1.096 \\[3pt]
+trôi cố định ($\hat{\delta}$ của 1500 ngày đầu) & 1.435 & 1.092 \\[3pt]
+trôi cập nhật mỗi 60 ngày & 1.435 & 1.092 \\[3pt]
+naive & 1.439 & 1.094 \\[3pt]
 \bottomrule
 \end{tabular}
 \end{adjustbox}

@@ -4,8 +4,11 @@ from pathlib import Path
 SEED = 3179  # giống bài giảng; mọi mô phỏng dùng numpy.random.default_rng(SEED)
 
 ROOT = Path(__file__).resolve().parents[2]
-DATA_RAW = ROOT / "data" / "raw"
-DATA_PROCESSED = ROOT / "data" / "processed"
+# Trong repo, data/ nằm cạnh src/. Trong gói nộp (submission/), mã nằm ở code/ còn dữ liệu ở data/ cạnh code/,
+# nên nếu ROOT/data không có thì dùng thư mục data/ ở cấp trên.
+DATA_DIR = ROOT / "data" if (ROOT / "data").is_dir() or not (ROOT.parent / "data").is_dir() else ROOT.parent / "data"
+DATA_RAW = DATA_DIR / "raw"
+DATA_PROCESSED = DATA_DIR / "processed"
 FIG_DIR = ROOT / "outputs" / "figures"
 TABLE_DIR = ROOT / "outputs" / "tables"
 LECTURE_DIR = ROOT / "docs" / "lectures"

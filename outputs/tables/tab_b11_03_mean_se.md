@@ -6,4 +6,4 @@
 | LY | 114 | 4 | 0.0523 | 2.361 | 0.08 | 8.308 | – | 48.28 |
 | DR | 1859 | 7 | 0.0239 | 0.9163 | 0.0229 | 0.9991 | 0.0247 | 2028.8 |
 
-*Ghi chú:* $\hat\tau$ Bartlett cắt cụt ở $K=\lfloor4(n/100)^{2/9}\rfloor$; công thức đầy đủ của $\Var\bar Y$ thay $\hat\gamma$ chỉ dùng độ trễ $h\le n/4$; dấu – nghĩa là công thức plug-in cho phương sai âm (ACF dao động, LY), không dùng được.
+*Ghi chú:* $\hat\tau$ Bartlett cắt cụt ở $K=\lfloor4(n/100)^{2/9}\rfloor$; $\hat\tau$ Bartlett luôn không âm nên dùng được cho cả ba bộ. Cột ``SE theo công thức đầy đủ'' dùng công thức đầy đủ của $\Var\bar Y$ thay $\hat\gamma$, chỉ dùng độ trễ $h\le n/4$; cắt cụt trọng số $(1-h/n)$ làm mất tính xác định dương, nên với ACF dao động (LY) tổng này âm và được ghi dấu –.

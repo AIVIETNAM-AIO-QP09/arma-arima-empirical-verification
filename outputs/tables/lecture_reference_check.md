@@ -1,6 +1,6 @@
 **Đối chiếu giá trị in trong bài giảng với giá trị tái lập bằng code (105/114 khớp trong dung sai làm tròn)**
 
-| Nội dung | Giá trị bài giảng | Giá trị tái lập | Dung sai | Kết quả | lý do (nếu lệch) |
+| Nội dung | Giá trị bài giảng | Giá trị tái lập | Dung sai | Kết quả | Lý do (nếu lệch) |
 |---|---|---|---|---|---|
 | HU AIC ar1 | 218.45 | 218.45 | 0.005 | Khớp |  |
 | HU BIC ar1 | 228.79 | 228.79 | 0.005 | Khớp |  |
